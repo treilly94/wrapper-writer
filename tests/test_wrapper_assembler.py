@@ -14,7 +14,15 @@ class TestWrapperAssembler(TestCase):
     def test_python_wrapper(self):
         output = wrapper_assembler("python.txt", self.method)
 
-        with open('./tests/resources/python_wrapper.txt', 'r') as expected_file:
+        with open('./tests/resources/wrapper_assembler/python.txt', 'r') as expected_file:
             expected = expected_file.read()
 
         self.assertEqual(output, expected)
+
+    # def test_java_api_wrapper(self):
+    #     output = wrapper_assembler("java.txt", self.method)
+    #
+    #     with open('./tests/resources/java_api_wrapper.txt', 'r') as expected_file:
+    #         expected = expected_file.read()
+    #
+    #     self.assertEqual(output, expected)
