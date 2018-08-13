@@ -1,5 +1,6 @@
 import re
 
+
 class MethodParser:
     """A class that parses the details of each method"""
 
