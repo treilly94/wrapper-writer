@@ -1,3 +1,5 @@
+{%- set name = method.method_name -%}
+{%- set params = method.method_params -%}
 def {{ name }}({% for p in params %}{{ p[0] }}{% endfor %}):
     api = jvm.TestFunc
 

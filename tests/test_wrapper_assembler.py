@@ -12,7 +12,7 @@ class TestWrapperAssembler(TestCase):
     method.method_docs = ""
 
     def test_python_wrapper(self):
-        output = wrapper_assembler(self.method)
+        output = wrapper_assembler("python.txt", self.method)
 
         with open('./tests/resources/python_wrapper.txt', 'r') as expected_file:
             expected = expected_file.read()
