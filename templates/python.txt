@@ -1,0 +1,4 @@
+def {{ name }}({{ param }}):
+    api = jvm.TestFunc
+
+    DataFrame(api.{{ name }}({{ param }}), sql_ctx)
