@@ -8,4 +8,4 @@ def wrapper_assembler(method):
     template_loader = jinja2.FileSystemLoader(searchpath="./templates/")
     template_env = jinja2.Environment(loader=template_loader)
     template = template_env.get_template("python.txt")
-    return template.render(name=method.method_name, param=method.method_params)
+    return template.render(name=method.method_name, params=method.method_params)

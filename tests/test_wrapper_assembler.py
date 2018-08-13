@@ -14,9 +14,7 @@ class TestWrapperAssembler(TestCase):
     def test_python_wrapper(self):
         output = wrapper_assembler(self.method)
 
-        expected = """def test_func(param1):
-                        api = jvm.TestFunc
-                        
-                        DataFrame(api.testFunc(param1), sql_ctx)"""
+        with open('./tests/resources/python_wrapper.txt', 'r') as expected_file:
+            expected = expected_file.read()
 
         self.assertEqual(output, expected)

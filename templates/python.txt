@@ -1,4 +1,4 @@
-def {{ name }}({{ param }}):
+def {{ name }}({% for p in params %}{{ p[0] }}{% endfor %}):
     api = jvm.TestFunc
 
-    DataFrame(api.{{ name }}({{ param }}), sql_ctx)
+    DataFrame(api.{{ name }}({% for p in params %}{{ p[0] }}{% endfor %}), sql_ctx)
