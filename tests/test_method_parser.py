@@ -10,6 +10,7 @@ class TestMethodParser(TestCase):
                     }"""
 
         output = MethodParser(method)
+        output.parse_method()
 
         self.assertEqual(output.method_name, "testFunc")
         self.assertEqual(output.method_params, [("param1", "String")])
