@@ -10,16 +10,21 @@ class WrapperWriter:
     def __init__(self, config_dir):
         self.config_dir = config_dir
 
-    # def create_wrappers(self, config_dir):
+    def create_wrappers(self, config_dir):
+        """This method reads the configuration files and applies them to the project"""
+        # Read structure
 
-    def read_from_config(self, config):
-        """This method reads the details of the method from a yaml method_details file"""
-        file = open(config)
-        self.method_details = yaml.load(file)
+        # Create directory if it doesnt
+
+    def read_yaml(self, path):
+        """This method reads  a yaml file into a dictionary"""
+        file = open(path)
+        config = yaml.load(file)
         file.close()
+        return config
 
     def wrapper_assembler(self, template):
-        """A method that assembles the wrapper from a method object and a wrapper method_details"""
+        """This method that assembles the wrapper from a template and the classes method_details"""
 
         # Get and render the template
         template_dir = os.path.join(self.config_dir, "templates")

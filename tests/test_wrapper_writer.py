@@ -8,8 +8,7 @@ class TestWrapperWriter(TestCase):
     method = WrapperWriter("./tests/resources/config/")
 
     def test_read_config(self):
-        self.method.read_from_config("./tests/resources/config/config.yml")
-        output = self.method.method_details
+        output = self.method.read_yaml("./tests/resources/config/config.yml")
 
         self.assertEqual("testFunc", output["name"])
         self.assertEqual({"param1": "String"}, output["params"])
