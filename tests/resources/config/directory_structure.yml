@@ -1,0 +1,8 @@
+project_root:
+directories:
+  python:
+    path: /test_dir/python/path/
+    template: python.txt
+  scala:
+    path: /test_dir/scala/path/
+    template: scala.txt

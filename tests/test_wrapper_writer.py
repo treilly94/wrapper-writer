@@ -7,6 +7,9 @@ class TestWrapperWriter(TestCase):
 
     method = WrapperWriter("./tests/resources/config/")
 
+    def test_create_wrappers(self):
+        self.method.create_wrappers()
+
     def test_read_config(self):
         output = self.method.read_yaml("./tests/resources/config/config.yml")
 
