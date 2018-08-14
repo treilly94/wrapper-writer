@@ -21,7 +21,7 @@ class TestMethodParser(TestCase):
         output = MethodParser()
         output.read_from_config("./tests/resources/method_parser/config.yml")
 
-        self.assertEqual(output.name, "testFunc")
-        self.assertEqual(output.params, {"param1": "String"})
-        self.assertEqual(output.docs, None)
-        self.assertEqual(output.returns, "String")
+        self.assertEqual("testFunc", output.name)
+        self.assertEqual({"param1": "String"}, output.params)
+        self.assertEqual(None, output.docs)
+        self.assertEqual("String", output.returns)
