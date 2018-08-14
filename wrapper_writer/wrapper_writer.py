@@ -11,7 +11,9 @@ class WrapperWriter:
 
     def read_from_config(self, config):
         """This method reads the details of the method from a yaml config file"""
-        self.config = yaml.load(open(config))
+        file = open(config)
+        self.config = yaml.load(file)
+        file.close()
 
     def wrapper_assembler(self, template):
         """A method that assembles the wrapper from a method object and a wrapper config"""
