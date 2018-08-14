@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wrapper_writer.wrapper_assembler import WrapperWriter
+from wrapper_writer.wrapper_writer import WrapperWriter
 
 
 class TestWrapperWriter(TestCase):
