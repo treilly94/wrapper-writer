@@ -12,9 +12,9 @@ class TestWrapperAssembler(TestCase):
     method.docs = None
 
     def test_python_wrapper(self):
-        output = wrapper_assembler("python.txt", self.method)
+        output = wrapper_assembler("./tests/resources/wrapper_assembler/templates/", "python.txt", self.method)
 
-        with open('./tests/resources/wrapper_assembler/python.txt', 'r') as expected_file:
+        with open('./tests/resources/wrapper_assembler/expected/python.txt', 'r') as expected_file:
             expected = expected_file.read()
 
         self.assertEqual(output, expected)
