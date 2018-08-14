@@ -1,28 +1,48 @@
 from unittest import TestCase
 
-from wrapper_writer.method_parser import MethodParser
-from wrapper_writer.wrapper_assembler import wrapper_assembler
+from wrapper_writer.wrapper_assembler import WrapperWriter
 
 
-class TestWrapperAssembler(TestCase):
-    method = MethodParser()
-    method.name = "testFunc"
-    method.params = {"param1": "String"}
-    method.returns = "String"
-    method.docs = None
+class TestWrapperWriter(TestCase):
 
-    def test_python_wrapper(self):
-        output = wrapper_assembler("./tests/resources/wrapper_assembler/templates/", "python.txt", self.method)
+    method = WrapperWriter("./tests/resources/templates/")
 
-        with open('./tests/resources/wrapper_assembler/expected/python.txt', 'r') as expected_file:
+    def test_read_config(self):
+        self.method.read_from_config("./tests/resources/configs/config.yml")
+        output = self.method.config
+
+        self.assertEqual("testFunc", output["name"])
+        self.assertEqual({"param1": "String"}, output["params"])
+        self.assertEqual(None, output["docs"])
+        self.assertEqual("String", output["returns"])
+
+    def test_wrapper_assembler_python(self):
+
+        self.method.config = {
+            "name": "testFunc",
+            "params": {"param1": "String"},
+            "returns": "String",
+            "docs": None
+        }
+
+        output = self.method.wrapper_assembler("python.txt")
+
+        with open('./tests/resources/expected/python.txt', 'r') as expected_file:
             expected = expected_file.read()
 
         self.assertEqual(expected, output)
 
-    def test_java_api_wrapper(self):
-        output = wrapper_assembler("./tests/resources/wrapper_assembler/templates/", "scala.txt", self.method)
+    def test_wrapper_assembler_scala(self):
+        self.method.config = {
+            "name": "testFunc",
+            "params": {"param1": "String"},
+            "returns": "String",
+            "docs": None
+        }
 
-        with open('./tests/resources/wrapper_assembler/expected/scala.txt', 'r') as expected_file:
+        output = self.method.wrapper_assembler("scala.txt")
+
+        with open('./tests/resources/expected/scala.txt', 'r') as expected_file:
             expected = expected_file.read()
 
         self.assertEqual(expected, output)
