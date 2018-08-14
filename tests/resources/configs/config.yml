@@ -1,5 +1,5 @@
 name: testFunc
 params:
   param1: String
-docs:
+docs: A cool function
 returns: String

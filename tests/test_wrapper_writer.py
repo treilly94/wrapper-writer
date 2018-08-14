@@ -13,7 +13,7 @@ class TestWrapperWriter(TestCase):
 
         self.assertEqual("testFunc", output["name"])
         self.assertEqual({"param1": "String"}, output["params"])
-        self.assertEqual(None, output["docs"])
+        self.assertEqual("A cool function", output["docs"])
         self.assertEqual("String", output["returns"])
 
     def test_wrapper_assembler_python(self):
@@ -22,7 +22,7 @@ class TestWrapperWriter(TestCase):
             "name": "testFunc",
             "params": {"param1": "String"},
             "returns": "String",
-            "docs": None
+            "docs": "Test Docs"
         }
 
         output = self.method.wrapper_assembler("python.txt")

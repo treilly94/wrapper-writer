@@ -1,6 +1,11 @@
 {%- set name = method.get("name") -%}
 {%- set params = method.get("params") -%}
+{%- set docs = method.get("docs") -%}
 def {{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}):
+    {% if docs != None -%}
+    """ {{ docs }}"""
+    {%- endif %}
+
     api = jvm.TestFunc
 
     DataFrame(api.{{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}), sql_ctx)
