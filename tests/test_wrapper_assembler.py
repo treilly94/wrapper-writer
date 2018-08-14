@@ -7,9 +7,9 @@ from wrapper_writer.wrapper_assembler import wrapper_assembler
 class TestWrapperAssembler(TestCase):
     method = MethodParser()
     method.name = "testFunc"
-    method.params = [("param1", "String")]
+    method.params = {"param1": "String"}
     method.returns = "String"
-    method.docs = ""
+    method.docs = None
 
     def test_python_wrapper(self):
         output = wrapper_assembler("python.txt", self.method)

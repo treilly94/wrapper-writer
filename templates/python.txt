@@ -1,6 +1,6 @@
 {%- set name = method.name -%}
 {%- set params = method.params -%}
-def {{ name }}({% for p in params %}{{ p[0] }}{% endfor %}):
+def {{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}):
     api = jvm.TestFunc
 
-    DataFrame(api.{{ name }}({% for p in params %}{{ p[0] }}{% endfor %}), sql_ctx)
+    DataFrame(api.{{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}), sql_ctx)
