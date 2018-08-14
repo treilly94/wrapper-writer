@@ -1,5 +1,5 @@
-{%- set name = method.name -%}
-{%- set params = method.params -%}
+{%- set name = method.get("name") -%}
+{%- set params = method.get("params") -%}
 def {{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}):
     api = jvm.TestFunc
 
