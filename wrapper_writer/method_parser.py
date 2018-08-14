@@ -1,4 +1,5 @@
 import re
+import yaml
 
 
 class MethodParser:
@@ -9,8 +10,15 @@ class MethodParser:
     docs = ""
     returns = ""
 
-    def read_from_config(self):
-        """This method reads the details of the method from a config file"""
+    def read_from_config(self, config):
+        """This method reads the details of the method from a yaml config file"""
+        config_dict = yaml.load(open(config))
+
+        self.name = config_dict.get("name")
+        self.params = config_dict.get("params")
+        self.docs = config_dict.get("docs")
+        self.returns = config_dict.get("returns")
+
 
     def parse_method(self, method):
         """This method parses the target method as a string into its individual components"""
