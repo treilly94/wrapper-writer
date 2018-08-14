@@ -19,7 +19,7 @@ class TestMethodParser(TestCase):
 
     def test_read_config(self):
         output = MethodParser()
-        output.read_from_config()
+        output.read_from_config("./tests/resources/method_parser/config.yml")
 
         self.assertEqual(output.name, "testFunc")
         self.assertEqual(output.params, [("param1", "String")])

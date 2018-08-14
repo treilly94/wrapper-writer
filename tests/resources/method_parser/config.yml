@@ -1,0 +1,5 @@
+name: testFunc
+params:
+  param1: String
+docs:
+returns: String
