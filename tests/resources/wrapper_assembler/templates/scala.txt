@@ -1,0 +1,8 @@
+{%- set name = method.name -%}
+{%- set params = method.params -%}
+{%- set returns = method.returns -%}
+object TestFunc {
+    def {{ name }}({% for p in params.keys() %}{{ p }}: {{ params.get(p) }}{% endfor %}): {{ returns }} = {
+
+    }
+}

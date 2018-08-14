@@ -19,10 +19,10 @@ class TestWrapperAssembler(TestCase):
 
         self.assertEqual(output, expected)
 
-    # def test_java_api_wrapper(self):
-    #     output = wrapper_assembler("java.txt", self.method)
-    #
-    #     with open('./tests/resources/java_api_wrapper.txt', 'r') as expected_file:
-    #         expected = expected_file.read()
-    #
-    #     self.assertEqual(output, expected)
+    def test_java_api_wrapper(self):
+        output = wrapper_assembler("./tests/resources/wrapper_assembler/templates/", "scala.txt", self.method)
+
+        with open('./tests/resources/wrapper_assembler/expected/scala.txt', 'r') as expected_file:
+            expected = expected_file.read()
+
+        self.assertEqual(output, expected)
