@@ -5,11 +5,11 @@ from wrapper_writer.wrapper_writer import WrapperWriter
 
 class TestWrapperWriter(TestCase):
 
-    method = WrapperWriter("./tests/resources/templates/")
+    method = WrapperWriter("./tests/resources/config/")
 
     def test_read_config(self):
-        self.method.read_from_config("./tests/resources/configs/config.yml")
-        output = self.method.config
+        self.method.read_from_config("./tests/resources/config/config.yml")
+        output = self.method.method_details
 
         self.assertEqual("testFunc", output["name"])
         self.assertEqual({"param1": "String"}, output["params"])
@@ -18,7 +18,7 @@ class TestWrapperWriter(TestCase):
 
     def test_wrapper_assembler_python(self):
 
-        self.method.config = {
+        self.method.method_details = {
             "name": "testFunc",
             "params": {"param1": "String"},
             "returns": "String",
@@ -33,7 +33,7 @@ class TestWrapperWriter(TestCase):
         self.assertEqual(expected, output)
 
     def test_wrapper_assembler_scala(self):
-        self.method.config = {
+        self.method.method_details = {
             "name": "testFunc",
             "params": {"param1": "String"},
             "returns": "String",
