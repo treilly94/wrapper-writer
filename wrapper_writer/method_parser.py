@@ -4,21 +4,24 @@ import re
 class MethodParser:
     """A class that parses the details of each method"""
 
-    method_name = ""
-    method_params = ""
-    method_docs = ""
-    method_returns = ""
+    name = ""
+    params = ""
+    docs = ""
+    returns = ""
 
     def __init__(self, method_string):
         self.method = method_string
+
+    def read_from_config(self):
+        """This method reads the details of the method from a config file"""
 
     def parse_method(self):
         """This method parses the target method as a string into its individual components"""
         pattern = r'def (\w+)\((.*)\): (\w+)'
         searched = re.search(pattern, self.method)
-        self.method_name = searched.group(1)
-        self.method_params = self.parse_params(searched.group(2))
-        self.method_returns = searched.group(3)
+        self.name = searched.group(1)
+        self.params = self.parse_params(searched.group(2))
+        self.returns = searched.group(3)
 
     @staticmethod
     def parse_params(params):

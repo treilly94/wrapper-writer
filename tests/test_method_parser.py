@@ -12,7 +12,7 @@ class TestMethodParser(TestCase):
         output = MethodParser(method)
         output.parse_method()
 
-        self.assertEqual(output.method_name, "testFunc")
-        self.assertEqual(output.method_params, [("param1", "String")])
-        self.assertEqual(output.method_docs, "")
-        self.assertEqual(output.method_returns, "String")
+        self.assertEqual(output.name, "testFunc")
+        self.assertEqual(output.params, [("param1", "String")])
+        self.assertEqual(output.docs, "")
+        self.assertEqual(output.returns, "String")
