@@ -9,16 +9,13 @@ class MethodParser:
     docs = ""
     returns = ""
 
-    def __init__(self, method_string):
-        self.method = method_string
-
     def read_from_config(self):
         """This method reads the details of the method from a config file"""
 
-    def parse_method(self):
+    def parse_method(self, method):
         """This method parses the target method as a string into its individual components"""
         pattern = r'def (\w+)\((.*)\): (\w+)'
-        searched = re.search(pattern, self.method)
+        searched = re.search(pattern, method)
         self.name = searched.group(1)
         self.params = self.parse_params(searched.group(2))
         self.returns = searched.group(3)

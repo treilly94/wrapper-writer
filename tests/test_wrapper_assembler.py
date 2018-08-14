@@ -5,7 +5,7 @@ from wrapper_writer.wrapper_assembler import wrapper_assembler
 
 
 class TestWrapperAssembler(TestCase):
-    method = MethodParser("")
+    method = MethodParser()
     method.name = "testFunc"
     method.params = [("param1", "String")]
     method.returns = "String"
