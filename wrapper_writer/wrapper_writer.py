@@ -34,16 +34,15 @@ class WrapperWriter:
         else:
             return os.getcwd()
 
-    def create_directories(self, content):
-        """This method creates the directory structure defined in the structure file"""
-        structure = content.get("directories")
-        for part in structure.keys():
-            print("Started " + part)
-            path = structure[part].get("path")
-            full_path = self.project_root + path  # TODO make this use a proper os.path.join
-            os.makedirs(full_path)
-            self.write_file(full_path, structure, part)
-            print("Finished " + part)
+    def wrapper_assembler(self, template):
+        """This method that assembles the wrapper from a template and the classes method_details"""
+
+        # Get and render the template
+        template_dir = os.path.join(self.config_dir, "templates")
+        template_loader = jinja2.FileSystemLoader(searchpath=template_dir)
+        template_env = jinja2.Environment(loader=template_loader)
+        template = template_env.get_template(template)
+        return template.render(method=self.method_details)
 
     def write_file(self, full_path, structure, part):
         """This method Writes the output from wrapper assembler to a file"""
@@ -54,12 +53,13 @@ class WrapperWriter:
         file.write(output)
         file.close()
 
-    def wrapper_assembler(self, template):
-        """This method that assembles the wrapper from a template and the classes method_details"""
-
-        # Get and render the template
-        template_dir = os.path.join(self.config_dir, "templates")
-        template_loader = jinja2.FileSystemLoader(searchpath=template_dir)
-        template_env = jinja2.Environment(loader=template_loader)
-        template = template_env.get_template(template)
-        return template.render(method=self.method_details)
+    def create_directories(self, content):
+        """This method creates the directory structure defined in the structure file"""
+        structure = content.get("directories")
+        for part in structure.keys():
+            print("Started " + part)
+            path = structure[part].get("path")
+            full_path = self.project_root + path  # TODO make this use a proper os.path.join
+            os.makedirs(full_path)
+            self.write_file(full_path, structure, part)
+            print("Finished " + part)

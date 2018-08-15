@@ -1,5 +1,5 @@
 def testFunc(param1):
-    """ Test Docs"""
+    """ A cool function"""
 
     api = jvm.TestFunc
 

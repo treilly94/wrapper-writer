@@ -1,0 +1,6 @@
+/** A cool function*/
+object TestFunc {
+    def testFunc(param1: String): String = {
+
+    }
+}
