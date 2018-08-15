@@ -3,6 +3,8 @@ directories:
   python:
     path: /test_dir/python/path/
     template: python.txt
+    file_extension: .py
   scala:
     path: /test_dir/scala/path/
     template: scala.txt
+    file_extension: .scala

@@ -15,6 +15,8 @@ class WrapperWriter:
         """This method reads the configuration files and applies them to the project"""
         structure_path = os.path.join(self.config_dir, "directory_structure.yml")
         content = self.read_yaml(structure_path)
+        config_path = os.path.join(self.config_dir, "config.yml")
+        self.method_details = self.read_yaml(config_path)
         self.project_root = self.get_project_root(content)
         self.create_directories(content)
 
@@ -34,12 +36,23 @@ class WrapperWriter:
 
     def create_directories(self, content):
         """This method creates the directory structure defined in the structure file"""
-        # Read the structure
         structure = content.get("directories")
-        for dir in structure.keys():
-            path = structure[dir].get("path")
+        for part in structure.keys():
+            print("Started " + part)
+            path = structure[part].get("path")
             full_path = self.project_root + path  # TODO make this use a proper os.path.join
             os.makedirs(full_path)
+            self.write_file(full_path, structure, part)
+            print("Finished " + part)
+
+    def write_file(self, full_path, structure, part):
+        """This method Writes the output from wrapper assembler to a file"""
+        output = self.wrapper_assembler(structure[part].get("template"))
+
+        file_name = full_path + self.method_details.get("name") + structure[part].get("file_extension")
+        file = open(file_name, "w")
+        file.write(output)
+        file.close()
 
     def wrapper_assembler(self, template):
         """This method that assembles the wrapper from a template and the classes method_details"""
