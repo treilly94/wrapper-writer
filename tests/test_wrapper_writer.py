@@ -45,10 +45,11 @@ class TestWrapperWriter(TestCase):
 
     def test_wrapper_assembler_scala(self):
         self.method.methods = {
-            "name": "testFunc",
-            "params": {"param1": "String"},
-            "returns": "String",
-            "docs": None
+            "testFunc": {
+                "params": {"param1": "String"},
+                "returns": "String",
+                "docs": None
+            }
         }
 
         output = self.method.wrapper_assembler("testFunc", "scala.txt")
