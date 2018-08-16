@@ -51,7 +51,7 @@ class WrapperWriter:
 
         output = self.wrapper_assembler(method, file_details.get("template"))
 
-        file_name = full_path + method + file_details.get("file_extension")
+        file_name = os.path.join(full_path, method + file_details.get("file_extension"))
         file = open(file_name, "w")
         file.write(output)
         file.close()
