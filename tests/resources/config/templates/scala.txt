@@ -1,4 +1,3 @@
-{%- set name = method.get("name") -%}
 {%- set params = method.get("params") -%}
 {%- set returns = method.get("returns") -%}
 {%- set docs = method.get("docs") -%}

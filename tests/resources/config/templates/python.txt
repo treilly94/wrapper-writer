@@ -1,4 +1,3 @@
-{%- set name = method.get("name") -%}
 {%- set params = method.get("params") -%}
 {%- set docs = method.get("docs") -%}
 def {{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}):
