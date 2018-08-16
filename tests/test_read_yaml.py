@@ -31,10 +31,10 @@ class TestReadYaml(TestCase):
         with self.assertRaises(Exception) as cm:
             self.method.read_yaml("./tests/resources/config/no_structure.yml")
         err = str(cm.exception)
-        self.assertEqual("config.yml must contain a structure tag", err)
+        self.assertEqual("config.yml must contain a structure key", err)
 
     def test_no_methods(self):
         with self.assertRaises(Exception) as cm:
             self.method.read_yaml("./tests/resources/config/no_methods.yml")
         err = str(cm.exception)
-        self.assertEqual("config.yml must contain a methods tag", err)
+        self.assertEqual("config.yml must contain a methods key", err)

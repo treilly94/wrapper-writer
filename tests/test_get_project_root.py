@@ -26,5 +26,9 @@ class TestGetProjectRoot(TestCase):
     def test_null_project_root(self):
         content = {}
 
-        with self.assertRaises("project_root undefined"):
+        with self.assertRaises(Exception) as cm:
             self.method.get_project_root(content)
+        err = str(cm.exception)
+        message = "config.yml must contain a project_root key, if you wish to use the default please include " \
+                  "the key with no value"
+        self.assertEqual(message, err)
