@@ -29,10 +29,11 @@ class TestWrapperWriter(TestCase):
 
     def test_wrapper_assembler_python(self):
         self.method.methods = {
-            "name": "testFunc",
-            "params": {"param1": "String"},
-            "returns": "String",
-            "docs": "A cool function"
+            "testFunc": {
+                "params": {"param1": "String"},
+                "returns": "String",
+                "docs": "A cool function"
+            }
         }
 
         output = self.method.wrapper_assembler("testFunc", "python.txt")
