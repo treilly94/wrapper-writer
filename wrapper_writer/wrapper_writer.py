@@ -14,8 +14,8 @@ class WrapperWriter:
 
     def create_wrappers(self):
         """This method reads the configuration files and applies them to the project"""
-        config_path = os.path.join(self.config_dir, "config.yml")
-        self.read_yaml(config_path)
+        config_file_path = os.path.join(self.config_dir, "config.yml")
+        self.read_yaml(config_file_path)
         self.create_directories()
 
     def read_yaml(self, path):
