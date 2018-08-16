@@ -24,13 +24,17 @@ class TestReadYaml(TestCase):
         self.assertEqual(expected_methods, self.method.methods)
 
     def test_no_file(self):
-        self.method.read_yaml("./tests/resources/config/no_file.yml")
-        # TODO Add assert errors
+        with self.assertRaises(FileNotFoundError):
+            self.method.read_yaml("./tests/resources/config/no_file.yml")
 
     def test_no_structure(self):
-        self.method.read_yaml("./tests/resources/config/no_structure.yml")
-        # TODO Add assert errors
+        with self.assertRaises(Exception) as cm:
+            self.method.read_yaml("./tests/resources/config/no_structure.yml")
+        err = str(cm.exception)
+        self.assertEqual("config.yml must contain a structure tag", err)
 
     def test_no_methods(self):
-        self.method.read_yaml("./tests/resources/config/no_methods.yml")
-        # TODO Add assert errors
+        with self.assertRaises(Exception) as cm:
+            self.method.read_yaml("./tests/resources/config/no_methods.yml")
+        err = str(cm.exception)
+        self.assertEqual("config.yml must contain a methods tag", err)
