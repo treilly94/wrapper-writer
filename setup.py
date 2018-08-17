@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='wrapper_writer',
-    version='0.1',
+    version='0.2',
     author="Tom Reilly",
     url="https://github.com/treilly94/wrapper-writer",
     packages=find_packages(),
