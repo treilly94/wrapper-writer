@@ -1,4 +1,5 @@
 import os
+
 import jinja2
 import yaml
 
@@ -29,6 +30,12 @@ class WrapperWriter:
 
     def get_project_root(self, content):
         """This method gets the root from the structure file or sets it to the current working directory"""
+        # Check if project root exists
+        if "project_root" not in content.keys():
+            message = "config.yml must contain a project_root key, if you wish to use the default please include " \
+                      "the key with no value"
+            raise Exception(message)
+        # Get project root or use default
         if content.get("project_root") is not None:
             return content.get("project_root")
         else:
