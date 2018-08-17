@@ -60,9 +60,15 @@ class WrapperWriter:
         """This method creates the directory structure defined in the structure file"""
         for part in self.structure.keys():
             print("Started " + part)
+            # Construct path
             path = self.structure[part].get("path")
             full_path = self.project_root + path  # TODO make this use a proper os.path.join
-            os.makedirs(full_path)
+            # Create path
+            try:
+                os.makedirs(full_path)
+            except FileExistsError:
+                print(full_path + " already exists")
+            # Create method files
             for method in self.methods:
                 self.write_file(full_path, part, method)
             print("Finished " + part)
