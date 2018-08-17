@@ -3,6 +3,21 @@
 # wrapper-writer
 This package dynamically creates wrappers for your methods in a given structure
 
+## Instillation 
+The package can be installed in the following ways
+#### From test pypi
+Use the below command to install from test pypi.  
+This may fail if the dependencies are not already installed as many of them are not available from the test pypi repo. 
+```
+pip3 install --index-url https://test.pypi.org/simple/ wrapper_writer 
+```
+#### From a local copy
+The following command can be run in the same folder as the setup.py to install the package from a local copy of the 
+code.
+```
+pip3 install --editable .
+```
+
 ## Method config
 Currently the details of the method are defined in a yaml file. 
 #### Name
