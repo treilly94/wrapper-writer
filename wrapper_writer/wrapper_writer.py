@@ -59,6 +59,11 @@ class WrapperWriter:
         method = self.methods[name]
         # Get and render the template
         template_dir = os.path.join(self.config_dir, "templates")
+        template_path = os.path.join(template_dir, template)
+        # Check template exists
+        if not os.path.exists(template_path):
+            raise FileNotFoundError
+
         template_loader = jinja2.FileSystemLoader(searchpath=template_dir)
         template_env = jinja2.Environment(loader=template_loader)
         template = template_env.get_template(template)
