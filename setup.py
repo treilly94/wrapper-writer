@@ -1,0 +1,18 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='wrapper_writer',
+    version='0.1',
+    author="Tom Reilly",
+    packages=find_packages(),
+    install_requires=[
+        "click",
+        "Jinja2",
+        "MarkupSafe",
+        "PyYAML"
+    ],
+    entry_points='''
+        [console_scripts]
+        wrapper_writer=wrapper_writer.wrapper_writer:write_wrappers
+    ''',
+)
