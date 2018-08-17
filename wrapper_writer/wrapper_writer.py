@@ -1,5 +1,6 @@
 import os
 
+import click
 import jinja2
 import yaml
 
@@ -96,3 +97,15 @@ class WrapperWriter:
             for method in self.methods:
                 self.write_file(full_path, part, method)
             print("Finished " + part)
+
+
+
+@click.command()
+@click.option("--config_dir", help="The directory containing the config file/templates")
+def write_wrappers(config_dir):
+    method = WrapperWriter(config_dir)
+    method.create_wrappers()
+
+
+if __name__ == "__main__":
+    write_wrappers()
