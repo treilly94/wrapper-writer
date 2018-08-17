@@ -4,6 +4,7 @@ setup(
     name='wrapper_writer',
     version='0.1',
     author="Tom Reilly",
+    url="https://github.com/treilly94/wrapper-writer",
     packages=find_packages(),
     install_requires=[
         "click",
