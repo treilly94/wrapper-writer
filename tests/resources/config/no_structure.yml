@@ -1,0 +1,11 @@
+# The absolute path of the root of the target project
+# If none is provided your cwd will be used
+project_root:
+
+# The details of the methods to be templated
+methods:
+  testFunc:
+    params:
+      param1: String
+    docs: A cool function
+    returns: String

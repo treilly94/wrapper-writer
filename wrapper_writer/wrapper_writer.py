@@ -20,12 +20,24 @@ class WrapperWriter:
         self.create_directories()
 
     def read_yaml(self, path):
-        """This method reads  a yaml file into a dictionary"""
+        """This method reads a yaml file into a dictionary"""
+        # Read file
         file = open(path)
         config = yaml.load(file)
         file.close()
+
+        # Check if Structure exists
+        if "structure" not in config.keys():
+            message = "config.yml must contain a structure key"
+            raise Exception(message)
         self.structure = config.get("structure")
+
+        # Check if methods exist
+        if "methods" not in config.keys():
+            message = "config.yml must contain a methods key"
+            raise Exception(message)
         self.methods = config.get("methods")
+
         self.project_root = self.get_project_root(config)
 
     def get_project_root(self, content):
