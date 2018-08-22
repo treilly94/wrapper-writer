@@ -1,19 +1,19 @@
+{% import "macros" as macros %}
+
 {%- set params = method.get("params") -%}
+{{ params.pop("df") }}
 {%- set returns = method.get("returns") -%}
 {%- set docs = method.get("docs") -%}
 package com.example.implicits
 
 import org.apache.spark.sql.DataFrame
-import com.example.SumColumns
+import com.example.{{ name }}
 
-object SumColumnsImpl {
-  implicit class SumColumnMethodsImpl(df: DataFrame) {
-
-  	{%- if docs != None -%}
-	/** {{ docs }}*/
-	{%- endif %}
-    def {{ name }}({% for p in params.keys() %}{{ p }}: {{ params.get(p) }}{% endfor %}): {{ returns }} = {
-      SumColumns.{{ name }}({% for p in params.keys() %}{{ p }}{% endfor %})
+object {{ name }}Impl {
+  implicit class {{ name }}MethodsImpl(df: DataFrame) {
+    {{ macros.scala_docs(docs) }}
+    def {{ name }}({{ macros.show_params_and_types(params) }}: {{ returns }} = {
+      {{ name }}.{{ name }}({{ macros.show_params(params) }})
     }
   }
 }
