@@ -33,3 +33,9 @@ methods:
       newCol: String
     docs: A cool function
     returns: DataFrame
+  filterOnList:
+    params:
+      df: DataFrame
+      targetCol: String
+      values: List[Int]
+    returns: DataFrame
