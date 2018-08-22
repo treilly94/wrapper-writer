@@ -1,0 +1,35 @@
+# The absolute path of the root of the target project
+# If none is provided your cwd will be used
+project_root:
+
+# The structure of the project
+# All paths are relative to the project_root
+structure:
+  R:
+    path: /R/R/
+    template: r.R
+    file_extension: .R
+  python:
+    path: /python/methods/
+    template: python.py
+    file_extension: .py
+  api:
+    path: /src/main/scala/com/example/api/
+    template: api.scala
+    file_extension: .scala
+  implicits:
+    path: /src/main/scala/com/example/implicits/
+    template: implicits.scala
+    file_extension: .scala
+
+
+# The details of the methods to be templated
+methods:
+  sumColumns:
+    params:
+      df: DataFrame
+      col1: String
+      col2: String
+      newCol: String
+    docs: A cool function
+    returns: DataFrame

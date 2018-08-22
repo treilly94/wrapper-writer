@@ -1,0 +1,10 @@
+{% macro show_params(params) %}
+	{% set length = params|length %}
+    {%- for p in params -%}
+    	{% if loop.index == length %}
+    		{{ p }}
+    	{% else %}
+    		{{ p }},
+    	{% endif %}  
+    {%- endfor -%}
+{% endmacro %}
