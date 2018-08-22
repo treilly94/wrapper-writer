@@ -5,6 +5,20 @@
     {%- endif %}
 {% endmacro %}
 
+{% macro r_docs(name, docs, params) %}
+#' {{ name }}
+#'
+#' @param sc
+{% for p in params -%}
+#' @param {{ p }}
+{% endfor -%}
+#'
+#' @return
+#' @export
+#'
+#' @examples
+{% endmacro %}
+
 {% macro show_params(params) %}
 	{%- set length = params|length -%}
     {%- for p in params -%}
@@ -37,5 +51,19 @@
     	{%- else -%}
     		{{ p }}: {{ params.get(p) }},
     	{%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% macro r_params(name, params) %}
+    sc=sc,
+    class="com.example.{{ name }}",
+    method="{{ name }}",
+    {%- set length = params|length -%}
+    {%- for p in params -%}
+    {% if loop.index == length %}
+    {{ p }}={{ p }}
+    {%- else %}
+    {{ p }}={{ p }},
+    {%- endif %}
     {%- endfor -%}
 {% endmacro %}
