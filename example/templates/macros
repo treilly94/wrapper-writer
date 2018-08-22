@@ -1,0 +1,23 @@
+{% macro show_params(params) %}
+	{%- set length = params|length -%}
+    {%- for p in params -%}
+    	{%- if loop.index == length -%}
+    		{{ p }}
+    	{%- else -%}
+    		{{ p }},
+    	{%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% macro python_to_java_params(params) %}
+	{%- set length = params|length -%}
+    {%- for p in params -%}
+    	{%- if loop.index == length -%}
+    		{{ p }}
+    	{%- elif p == "df"-%}
+    	    {{ p }}._jdf,
+    	{%- else -%}
+    		{{ p }},
+    	{%- endif -%}
+    {%- endfor -%}
+{% endmacro %}

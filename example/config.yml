@@ -7,19 +7,19 @@ project_root:
 structure:
   R:
     path: /R/R/
-    template: r.R
+    template: r
     file_extension: .R
   python:
     path: /python/methods/
-    template: python.py
+    template: python
     file_extension: .py
   api:
     path: /src/main/scala/com/example/api/
-    template: api.scala
+    template: api
     file_extension: .scala
   implicits:
     path: /src/main/scala/com/example/implicits/
-    template: implicits.scala
+    template: implicits
     file_extension: .scala
 
 
