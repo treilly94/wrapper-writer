@@ -1,3 +1,10 @@
+
+{% macro scala_docs(docs) %}
+    {%- if docs != None -%}
+    /** {{ docs }}*/
+    {%- endif %}
+{% endmacro %}
+
 {% macro show_params(params) %}
 	{%- set length = params|length -%}
     {%- for p in params -%}
@@ -18,6 +25,17 @@
     	    {{ p }}._jdf,
     	{%- else -%}
     		{{ p }},
+    	{%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% macro show_params_and_types(params) %}
+	{%- set length = params|length -%}
+    {%- for p in params -%}
+    	{%- if loop.index == length -%}
+    		{{ p }}: {{ params.get(p) }}
+    	{%- else -%}
+    		{{ p }}: {{ params.get(p) }},
     	{%- endif -%}
     {%- endfor -%}
 {% endmacro %}
