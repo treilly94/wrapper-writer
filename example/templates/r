@@ -6,7 +6,7 @@
 
 {{ macros.r_docs(name, docs, params) }}
 
-{{ name }} <- function(sc, {{ macros.show_params(params) }}) {
+{{ name|lower_camel }} <- function(sc, {{ macros.show_params(params) }}) {
 
 
   # Checks to see if there is spark connection

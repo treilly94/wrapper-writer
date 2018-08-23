@@ -11,7 +11,7 @@
 {% endmacro %}
 
 {% macro r_docs(name, docs, params) %}
-#' {{ name }}
+#' {{ name|lower_camel }}
 #'
 #' @param sc
 {% for p in params -%}
@@ -61,8 +61,8 @@
 
 {% macro r_params(name, params) %}
     sc=sc,
-    class="com.example.{{ name }}",
-    method="{{ name }}",
+    class="com.example.{{ name|upper_camel }}",
+    method="{{ name|lower_camel }}",
     {%- set length = params|length -%}
     {%- for p in params -%}
     {% if loop.index == length %}

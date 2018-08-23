@@ -24,8 +24,9 @@ structure:
 
 
 # The details of the methods to be templated
+# It is recomended that all method names are lowercase with underscores so that the syntax filters can be easily applied
 methods:
-  sumColumns:
+  sum_columns:
     params:
       df: DataFrame
       col1: String
@@ -33,7 +34,7 @@ methods:
       newCol: String
     docs: A cool function
     returns: DataFrame
-  filterOnList:
+  filter_on_list:
     params:
       df: DataFrame
       targetCol: String
