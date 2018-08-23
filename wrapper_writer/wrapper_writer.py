@@ -4,6 +4,8 @@ import click
 import jinja2
 import yaml
 
+from wrapper_writer.converters import upper_camel, lower_camel
+
 
 class WrapperWriter:
     config_dir = ""
@@ -67,6 +69,10 @@ class WrapperWriter:
 
         template_loader = jinja2.FileSystemLoader(searchpath=template_dir)
         template_env = jinja2.Environment(loader=template_loader)
+
+        template_env.filters["lower_camel"] = lower_camel
+        template_env.filters["upper_camel"] = upper_camel
+
         template = template_env.get_template(template)
         return template.render(name=name, method=method)
 
