@@ -7,10 +7,7 @@ from pyspark.sql import DataFrame
 
 
 def {{ name }}({{ macros.show_params(params) }}):
-	{% if docs != None -%}
-    """ {{ docs }}"""
-    {%- endif %}
-
+	{{ macros.python_docs(docs) }}
     # Get the Scala API
     api = df._sc._jvm.com.example.api.SumColumnsAPI
 

@@ -1,7 +1,12 @@
-
 {% macro scala_docs(docs) %}
     {%- if docs != None -%}
     /** {{ docs }}*/
+    {%- endif %}
+{% endmacro %}
+
+{% macro python_docs(docs) %}
+    {%- if docs != None -%}
+    """ {{ docs }}"""
     {%- endif %}
 {% endmacro %}
 
