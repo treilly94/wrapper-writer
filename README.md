@@ -88,3 +88,13 @@ def {{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}):
 
     DataFrame(api.{{ name }}({% for p in params.keys() %}{{ p }}{% endfor %}), sql_ctx)
 ``` 
+
+## Running the package
+Once the package has been installed it can be run by calling *wrapper_writer*  
+It takes the following parameters:  
+--config_dir = The directory containing the config file
+
+So running the function from the config directory would look like 
+```bash
+wrapper_writer --config_dir .
+```
