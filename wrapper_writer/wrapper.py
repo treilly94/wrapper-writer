@@ -35,7 +35,12 @@ class Wrapper:
         return template.render(container=self.container)
 
     def create_file_name(self):
-        pass
+        """This method formats the file name and adds it to the path"""
+        # Format filename
+        filename = self.structure.file_name_format % self.container.name
+
+        # Add path
+        return os.path.join(self.structure.path, filename)
 
     def write_file(self):
         """This method populates the template, creates the appropriate file name, and writes the file"""
