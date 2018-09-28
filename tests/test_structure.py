@@ -5,7 +5,7 @@ import os
 from wrapper_writer.structure import Structure
 
 class TestStructure(TestCase):
-    path = "/dir/tests"
+    path = "./tests/dir/tests"
     template = ""
     file_name_format = ""
 
