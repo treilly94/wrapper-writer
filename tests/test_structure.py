@@ -37,5 +37,17 @@ class TestStructure(TestCase):
 
         self.assertTrue(os.path.isdir(absolute_path))
 
+    def test_create_dir_exists(self):
+        absolute_path = os.path.join(os.getcwd(), "./tests/already/here")
+        os.makedirs(absolute_path)
+        # Calling the structure class
+        s = Structure("./tests/already/here", self.template, self.file_name_format)
+        s.create_path()
+
+        try:
+            s.create_dir()
+        except FileExistsError:
+            self.fail("create_directories failed because directories already exist")
+
 
 
