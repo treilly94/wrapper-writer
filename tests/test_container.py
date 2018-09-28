@@ -18,6 +18,14 @@ class TestContainer(TestCase):
 
     def test_create_config(self):
         output = self.container.create_config()
-        expected = ""
+        expected = "testContainer:\n" \
+                   "\ttestName:\n" \
+                   "\t\tparams:\n" \
+                   "\t\t\tp1: String\n" \
+                   "\t\t\tp2: Int\n" \
+                   "\t\tdocs: Test docs\n" \
+                   "\t\treturns: Unit\n" \
+                   "\t\tother:\n" \
+                   "\t\t\tExample: 1 + 1 = 2\n"
 
         self.assertEqual(expected, output)
