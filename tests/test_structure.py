@@ -5,20 +5,20 @@ import os
 from wrapper_writer.structure import Structure
 
 class TestStructure(TestCase):
-    path = "\\dir\\tests"
+    path = "/dir/tests"
     template = ""
     file_name_format = ""
 
     @classmethod
     def tearDownClass(cls):
         absolute_path = os.getcwd()
-        directorys = cls.path.split("\\")
-        for i in range(len(directorys), 1, -1):
-            latest_path="\\".join(directorys[0:i])
-            os.rmdir(absolute_path+latest_path)
+        directories = cls.path.split("\\")
+        for i in range(len(directories), 1, -1):
+            latest_path = "\\".join(directories[0:i])
+            os.rmdir(os.path.join(absolute_path,latest_path))
 
     def test_create_path(self):
-        absolute_path = os.getcwd() + self.path
+        absolute_path = os.path.join(os.getcwd(), self.path)
 
         # Calling the structure class
         s = Structure(self.path, self.template, self.file_name_format)
@@ -28,7 +28,7 @@ class TestStructure(TestCase):
         self.assertEquals(absolute_path, full_path)
 
     def test_create_dir(self):
-        absolute_path = os.getcwd() + self.path
+        absolute_path = os.path.join(os.getcwd(), self.path)
 
         # Calling the structure class
         s = Structure(self.path, self.template, self.file_name_format)

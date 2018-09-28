@@ -13,7 +13,7 @@ class Structure:
         This function combines the given path (relative path) with the current working directory to get the absolute path
         :return:
         """
-        self.full_path = os.getcwd()+ self.path
+        self.full_path = os.path.join(os.getcwd(), self.path)
 
 
     def create_dir(self):
