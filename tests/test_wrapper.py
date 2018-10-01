@@ -1,3 +1,5 @@
+import os
+import shutil
 from unittest import TestCase
 
 from wrapper_writer.container import Container
@@ -16,7 +18,7 @@ class TestWrapper(TestCase):
                     other={})
 
         container = Container(name="test_container", path="", methods=[m1])
-        structure = Structure(path="", template="testTemplate.scala.j2", file_name_format="prefix_%s.txt")
+        structure = Structure(path="./test_dir", template="testTemplate.scala.j2", file_name_format="prefix_%s.txt")
         self.wrapper = Wrapper(project_root="./tests/resources/config/", container=container, structure=structure)
 
     def test_populate_template(self):
@@ -33,10 +35,20 @@ class TestWrapper(TestCase):
             self.wrapper.populate_template()
 
     def test_create_file_name(self):
-        expected = "prefix_test_container.txt"
+        expected = "./test_dir/prefix_test_container.txt"
         output = self.wrapper.create_file_name()
 
         self.assertEqual(expected, output)
 
     def test_write_file(self):
-        self.fail()
+        try:
+            path = os.path.join(os.getcwd(), "test_dir")
+            os.mkdir(path)
+
+            self.wrapper.write_file()
+
+            self.assertTrue(os.path.exists(os.path.join(path, "prefix_test_container.txt")))
+
+        # Clean up
+        finally:
+            shutil.rmtree('./test_dir/')
