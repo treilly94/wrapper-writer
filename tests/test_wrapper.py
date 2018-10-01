@@ -15,7 +15,7 @@ class TestWrapper(TestCase):
                 other={})
 
     container = Container(name="test_container", path="", methods=[m1])
-    structure = Structure(path="", template="testTemplate.scala.j2", file_name_format="")
+    structure = Structure(path="", template="testTemplate.scala.j2", file_name_format="prefix_%s.txt")
     wrapper = Wrapper(project_root="./tests/resources/config/", container=container, structure=structure)
 
     def test_populate_template(self):
@@ -27,7 +27,10 @@ class TestWrapper(TestCase):
         self.assertEqual(expected, output)
 
     def test_create_file_name(self):
-        self.fail()
+        expected = "prefix_test_container.txt"
+        output = self.wrapper.create_file_name()
+
+        self.assertEqual(expected, output)
 
     def test_write_file(self):
         self.fail()
