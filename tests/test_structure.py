@@ -2,34 +2,14 @@ from unittest import TestCase
 
 import os
 
+import shutil
+
 from wrapper_writer.structure import Structure
 
 class TestStructure(TestCase):
     path = "./tests/dir/tests"
     template = ""
     file_name_format = ""
-
-    @classmethod
-    def delete_directories(cls, path, absolute_path):
-        directories = path.split("\\")
-        for i in range(len(directories), 1, -1):
-            latest_path = "\\".join(directories[0:i])
-            os.rmdir(os.path.join(absolute_path, latest_path))
-
-    @classmethod
-    def tearDownClass(cls):
-        absolute_path = os.getcwd()
-
-        directories = cls.path.split("\\")
-        for i in range(len(directories), 1, -1):
-            latest_path = "\\".join(directories[0:i])
-            os.rmdir(os.path.join(absolute_path, latest_path))
-
-        directories = "./tests/already/here".split("\\")
-        for i in range(len(directories), 1, -1):
-            latest_path = "\\".join(directories[0:i])
-            os.rmdir(os.path.join(absolute_path, latest_path))
-
 
 
     def test_create_path(self):
@@ -48,9 +28,10 @@ class TestStructure(TestCase):
         # Calling the structure class
         s = Structure(self.path, self.template, self.file_name_format)
         s.full_path = absolute_path
-        s.create_dir()
 
+        s.create_dir()
         self.assertTrue(os.path.isdir(absolute_path))
+        shutil.rmtree("./tests/"+self.path.split("/")[2])
 
     def test_create_dir_exists(self):
         absolute_path = os.path.join(os.getcwd(), "./tests/already/here")
@@ -63,6 +44,9 @@ class TestStructure(TestCase):
             s.create_dir()
         except FileExistsError:
             self.fail("create_directories failed because directories already exist")
+
+        shutil.rmtree("./tests/already/")
+
 
 
 
