@@ -8,6 +8,23 @@ from wrapper_writer.wrapper import Wrapper
 
 
 class WrapperWriter:
+    """
+    The WrapperWriter class contains the details and functionality associated writing a wrapper file based on two
+    configs.
+
+    :param structures: The dictionary which holds all the information from the structure config.
+    :type structures: dict
+    :param containers: The dictionary which holds all the information from the methods config.
+    :type containers: dict
+    :param project_root: The absolute path to the current working directory.
+    :type project_root: str
+    :param structure_classes: The list which holds all the structure classes.
+    :type structure_classes: List
+    :param container_classes: The list which holds all the container classes.
+    :type container_classes: List
+    :param wrappers: The list which holds all the wrapper classes.
+    :type wrappers: List
+    """
     structures = {}
     containers = {}
     project_root = ""
@@ -21,7 +38,10 @@ class WrapperWriter:
         self.structure_config_path = structure_config_path
 
     def read_configs(self):
-        """This method reads a yaml file into a dictionary"""
+        """
+        This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
+        then get the project root from the structures yml file.
+        """
         # Read file
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
@@ -44,11 +64,19 @@ class WrapperWriter:
 
 
     def instantiate_structure_class(self):
+        """
+        This function will instantiate the Structure class for each structure within the structures dictionary class
+        parameter. It will store in class within a list.
+        """
         for i in self.structures.values():
             one_structure = Structure(self.project_root, i.get("path"), i.get("template"), i.get("file_name_format"))
             self.structure_classes.append(one_structure)
 
     def instantiate_container_class(self):
+        """
+        This function will instantiate the Container class for each container within the container dictionary class
+        parameter. It will store in class within a list.
+        """
         for i, j in self.containers.items():
             container_methods = []
             for x,v in j.items():
@@ -58,11 +86,19 @@ class WrapperWriter:
             self.container_classes.append(one_container)
 
     def create_directories(self):
+        """
+        This function will take the structure_classes parameter and called the create_path and create_dir functions
+        for each structure class within the list.
+        """
         for i in self.structure_classes:
             i.create_path()
             i.create_dir()
 
     def instantiate_wrapper_class(self):
+        """
+        This function will instantiate the Wrapper class for each structure and each container within the
+        structure and container class. It will store these wrapper classes within a list.
+        """
         for i in self.structure_classes:
             for j in self.container_classes:
                 one_wrapper = Wrapper(self.project_root, j, i)
@@ -70,6 +106,9 @@ class WrapperWriter:
 
 
     def run(self):
+        """
+        This function will run the above method in order to produce a wrapper file.
+        """
         self.read_configs()
         self.instantiate_structure_class()
         self.instantiate_container_class()
