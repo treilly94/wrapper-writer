@@ -1,3 +1,4 @@
+import os
 import yaml
 
 from wrapper_writer.container import Container
@@ -14,8 +15,8 @@ class WrapperWriter:
     container_classes =[]
     wrappers = []
 
-    def __init__(self, method_config_path="./configs/method_config.yml",
-                 structure_config_path="./configs/structure_config.yml"):
+    def __init__(self, method_config_path="./method_config.yml",
+                 structure_config_path="./structure_config.yml"):
         self.method_config_path = method_config_path
         self.structure_config_path = structure_config_path
 
@@ -36,21 +37,21 @@ class WrapperWriter:
             message = "config.yml must contain a structure key"
             raise Exception(message)
         self.structures = config.get("structure")
-        self.project_root = config.get("project_root")
+        if config.get("project_root"):
+            self.project_root = config.get("project_root")
+        else:
+            self.project_root = os.path.join(os.getcwd(), "example")
+
 
     def instantiate_structure_class(self):
         for i in self.structures.values():
-            one_structure = Structure(i.get("path"), i.get("template"), i.get("file_extension"))
+            one_structure = Structure(self.project_root, i.get("path"), i.get("template"), i.get("file_name_format"))
             self.structure_classes.append(one_structure)
 
     def instantiate_container_class(self):
         for i, j in self.containers.items():
             container_methods = []
-            print(j)
             for x,v in j.items():
-                print(x)
-                print("-------------------")
-                print(v)
                 one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)

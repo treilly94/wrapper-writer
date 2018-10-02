@@ -13,7 +13,7 @@ from wrapper_writer.wrapper_writer import WrapperWriter
 class TestWrapperWriter(TestCase):
     method_config = "./tests/resources/config/method_config.yml"
     structure_config = "./tests/resources/config/structure_config.yml"
-    project_root = "/home/cats/"
+    project_root = os.getcwd()
 
     container = {
             "Maths": {
@@ -38,17 +38,17 @@ class TestWrapperWriter(TestCase):
             "python": {
                 "path": "/test_dir/python/path/",
                 "template": "python.txt",
-                "file_extension": ".py"
+                "file_name_format": "{}.py"
             },
             "scala": {
                 "path": "/test_dir/scala/path/",
                 "template": "scala.txt",
-                "file_extension": ".scala"
+                "file_name_format": "{}.scala"
             },
         }
 
-    structure_class = [Structure("./test_dir/python/path/", "python.txt", ".py"),
-                           Structure("./test_dir/scala/path/", "scala.txt", ".scala")]
+    structure_class = [Structure(project_root, "./test_dir/python/path/", "python.txt", ".py"),
+                           Structure(project_root, "./test_dir/scala/path/", "scala.txt", ".scala")]
 
     def test_read_configs(self):
         w = WrapperWriter(self.method_config, self.structure_config)
@@ -75,11 +75,11 @@ class TestWrapperWriter(TestCase):
         w.instantiate_structure_class()
         self.assertEqual("/test_dir/python/path/", w.structure_classes[0].path)
         self.assertEqual("python.txt", w.structure_classes[0].template)
-        self.assertEqual(".py", w.structure_classes[0].file_name_format)
+        self.assertEqual("{}.py", w.structure_classes[0].file_name_format)
 
         self.assertEqual("/test_dir/scala/path/", w.structure_classes[1].path)
         self.assertEqual("scala.txt", w.structure_classes[1].template)
-        self.assertEqual(".scala", w.structure_classes[1].file_name_format)
+        self.assertEqual("{}.scala", w.structure_classes[1].file_name_format)
 
 
     def test_instantiate_container_class(self):
@@ -129,9 +129,6 @@ class TestWrapperWriter(TestCase):
                                Container("Estimation", [Method("ratio", {"column_a": "String", "column_b": "String"},
                                                  "This function does ratio estimation", "String", None)])
                                ]
-
-        structure_class = [Structure("./test_dir/python/path/", "python.txt", ".py"),
-                           Structure("./test_dir/scala/path/", "scala.txt", ".scala")]
 
         w.instantiate_wrapper_class()
         self.assertEqual(self.project_root, w.wrappers[0].project_root)

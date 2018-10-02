@@ -44,6 +44,7 @@ class Wrapper:
 
         # Render the template
         template = template_env.get_template(self.structure.template)
+        print(self.container.methods[0])
         return template.render(container=self.container)
 
     def create_file_name(self):
@@ -52,10 +53,11 @@ class Wrapper:
         :return: str
         """
         # Format filename
-        filename = self.structure.file_name_format % self.container.name
+
+        filename = self.structure.file_name_format.format(self.container.name)
 
         # Add path
-        return os.path.join(self.structure.path, filename)
+        return os.path.join(self.structure.full_path, filename)
 
     def write_file(self):
         """This method populates the template, creates the appropriate file name, and writes the file.

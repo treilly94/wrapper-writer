@@ -10,13 +10,15 @@ class TestStructure(TestCase):
     path = "./tests/dir/tests"
     template = ""
     file_name_format = ""
+    project_root = ""
 
 
     def test_create_path(self):
         absolute_path = os.path.join(os.getcwd(), self.path)
 
         # Calling the structure class
-        s = Structure(self.path, self.template, self.file_name_format)
+        s = Structure(self.project_root, self.path, self.template, self.file_name_format)
+        s.project_root = os.getcwd()
         s.create_path()
         full_path = s.full_path
 
@@ -26,7 +28,7 @@ class TestStructure(TestCase):
         absolute_path = os.path.join(os.getcwd(), self.path)
 
         # Calling the structure class
-        s = Structure(self.path, self.template, self.file_name_format)
+        s = Structure(self.project_root, self.path, self.template, self.file_name_format)
         s.full_path = absolute_path
 
         s.create_dir()
@@ -37,7 +39,7 @@ class TestStructure(TestCase):
         absolute_path = os.path.join(os.getcwd(), "./tests/already/here")
         os.makedirs(absolute_path)
         # Calling the structure class
-        s = Structure("./tests/already/here", self.template, self.file_name_format)
+        s = Structure(self.project_root, "./tests/already/here", self.template, self.file_name_format)
         s.full_path = absolute_path
 
         try:
