@@ -20,7 +20,7 @@ class TestWrapper(TestCase):
 
         container = Container(name="test_container", path="", methods=[m1])
         structure = Structure(project_root=os.getcwd(), path="./test_dir", template="testTemplate.scala.j2", file_name_format="prefix_{}.txt")
-        self.wrapper = Wrapper(project_root="./tests/resources/config/", container=container, structure=structure)
+        self.wrapper = Wrapper(project_root="./tests/resources/", container=container, structure=structure)
 
     def test_populate_template(self):
         output = self.wrapper.populate_template()

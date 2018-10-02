@@ -1,6 +1,0 @@
-
-object TestFunc {
-    def testFunc(param1: String): String = {
-
-    }
-}
