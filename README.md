@@ -3,7 +3,7 @@
 # wrapper-writer
 This package dynamically creates wrappers for your methods in a given structure
 
-## Instillation 
+## Installation 
 The package can be installed in the following ways
 #### From test pypi
 Use the below command to install from test pypi.  
