@@ -4,6 +4,7 @@ import os
 
 import shutil
 
+from wrapper_writer.method import Method
 from wrapper_writer.structure import Structure
 from wrapper_writer.wrapper_writer import WrapperWriter
 
@@ -11,6 +12,7 @@ from wrapper_writer.wrapper_writer import WrapperWriter
 class TestWrapperWriter(TestCase):
     method_config = "./tests/resources/config/method_config.yml"
     structure_config = "./tests/resources/config/structure_config.yml"
+    c_path = "/home/cats/"
 
     def test_read_configs(self):
         w = WrapperWriter(self.method_config, self.structure_config)
@@ -84,6 +86,48 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("/test_dir/scala/path/", w.structure_classes[1].path)
         self.assertEqual("scala.txt", w.structure_classes[1].template)
         self.assertEqual(".scala", w.structure_classes[1].file_name_format)
+
+
+    def test_instantiate_container_class(self):
+        w = WrapperWriter(self.method_config, self.method_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": "String", "column_b": "String", },
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                },
+                "mulitply": {
+                    "params": {"column_a": "String", "column_b": "String", },
+                    "returns": "String",
+                    "docs": "This function multiplies the two columns together"
+                }
+            },
+            "Estimation": {"ratio": {
+                "params": {"column_a": "String", "column_b": "String", },
+                "returns": "String",
+                "docs": "This function does ratio estimation"
+            }}
+        }
+
+        w.instantiate_container_class()
+        self.assertEqual("Maths", w.container_classes[0].name)
+        self.assertEqual("sum_column", w.container_classes[0].methods[0].name)
+        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[0].methods[0].params)
+        self.assertEqual("This function adds the two columns together", w.container_classes[0].methods[0].docs)
+        self.assertEqual("String", w.container_classes[0].methods[0].returns)
+
+        self.assertEqual("mulitply", w.container_classes[0].methods[1].name)
+        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[0].methods[1].params)
+        self.assertEqual("This function multiplies the two columns together", w.container_classes[0].methods[1].docs)
+        self.assertEqual("String", w.container_classes[0].methods[1].returns)
+
+        self.assertEqual("Estimation", w.container_classes[1].name)
+        self.assertEqual("ratio", w.container_classes[1].methods[0].name)
+        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[1].methods[0].params)
+        self.assertEqual("This function does ratio estimation", w.container_classes[1].methods[0].docs)
+        self.assertEqual("String", w.container_classes[1].methods[0].returns)
+
 
 
     def test_create_directories(self):
