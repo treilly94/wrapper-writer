@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from unittest import TestCase
 
 from wrapper_writer.container import Container
@@ -35,7 +36,11 @@ class TestWrapper(TestCase):
             self.wrapper.populate_template()
 
     def test_create_file_name(self):
-        expected = "./test_dir/prefix_test_container.txt"
+
+        if sys.platform.startswith("win"):
+            expected = "./test_dir\prefix_test_container.txt"
+        else:
+            expected = "./test_dir/prefix_test_container.txt"
         output = self.wrapper.create_file_name()
 
         self.assertEqual(expected, output)
