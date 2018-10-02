@@ -1,30 +1,30 @@
 import yaml
 
 from wrapper_writer.structure import Structure
+from wrapper_writer.wrapper import Wrapper
 
 
 class WrapperWriter:
     structures = {}
-    methods = {}
+    containers = {}
     project_root = ""
+    structure_classes = []
+    wrappers = []
 
+    def __init__(self, method_config_path="./configs/method_config.yml",
+                 structure_config_path="./configs/structure_config.yml"):
+        self.method_config_path = method_config_path
+        self.structure_config_path = structure_config_path
 
-    def read_method_config(self, path):
+    def read_configs(self):
         """This method reads a yaml file into a dictionary"""
         # Read file
-        file = open(path)
-        config = yaml.load(file)
+        file = open(self.method_config_path)
+        self.containers = yaml.load(file)
         file.close()
 
-        # Check if methods exist
-        if "methods" not in config.keys():
-            message = "config.yml must contain a methods key"
-            raise Exception(message)
-        self.methods = config.get("methods")
-
-    def read_structure_config(self, path):
         # Read file
-        file = open(path)
+        file = open(self.structure_config_path)
         config = yaml.load(file)
         file.close()
 
@@ -35,14 +35,24 @@ class WrapperWriter:
         self.structures = config.get("structure")
         self.project_root = config.get("project_root")
 
-    def instantiate_structure_class(self, path, template, file_name_format):
-        self.structure_class = Structure(path, template, file_name_format)
+    def instantiate_structure_class(self):
+        for i in self.structures:
+            struct = self.structures.get(i)
+            one_structure = Structure(struct.get("path"), struct.get("template"), struct.get("file_extension"))
+            self.structure_classes.append(one_structure)
 
     def create_directories(self):
-        for i in self.structures:
-            self.structure_class = Structure(i.path, i.template, i.file_name_format)
-            self.structure_class.create_path()
-            self.structure_class.create_dir()
+        for i in self.structure_classes:
+            i.create_path()
+            i.create_dir()
 
     def instantiate_wrapper_class(self):
-        self.wrapper_class = WrapperWriter()
+        for i in self.structure_classes:
+            for j in self.containers:
+                container = self.containers.get(j)
+                one_wrapper = Wrapper(i.project_root, container, i)
+                self.wrappers.append(one_wrapper)
+
+
+    def run(self):
+        self.instantiate_structure_class()

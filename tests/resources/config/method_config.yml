@@ -1,5 +1,5 @@
 # The details of the methods to be templated
-methods:
+Maths:
   sum_column:
     params:
       column_a: String
@@ -12,3 +12,11 @@ methods:
       column_b: String
     docs: This function multiplies the two columns together
     returns: String
+
+Estimation:
+  ratio:
+      params:
+        column_a: String
+        column_b: String
+      docs: This function does ratio estimation
+      returns: String
