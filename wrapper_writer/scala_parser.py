@@ -1,53 +1,80 @@
 import re
+import yaml
+import os
 
 
 class ScalaParse:
 
-    def __init__(self, filename):
+    def __init__(self, filename, config_name, append_config=False):
         self.filename = filename
+        self.config_filename = config_name
+        self.if_config_exists = append_config
 
     def read_file(self):
         with open(self.filename) as myfile:
             data = myfile.read()
         return data
 
+    def prepare_files(self):
+        print("Checking if file exists")
+        if os.path.exists(self.config_filename):
+            os.remove(self.config_filename)
+        else:
+            print("The file does not exists")
+
     def find_method_regex(self):
         retrieve_data = self.read_file()
+        if not self.if_config_exists:
+            self.prepare_files()
         ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         ptrn2 = ptrn.finditer(retrieve_data)
-        # print(type(ptrn2))
-        # for k in ptrn2:
-        #     print(k.group())
         return ptrn2
 
-    breakDown= []
     def multi_process(self):
-        allfound = self.find_method_regex()
-        for i in allfound:
+        all_found = self.find_method_regex()
+        for i in all_found:
             ig = i.group()
-            extract_return_type = self.string_manipulation(ig)
-            print(extract_return_type)
-            extract_name = self.extract_item(ig)
-            print(extract_name)
-            # breadDown.append[extract_name, extract_return_type]
+            return_type = self.extract_return_type(ig)
+            print(return_type)
+            method_name = self.extract_method_name(ig)
+            print(method_name)
+            params = self.extract_params(ig)
+            print(params)
+            data ={"methods": {method_name: {"params": params, "return_type": return_type}}}
+            print(data)
+            print(self.if_config_exists)
+            with open(self.config_filename, 'a') as yaml_file:
+                yaml.dump(data, yaml_file, default_flow_style=False)
 
-    def string_manipulation(self, raw_res):
+    @staticmethod
+    def extract_return_type(raw_res):
         first, *middle, last = raw_res.split()
-        returnType = last
-        return returnType
+        return_type = last
+        return return_type
 
-    def extract_item(self, raw_res):
-        funcName = r"def (\w+)"
-        funcNameFind = re.search(funcName, raw_res)
-        funNameRaw = funcNameFind.group()
-        cleanFuncName = funNameRaw.replace("def ", "")
-        return cleanFuncName
+    @staticmethod
+    def extract_method_name(raw_res):
+        func_name = r"def (\w+)"
+        func_name_find = re.search(func_name, raw_res)
+        fun_name_raw = func_name_find.group()
+        clean_func_name = fun_name_raw.replace("def ", "")
+        return clean_func_name
 
-
+    @staticmethod
+    def extract_params(raw_res):
+        retrieve_params = r"\((.*)\)"
+        retrieve_params_find = re.search(retrieve_params, raw_res)
+        retrieve_params_raw = retrieve_params_find.group()
+        retrieve_params_clean = retrieve_params_raw[1:-1]
+        dict_by_comma = dict(item.split(":") for item in retrieve_params_clean.split(","))
+        for k, v in dict_by_comma.items():
+            dict_by_comma[k] = v.lstrip()
+            new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
+        return new_dict
 
 
 if __name__ == '__main__':
-    x = ScalaParse("scalacode.scala")
+    x = ScalaParse("scalacode.scala", "config_eres.yml")
     x.multi_process()
 
 
