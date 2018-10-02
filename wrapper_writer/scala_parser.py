@@ -11,37 +11,45 @@ class ScalaParse:
         self.if_config_exists = append_config
 
     def read_file(self):
-        with open(self.filename) as myfile:
-            data = myfile.read()
-        return data
+        try:
+            with open(self.filename) as logic_file:
+                data = logic_file.read()
+            return data
+        except IOError as e:
+            print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
     def prepare_files(self):
-        print("Checking if file exists")
+        print("Checking if file exists ...")
         if os.path.exists(self.config_filename):
             os.remove(self.config_filename)
         else:
-            print("The file does not exists")
+            print("The config file does not exists")
 
     def find_method_regex(self):
         retrieve_data = self.read_file()
         if not self.if_config_exists:
             self.prepare_files()
         ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
-        ptrn2 = ptrn.finditer(retrieve_data)
+        try:
+            ptrn2 = ptrn.finditer(retrieve_data)
+        except:
+            print("Nothing In There")
+        print(ptrn2)
         return ptrn2
 
     def multi_process(self):
         all_found = self.find_method_regex()
-        for i in all_found:
+        matches = tuple(all_found)
+        if not matches:
+            raise Exception("No Methods Found")
+        for i in matches:
             ig = i.group()
+            # print("Task")
+            # print(ig)
             return_type = self.extract_return_type(ig)
-            print(return_type)
             method_name = self.extract_method_name(ig)
-            print(method_name)
             params = self.extract_params(ig)
-            print(params)
             data ={"methods": {method_name: {"params": params, "return_type": return_type}}}
-            print(data)
             print(self.if_config_exists)
             with open(self.config_filename, 'a') as yaml_file:
                 yaml.dump(data, yaml_file, default_flow_style=False)
