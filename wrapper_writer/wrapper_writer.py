@@ -64,7 +64,7 @@ class WrapperWriter:
     def instantiate_wrapper_class(self):
         for i in self.structure_classes:
             for j in self.container_classes:
-                one_wrapper = Wrapper(i.project_root, j, i)
+                one_wrapper = Wrapper(self.project_root, j, i)
                 self.wrappers.append(one_wrapper)
 
 
