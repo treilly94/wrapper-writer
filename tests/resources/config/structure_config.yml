@@ -1,6 +1,6 @@
 # The absolute path of the root of the target project
 # If none is provided your cwd will be used
-project_root: D://wrapper_writter/
+project_root:
 
 # The structure of the project
 # All paths are relative to the project_root
