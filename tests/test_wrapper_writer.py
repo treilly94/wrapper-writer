@@ -77,13 +77,13 @@ class TestWrapperWriter(TestCase):
             },
         }
         w.instantiate_structure_class()
-        self.assertEquals("/test_dir/python/path/", w.structure_classes[0].path)
-        self.assertEquals("python.txt", w.structure_classes[0].template)
-        self.assertEquals(".py", w.structure_classes[0].file_name_format)
+        self.assertEqual("/test_dir/python/path/", w.structure_classes[0].path)
+        self.assertEqual("python.txt", w.structure_classes[0].template)
+        self.assertEqual(".py", w.structure_classes[0].file_name_format)
 
-        self.assertEquals("/test_dir/scala/path/", w.structure_classes[1].path)
-        self.assertEquals("scala.txt", w.structure_classes[1].template)
-        self.assertEquals(".scala", w.structure_classes[1].file_name_format)
+        self.assertEqual("/test_dir/scala/path/", w.structure_classes[1].path)
+        self.assertEqual("scala.txt", w.structure_classes[1].template)
+        self.assertEqual(".scala", w.structure_classes[1].file_name_format)
 
 
     def test_create_directories(self):

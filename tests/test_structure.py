@@ -20,7 +20,7 @@ class TestStructure(TestCase):
         s.create_path()
         full_path = s.full_path
 
-        self.assertEquals(absolute_path, full_path)
+        self.assertEqual(absolute_path, full_path)
 
     def test_create_dir(self):
         absolute_path = os.path.join(os.getcwd(), self.path)
