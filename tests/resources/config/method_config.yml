@@ -1,0 +1,14 @@
+# The details of the methods to be templated
+methods:
+  sum_column:
+    params:
+      column_a: String
+      column_b: String
+    docs: This function adds the two columns together
+    returns: String
+  mulitply:
+    params:
+      column_a: String
+      column_b: String
+    docs: This function multiplies the two columns together
+    returns: String

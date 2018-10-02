@@ -1,0 +1,15 @@
+# The absolute path of the root of the target project
+# If none is provided your cwd will be used
+project_root: D://wrapper_writter/
+
+# The structure of the project
+# All paths are relative to the project_root
+structure:
+  python:
+    path: /test_dir/python/path/
+    template: python.txt
+    file_extension: .py
+  scala:
+    path: /test_dir/scala/path/
+    template: scala.txt
+    file_extension: .scala
