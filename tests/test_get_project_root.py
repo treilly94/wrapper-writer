@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase
 
-from wrapper_writer.wrapper_writer import WrapperWriter
+from wrapper_writer.old_wrapper_writer import WrapperWriter
 
 
 class TestGetProjectRoot(TestCase):
