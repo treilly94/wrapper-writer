@@ -6,8 +6,8 @@ project_root:
 # All paths are relative to the project_root
 structure:
   api:
-    path: /src/main/scala/com/example/api/
-    template: scala.txt
+    path: src/main/scala/com/example/api/
+    template: api
     file_name_format: "{}API.scala"
   python:
     path: python/methods/
