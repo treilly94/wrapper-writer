@@ -10,7 +10,7 @@ class Structure:
     :type path: str
     :param template: The name of the template file to use.
     :type template: str
-    :param file_name_format: The format of the new file names using PyFormat where a %s represents the file name.
+    :param file_name_format: The format of the new file names using PyFormat where a {} represents the file name.
     :type file_name_format: str
     """
 
