@@ -14,7 +14,7 @@ class TestContainer(TestCase):
     c_name = "testContainer"
     c_path = "/home/cats/"
     c_methods = [m1]
-    container = Container(c_name, c_path, c_methods)
+    container = Container(c_name, c_methods, c_path)
 
     def test_create_config(self):
         output = self.container.create_config()

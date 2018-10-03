@@ -8,16 +8,8 @@ structure:
   python:
     path: /test_dir/python/path/
     template: python.txt
-    file_extension: .py
+    file_name_format: "{}.py"
   scala:
     path: /test_dir/scala/path/
     template: scala.txt
-    file_extension: .scala
-
-# The details of the methods to be templated
-methods:
-  testFunc:
-    params:
-      param1: String
-    docs: A cool function
-    returns: String
+    file_name_format: "{}.scala"

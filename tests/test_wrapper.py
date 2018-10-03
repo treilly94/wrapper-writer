@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from unittest import TestCase
 
 from wrapper_writer.container import Container
@@ -18,8 +19,8 @@ class TestWrapper(TestCase):
                     other={})
 
         container = Container(name="test_container", path="", methods=[m1])
-        structure = Structure(path="./test_dir", template="testTemplate.scala.j2", file_name_format="prefix_%s.txt")
-        self.wrapper = Wrapper(project_root="./tests/resources/config/", container=container, structure=structure)
+        structure = Structure(project_root=os.getcwd(), path="./test_dir", template="testTemplate.scala.j2", file_name_format="prefix_{}.txt")
+        self.wrapper = Wrapper(project_root="./tests/resources/", container=container, structure=structure)
 
     def test_populate_template(self):
         output = self.wrapper.populate_template()
@@ -35,7 +36,11 @@ class TestWrapper(TestCase):
             self.wrapper.populate_template()
 
     def test_create_file_name(self):
-        expected = "./test_dir/prefix_test_container.txt"
+        self.wrapper.structure.full_path = "./test_dir"
+        if sys.platform.startswith("win"):
+            expected = "./test_dir\prefix_test_container.txt"
+        else:
+            expected = "./test_dir/prefix_test_container.txt"
         output = self.wrapper.create_file_name()
 
         self.assertEqual(expected, output)
@@ -44,7 +49,7 @@ class TestWrapper(TestCase):
         try:
             path = os.path.join(os.getcwd(), "test_dir")
             os.mkdir(path)
-
+            self.wrapper.structure.full_path = "./test_dir"
             self.wrapper.write_file()
 
             self.assertTrue(os.path.exists(os.path.join(path, "prefix_test_container.txt")))

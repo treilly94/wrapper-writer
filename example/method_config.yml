@@ -1,0 +1,15 @@
+methods:
+  sum_columns:
+    params:
+      df: DataFrame
+      col1: String
+      col2: String
+      newCol: String
+    docs: A cool function
+    returns: DataFrame
+  filter_on_list:
+    params:
+      df: DataFrame
+      targetCol: String
+      values: List[Int]
+    returns: DataFrame

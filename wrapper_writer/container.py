@@ -10,7 +10,7 @@ class Container:
     :param methods: The methods associated with the container.
     :type methods: list
     """
-    def __init__(self, name, path, methods):
+    def __init__(self, name, methods, path=None):
         self.name = name
         self.path = path
         self.methods = methods

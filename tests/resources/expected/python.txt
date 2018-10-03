@@ -1,6 +1,0 @@
-def testFunc(param1):
-    """ A cool function"""
-
-    api = jvm.TestFunc
-
-    DataFrame(api.testFunc(param1), sql_ctx)
