@@ -17,8 +17,7 @@ class TestStructure(TestCase):
         absolute_path = os.path.join(os.getcwd(), self.path)
 
         # Calling the structure class
-        s = Structure(self.project_root, self.path, self.template, self.file_name_format)
-        s.project_root = os.getcwd()
+        s = Structure(os.getcwd(), self.path, self.template, self.file_name_format)
         s.create_path()
         full_path = s.full_path
 
@@ -30,10 +29,11 @@ class TestStructure(TestCase):
         # Calling the structure class
         s = Structure(self.project_root, self.path, self.template, self.file_name_format)
         s.full_path = absolute_path
-
-        s.create_dir()
-        self.assertTrue(os.path.isdir(absolute_path))
-        shutil.rmtree("./tests/"+self.path.split("/")[2])
+        try:
+            s.create_dir()
+            self.assertTrue(os.path.isdir(absolute_path))
+        finally:
+            shutil.rmtree("./tests/"+self.path.split("/")[2])
 
     def test_create_dir_exists(self):
         absolute_path = os.path.join(os.getcwd(), "./tests/already/here")
@@ -46,8 +46,8 @@ class TestStructure(TestCase):
             s.create_dir()
         except FileExistsError:
             self.fail("create_directories failed because directories already exist")
-
-        shutil.rmtree("./tests/already/")
+        finally:
+            shutil.rmtree("./tests/already/")
 
 
 
