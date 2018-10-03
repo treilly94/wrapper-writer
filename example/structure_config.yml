@@ -8,7 +8,7 @@ structure:
   python:
     path: python/methods/
     template: python
-    file_name_format: "{}.py"
+    file_name_format: "{}API.py"
   scala:
     path: /test_dir/scala/path/
     template: scala.txt
