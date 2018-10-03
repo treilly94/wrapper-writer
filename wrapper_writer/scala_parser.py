@@ -5,8 +5,13 @@ import glob
 import sys
 
 
-
 class ScalaParse:
+    """
+    This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
+    :param filename: The name of the file to parse
+    :param config_name: The name of the yaml config file
+    :param append_config: boolean value, True will overwrite an existing file, False will append to file
+    """
 
     def __init__(self, filename, config_name, append_config=False):
         self.filename = filename
@@ -49,8 +54,6 @@ class ScalaParse:
             raise Exception("No Methods Found")
         for i in matches:
             ig = i.group()
-            # print("Task")
-            # print(ig)
             return_type = self.extract_return_type(ig)
             method_name = self.extract_method_name(ig)
             params = self.extract_params(ig)
@@ -87,6 +90,9 @@ class ScalaParse:
 
 
 class Orchestrator:
+    """
+    This class orchestrates the scala parser application
+    """
 
     def __init__(self, folder=None, logic_file=None, file_extension="\\*"):
         self.folder = folder
