@@ -60,7 +60,7 @@ class WrapperWriter:
         if config.get("project_root"):
             self.project_root = config.get("project_root")
         else:
-            self.project_root = os.path.join(os.getcwd(), "example")
+            self.project_root = os.getcwd()
 
 
     def instantiate_structure_class(self):

@@ -50,7 +50,7 @@ class TestWrapperWriter(TestCase):
     structure_class = [Structure(project_root, "./test_dir/python/path/", "python.txt", ".py"),
                            Structure(project_root, "./test_dir/scala/path/", "scala.txt", ".scala")]
 
-    def test_read_configs(self):
+    def test_read_method_configs(self):
         w = WrapperWriter(self.method_config, self.structure_config)
         w.read_configs()
         config = w.containers
@@ -70,7 +70,7 @@ class TestWrapperWriter(TestCase):
             w.read_configs()
 
     def test_instantiate_structure_class(self):
-        w = WrapperWriter(self.method_config, self.method_config)
+        w = WrapperWriter(self.method_config, self.structure_config)
         w.structures = self.structure
         w.instantiate_structure_class()
         self.assertEqual("/test_dir/python/path/", w.structure_classes[0].path)
@@ -83,7 +83,7 @@ class TestWrapperWriter(TestCase):
 
 
     def test_instantiate_container_class(self):
-        w = WrapperWriter(self.method_config, self.method_config)
+        w = WrapperWriter(self.method_config, self.structure_config)
         w.containers = self.container
         w.instantiate_container_class()
 
@@ -107,17 +107,19 @@ class TestWrapperWriter(TestCase):
 
 
     def test_create_directories(self):
-        w = WrapperWriter(self.method_config, self.method_config)
+        w = WrapperWriter(self.method_config, self.structure_config)
         w.structure_classes = self.structure_class
-        w.create_directories()
 
-        self.assertTrue(os.path.isdir(os.path.join(os.getcwd(), "./test_dir/python/path/")))
-        self.assertTrue(os.path.isdir(os.path.join(os.getcwd(), "./test_dir/scala/path/")))
+        try:
+            w.create_directories()
 
-        shutil.rmtree("./test_dir/")
+            self.assertTrue(os.path.isdir(os.path.join(os.getcwd(), "./test_dir/python/path/")))
+            self.assertTrue(os.path.isdir(os.path.join(os.getcwd(), "./test_dir/scala/path/")))
+        finally:
+            shutil.rmtree("./test_dir/")
 
     def test_instantiate_wrapper_class(self):
-        w = WrapperWriter(self.method_config, self.method_config)
+        w = WrapperWriter(self.method_config, self.structure_config)
         w.project_root = self.project_root
         w.structure_classes = self.structure_class
         w.container_classes = [Container("Maths",

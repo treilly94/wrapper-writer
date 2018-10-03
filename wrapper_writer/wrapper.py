@@ -44,7 +44,7 @@ class Wrapper:
 
         # Render the template
         template = template_env.get_template(self.structure.template)
-        print(self.container.methods[0])
+
         return template.render(container=self.container)
 
     def create_file_name(self):
