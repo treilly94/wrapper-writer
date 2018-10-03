@@ -3,7 +3,7 @@ package com.example
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.col
 
-object FilterOnList {
+object Operations {
 
   /**
     * This function calls a protected function which filters the data based on where the targetCol doesn't have values

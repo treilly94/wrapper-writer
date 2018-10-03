@@ -23,11 +23,11 @@ class MathsTest {
   }
 
   @Test
-  def testFilterOnList(): Unit = {
-    val input: DataFrame = spark.read.json("./src/test/resources/input/filter_on_list.json")
+  def testSumColumns(): Unit = {
+    val input: DataFrame = spark.read.json("./src/test/resources/input/sum_in.json")
     println("Input")
     input.show()
-    val expected: DataFrame = spark.read.json("./src/test/resources/expected/filter_on_list.json")
+    val expected: DataFrame = spark.read.json("./src/test/resources/expected/sum_out.json")
     println("Expected")
     expected.show()
     val output: DataFrame = sumColumns(input, "col1", "col2", "sum")

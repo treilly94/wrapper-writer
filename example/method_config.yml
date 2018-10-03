@@ -1,15 +1,25 @@
-methods:
+Maths:
   sum_columns:
     params:
       df: DataFrame
-      col1: String
-      col2: String
-      newCol: String
-    docs: A cool function
+      column_a: String
+      column_b: String
+      new_col: String
+    docs: This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
     returns: DataFrame
+  sum_columns:
+      params:
+        df: DataFrame
+        olumn_a: String
+        column_b: String
+        new_col: String
+      docs: This function takes in two integers and multiplies them together and return the outcome.
+      returns: DataFrame
+Operations:
   filter_on_list:
     params:
       df: DataFrame
-      targetCol: String
+      target_ol: String
       values: List[Int]
+    docs: This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
     returns: DataFrame

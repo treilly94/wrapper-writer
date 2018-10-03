@@ -1,11 +1,11 @@
 package com.example
 
-import com.example.FilterOnList.filterOnList
+import com.example.Operations.filterOnList
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.junit.Test
 
 
-class FilterOnListTest {
+class OperationsTest {
   val spark: SparkSession = SparkSession.builder().master("local").getOrCreate()
   spark.sparkContext.setLogLevel("ERROR")
 
