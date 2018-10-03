@@ -5,6 +5,13 @@ import org.apache.spark.sql.functions.col
 
 object FilterOnList {
 
+  /**
+    * This function takes in a DataFrame
+    * @param df
+    * @param targetCol
+    * @param values
+    * @return
+    */
   def filterOnList(df: DataFrame, targetCol: String, values: List[Int]): DataFrame = {
     filterFunct(df, targetCol, values)
   }
