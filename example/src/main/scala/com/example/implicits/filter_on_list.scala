@@ -7,7 +7,7 @@ object FilterOnListImpl {
   implicit class FilterOnListMethodsImpl(df: DataFrame) {
     
 
-    def filterOnList(targetCol: String,values: List[Int]: DataFrame = {
+    def filterOnList(targetCol: String,values: List[Int]: DataFrame= {
       FilterOnList.filterOnList(targetCol,values)
     }
   }
