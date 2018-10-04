@@ -9,6 +9,10 @@ structure:
     path: src/main/scala/com/example/api/
     template: api.scala.j2
     file_name_format: "{}API.scala"
+  impl:
+    path: src/main/scala/com/example/implicits/
+    template: implicits.scala.j2
+    file_name_format: "{}Impl.scala"
   python:
     path: python/methods/
     template: python.py.j2
