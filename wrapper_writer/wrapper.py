@@ -17,7 +17,7 @@ class Wrapper:
     """
 
     def __init__(self, project_root, container, structure):
-        self.project_root = project_root
+        self.project_root = os.path.normpath(project_root)
         self.container = container
         self.structure = structure
 
