@@ -1,4 +1,4 @@
-% import "macros" as macros %}
+% import "macros.j2" as macros %}
 
 {%- set name = container.methods[0].name -%}
 {%- set params = container.methods[0].params -%}
