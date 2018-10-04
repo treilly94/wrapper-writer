@@ -12,8 +12,7 @@ class TestStructure(TestCase):
     project_root = ""
 
     def test_create_path(self):
-        absolute_path = os.path.join(os.getcwd(), self.path)
-        absolute_path = os.path.normpath(absolute_path)
+        absolute_path = os.path.normpath(os.path.join(os.getcwd(), self.path))
 
         # Calling the structure class
         s = Structure(os.getcwd(), self.path, self.template, self.file_name_format)
