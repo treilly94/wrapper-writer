@@ -36,12 +36,12 @@ class ScalaParse:
         :return: iterable object with all methods found
         """
         retrieve_data = self.read_scala_file()
-        ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
+        pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
-            ptrn2 = ptrn.finditer(retrieve_data)
+            pattern2 = pattern.finditer(retrieve_data)
         except:
             print("Nothing In There")
-        return ptrn2
+        return pattern2
 
     def multi_process(self):
         """
