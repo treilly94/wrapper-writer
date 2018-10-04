@@ -32,45 +32,48 @@ object FilterOnList {
         sp = ScalaParse(filename=self.path, config_name=self.config_name)
         res = sp.read_scala_file()
         self.assertEqual(self.expected_code, res)
-
-    def test_find_method_regex(self):
-        """
-        Assert the result returned is
-        """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
-        result = sp.find_method_regex()
-
-    def test_multi_process(self):
-        """
-
-        :return:
-        """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
-        # result = sp.multi_process()
-
-    def test_extract_return_type(self):
-        """
-
-        :return:
-        """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
-        # result = sp.extract_return_type()
-
-    def test_extract_method_name(self):
-        """
-
-        :return:
-        """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
-        # result = sp.extract_method_name()
-
-    def test_extract_params(self):
-        """
-
-        :return:
-        """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
-        # result = sp.extract_params()
+    #
+    # def test_find_method_regex(self):
+    #     """
+    #     Assert the result returned i
+    #     """
+    #     sp = ScalaParse(filename=self.path, config_name=self.config_name)
+    #     result = sp.find_method_regex()
+    #     # self.assertTrue(result)
+    #     # self.assertTrue(len(result))
+    #     print(result)
+    #
+    # def test_multi_process(self):
+    #     """
+    #
+    #     :return:
+    #     """
+    #     sp = ScalaParse(filename=self.path, config_name=self.config_name)
+    #     # result = sp.multi_process()
+    #
+    # def test_extract_return_type(self):
+    #     """
+    #
+    #     :return:
+    #     """
+    #     sp = ScalaParse(filename=self.path, config_name=self.config_name)
+    #     # result = sp.extract_return_type()
+    #
+    # def test_extract_method_name(self):
+    #     """
+    #
+    #     :return:
+    #     """
+    #     sp = ScalaParse(filename=self.path, config_name=self.config_name)
+    #     # result = sp.extract_method_name()
+    #
+    # def test_extract_params(self):
+    #     """
+    #
+    #     :return:
+    #     """
+    #     sp = ScalaParse(filename=self.path, config_name=self.config_name)
+    #     # result = sp.extract_params()
 
 # class TestApp(TestCase):
 #
