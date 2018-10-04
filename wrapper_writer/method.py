@@ -13,7 +13,7 @@ class Method:
     :type other: dict
     """
 
-    def __init__(self, name, params, docs, returns, other):
+    def __init__(self, name, params, docs, returns, other={}):
 
         self.name = name
         self.params = params
