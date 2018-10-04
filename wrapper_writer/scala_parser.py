@@ -33,7 +33,7 @@ class ScalaParse:
 
     def prepare_files(self):
         """
-
+        This funciton will all user to delete the contents of the file it exists
         :return:
         """
         print("Checking if file exists ...")
@@ -44,23 +44,23 @@ class ScalaParse:
 
     def find_method_regex(self):
         """
-
-        :return:
+        This function will find method raw method signature from file to be parsed
+        :return: iterable object with all methods found
         """
         retrieve_data = self.read_file()
-        # if not self.if_config_exists:
-        #     self.prepare_files()
+        if not self.if_config_exists:
+            self.prepare_files()
         ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             ptrn2 = ptrn.finditer(retrieve_data)
         except:
             print("Nothing In There")
-        print(ptrn2)
+        # print(ptrn2)
         return ptrn2
 
     def multi_process(self):
         """
-
+        This function will process each method found and write it to a yaml file
         :return:
         """
         all_found = self.find_method_regex()
@@ -128,10 +128,12 @@ class App:
     :param file_extension: String object of file extension to look for
     """
 
-    def __init__(self, folder=None, logic_file=None, file_extension="*.scala"):
+    def __init__(self, folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False):
         self.folder = folder
         self.file = logic_file
         self.file_extension = file_extension
+        self.config_file = config_name
+        self.append_config = append_config
 
     def prepare_input(self):
         """
@@ -160,7 +162,7 @@ class App:
     def run_scala(self):
         scala_files_to_run = self.prepare_input()
         for p in scala_files_to_run:
-            x = ScalaParse(p, "config_sadhg.yml")
+            x = ScalaParse(p, self.config_file, self.append_config)
             x.multi_process()
 
     def run_python(self):
@@ -169,9 +171,4 @@ class App:
     def run_r(self):
         pass
 
-
-if __name__ == '__main__':
-    # t = Orchestrator(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\")
-    t = App(logic_file="scalacode.scala")
-    t.run_scala()
 
