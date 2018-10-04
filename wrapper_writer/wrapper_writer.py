@@ -44,22 +44,19 @@ class WrapperWriter:
         """
         # Read file
         config ={}
-        try:
-            file = open(self.method_config_path)
-            self.containers = yaml.load(file)
-            file.close()
 
-            # Read file
-            file = open(self.structure_config_path)
-            config = yaml.load(file)
-            file.close()
-        except FileNotFoundError as error:
-            raise error
+        file = open(self.method_config_path)
+        self.containers = yaml.load(file)
+        file.close()
+
+        # Read file
+        file = open(self.structure_config_path)
+        config = yaml.load(file)
+        file.close()
 
         # Check if Structure exists
         if "structure" not in config.keys():
             message = "the structure config must contain a structure key"
-            print(message)
             raise Exception(message)
         self.structures = config.get("structure")
         if config.get("project_root"):
