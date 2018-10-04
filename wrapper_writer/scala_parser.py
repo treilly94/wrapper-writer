@@ -19,6 +19,10 @@ class ScalaParse:
         self.if_config_exists = append_config
 
     def read_file(self):
+        """
+
+        :return:
+        """
         try:
             with open(self.filename) as logic_file:
                 data = logic_file.read()
@@ -28,6 +32,10 @@ class ScalaParse:
             sys.exit(1)
 
     def prepare_files(self):
+        """
+
+        :return:
+        """
         print("Checking if file exists ...")
         if os.path.exists(self.config_filename):
             os.remove(self.config_filename)
@@ -35,6 +43,10 @@ class ScalaParse:
             print("The config file does not exists")
 
     def find_method_regex(self):
+        """
+
+        :return:
+        """
         retrieve_data = self.read_file()
         # if not self.if_config_exists:
         #     self.prepare_files()
@@ -47,6 +59,10 @@ class ScalaParse:
         return ptrn2
 
     def multi_process(self):
+        """
+
+        :return:
+        """
         all_found = self.find_method_regex()
         matches = tuple(all_found)
         print(matches)
@@ -57,19 +73,29 @@ class ScalaParse:
             return_type = self.extract_return_type(ig)
             method_name = self.extract_method_name(ig)
             params = self.extract_params(ig)
-            data ={"methods": {method_name: {"params": params, "return_type": return_type}}}
+            data ={"container": {method_name: {"params": params, "return_type": return_type}}}
             print(self.if_config_exists)
             with open(self.config_filename, 'a') as yaml_file:
                 yaml.dump(data, yaml_file, default_flow_style=False)
 
     @staticmethod
     def extract_return_type(raw_res):
+        """
+        This function extracts the return type of a method
+        :param raw_res: A method signature from the file to be parsed
+        :return: return_type: String object of the return type
+        """
         first, *middle, last = raw_res.split()
         return_type = last
         return return_type
 
     @staticmethod
     def extract_method_name(raw_res):
+        """
+        The function will use regex to extract the method name from the logic code
+        :param raw_res: A method signature from the file to be parsed
+        :return: clean_func_name: String object of the function name
+        """
         func_name = r"def (\w+)"
         func_name_find = re.search(func_name, raw_res)
         fun_name_raw = func_name_find.group()
@@ -78,6 +104,11 @@ class ScalaParse:
 
     @staticmethod
     def extract_params(raw_res):
+        """
+        This function will use regex to extract the parameters from the logic code
+        :param raw_res: method signature from the file to be parsed
+        :return new_dict: A dictionary containing the parameters
+        """
         retrieve_params = r"\((.*)\)"
         retrieve_params_find = re.search(retrieve_params, raw_res)
         retrieve_params_raw = retrieve_params_find.group()
@@ -89,9 +120,12 @@ class ScalaParse:
         return new_dict
 
 
-class Orchestrator:
+class App:
     """
-    This class orchestrates the scala parser application
+    This App class orchestrates the scala parser application
+    :param folder: String object of the folder path which is provided by the user to indicate where files live
+    :param file: String object if the file to be parsed
+    :param file_extension: String object of file extension to look for
     """
 
     def __init__(self, folder=None, logic_file=None, file_extension="*.scala"):
@@ -99,8 +133,12 @@ class Orchestrator:
         self.file = logic_file
         self.file_extension = file_extension
 
-    def crossroad(self):
-        scala_files = []
+    def prepare_input(self):
+        """
+        This function will prepare the use input,
+        :return: all files to be parsed
+        """
+        all_files = []
         prep_ends_with = self.file_extension[1:]
         if not (self.folder or self.file):
             raise TypeError("Provide File or Directory")
@@ -110,21 +148,17 @@ class Orchestrator:
 
                 for files in glob.glob(self.folder):
                     if files.endswith(prep_ends_with):
-                        scala_files.append(files)
-                return scala_files
-                # for p in scala_files:
-                #     x = ScalaParse(p, "config_redir.yml")
-                #     x.multi_process()
+                        all_files.append(files)
+                return all_files
             else:
                 print("Throw exception here directory doesnt exist")
         elif self.file and not self.folder:
-            # y = ScalaParse(self.file, "config_solo.yml")
-            # y.multi_process()
-            scala_files.append(self.file)
-            return scala_files
+
+            all_files.append(self.file)
+            return all_files
 
     def run_scala(self):
-        scala_files_to_run = self.crossroad()
+        scala_files_to_run = self.prepare_input()
         for p in scala_files_to_run:
             x = ScalaParse(p, "config_sadhg.yml")
             x.multi_process()
@@ -138,6 +172,6 @@ class Orchestrator:
 
 if __name__ == '__main__':
     # t = Orchestrator(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\")
-    t = Orchestrator(logic_file="scalacode.scala")
+    t = App(logic_file="scalacode.scala")
     t.run_scala()
 
