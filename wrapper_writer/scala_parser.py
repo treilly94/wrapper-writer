@@ -18,9 +18,8 @@ class ScalaParse:
         self.config_filename = config_name
         self.if_config_exists = append_config
 
-    def read_file(self):
+    def read_scala_file(self):
         """
-
         :return:
         """
         try:
@@ -37,19 +36,19 @@ class ScalaParse:
         :return:
         """
         print("Checking if file exists ...")
-        if os.path.exists(self.config_filename):
+        if os.path.isfile(self.config_filename):
             os.remove(self.config_filename)
         else:
             print("The config file does not exists")
 
     def find_method_regex(self):
         """
-        This function will find method raw method signature from file to be parsed
+        This function will find the method raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
-        retrieve_data = self.read_file()
-        if not self.if_config_exists:
-            self.prepare_files()
+        retrieve_data = self.read_scala_file()
+        # if not self.if_config_exists:
+        #     self.prepare_files()
         ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             ptrn2 = ptrn.finditer(retrieve_data)
@@ -70,11 +69,15 @@ class ScalaParse:
             raise Exception("No Methods Found")
         for i in matches:
             ig = i.group()
+            base_raw = os.path.basename(self.filename)
+            container_name = os.path.splitext(base_raw)[0]
+            print(container_name)
             return_type = self.extract_return_type(ig)
             method_name = self.extract_method_name(ig)
             params = self.extract_params(ig)
-            data ={"container": {method_name: {"params": params, "return_type": return_type}}}
+            data = {container_name: {method_name: {"params": params, "returns": return_type}}}
             print(self.if_config_exists)
+            print(data)
             with open(self.config_filename, 'a') as yaml_file:
                 yaml.dump(data, yaml_file, default_flow_style=False)
 
@@ -135,11 +138,21 @@ class App:
         self.config_file = config_name
         self.append_config = append_config
 
+    def delete_config(self):
+        print("Checking if file exists ...")
+        if os.path.isfile(self.config_file):
+            os.remove(self.config_file)
+        else:
+            print("The config file does not exists")
+
     def prepare_input(self):
         """
         This function will prepare the use input,
         :return: all files to be parsed
         """
+        if not self.append_config:
+            self.delete_config()
+
         all_files = []
         prep_ends_with = self.file_extension[1:]
         if not (self.folder or self.file):
@@ -147,7 +160,6 @@ class App:
         if self.folder and not self.file:
             if os.path.exists(self.folder):
                 self.folder += self.file_extension
-
                 for files in glob.glob(self.folder):
                     if files.endswith(prep_ends_with):
                         all_files.append(files)
@@ -155,7 +167,6 @@ class App:
             else:
                 print("Throw exception here directory doesnt exist")
         elif self.file and not self.folder:
-
             all_files.append(self.file)
             return all_files
 
@@ -170,5 +181,6 @@ class App:
 
     def run_r(self):
         pass
+
 
 
