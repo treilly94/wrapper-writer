@@ -11,7 +11,7 @@ structure:
     file_name_format: "{}API.scala"
   python:
     path: python/methods/
-    template: python
+    template: python.py.j2
     file_name_format: "{}.py"
   r:
     path: R/R/
