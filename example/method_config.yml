@@ -1,4 +1,4 @@
-Maths:
+maths:
   sum_columns:
     params:
       df: DataFrame
@@ -16,7 +16,7 @@ Maths:
     docs: This function takes in two integers and multiplies them together and return the outcome.
     returns: DataFrame
 
-Operations:
+operations:
   filter_on_list:
     params:
       df: DataFrame
