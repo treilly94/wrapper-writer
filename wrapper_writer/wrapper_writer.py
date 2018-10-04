@@ -1,4 +1,5 @@
 import os
+
 import yaml
 
 from wrapper_writer.container import Container
@@ -12,58 +13,54 @@ class WrapperWriter:
     The WrapperWriter class contains the details and functionality associated writing a wrapper file based on two
     configs.
 
-    :param structures: The dictionary which holds all the information from the structure config.
-    :type structures: dict
-    :param containers: The dictionary which holds all the information from the methods config.
-    :type containers: dict
-    :param project_root: The absolute path to the current working directory.
-    :type project_root: str
-    :param structure_classes: The list which holds all the structure classes.
-    :type structure_classes: List
-    :param container_classes: The list which holds all the container classes.
-    :type container_classes: List
-    :param wrappers: The list which holds all the wrapper classes.
-    :type wrappers: List
+    :param method_config_path: The path to the method config file relative to the cwd.
+    :type method_config_path: str
+    :param structure_config_path: The path to the structure config file relative to the cwd.
+    :type structure_config_path: str
     """
     structures = {}
+    """The dictionary which holds all the information from the structure config."""
     containers = {}
+    """The dictionary which holds all the information from the methods config."""
     project_root = ""
+    """The absolute path to the current working directory."""
     structure_classes = []
-    container_classes =[]
+    """The list which holds all the structure classes."""
+    container_classes = []
+    """The list which holds all the container classes."""
     wrappers = []
+    """The list which holds all the wrapper classes."""
 
     def __init__(self, method_config_path="./method_config.yml",
                  structure_config_path="./structure_config.yml"):
-        self.method_config_path = method_config_path
-        self.structure_config_path = structure_config_path
+        self.method_config_path = os.path.normpath(method_config_path)
+        self.structure_config_path = os.path.normpath(structure_config_path)
 
     def read_configs(self):
         """
         This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
         then get the project root from the structures yml file.
         """
-        # Read file
-        config ={}
 
+        # Read methods
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
         file.close()
 
-        # Read file
+        # Read Structure
         file = open(self.structure_config_path)
-        config = yaml.load(file)
+        structure_config = yaml.load(file)
         file.close()
 
         # Check if Structure exists
-        if "structure" not in config.keys():
+        if "structure" not in structure_config.keys():
             message = "the structure config must contain a structure key"
             raise Exception(message)
-        self.structures = config.get("structure")
-        if config.get("project_root"):
-            self.project_root = config.get("project_root")
+        self.structures = structure_config.get("structure")
+        if structure_config.get("project_root"):
+            self.project_root = os.path.normpath(structure_config.get("project_root"))
         else:
             self.project_root = os.getcwd()
-
 
     def instantiate_structure_class(self):
         """
@@ -81,7 +78,7 @@ class WrapperWriter:
         """
         for i, j in self.containers.items():
             container_methods = []
-            for x,v in j.items():
+            for x, v in j.items():
                 one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
@@ -106,7 +103,6 @@ class WrapperWriter:
                 one_wrapper = Wrapper(self.project_root, j, i)
                 self.wrappers.append(one_wrapper)
 
-
     def run(self):
         """
         This function will run the above method in order to produce a wrapper file.
@@ -115,7 +111,6 @@ class WrapperWriter:
         self.instantiate_structure_class()
         self.instantiate_container_class()
         self.create_directories()
-
 
         self.instantiate_wrapper_class()
         for i in self.wrappers:

@@ -1,10 +1,9 @@
+import os
+import shutil
 from unittest import TestCase
 
-import os
-
-import shutil
-
 from wrapper_writer.structure import Structure
+
 
 class TestStructure(TestCase):
     path = "./tests/dir/tests"
@@ -12,9 +11,8 @@ class TestStructure(TestCase):
     file_name_format = ""
     project_root = ""
 
-
     def test_create_path(self):
-        absolute_path = os.path.join(os.getcwd(), self.path)
+        absolute_path = os.path.normpath(os.path.join(os.getcwd(), self.path))
 
         # Calling the structure class
         s = Structure(os.getcwd(), self.path, self.template, self.file_name_format)
@@ -33,7 +31,7 @@ class TestStructure(TestCase):
             s.create_dir()
             self.assertTrue(os.path.isdir(absolute_path))
         finally:
-            shutil.rmtree("./tests/"+self.path.split("/")[2])
+            shutil.rmtree("./tests/" + self.path.split("/")[2])
 
     def test_create_dir_exists(self):
         absolute_path = os.path.join(os.getcwd(), "./tests/already/here")
@@ -48,7 +46,3 @@ class TestStructure(TestCase):
             self.fail("create_directories failed because directories already exist")
         finally:
             shutil.rmtree("./tests/already/")
-
-
-
-

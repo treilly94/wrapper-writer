@@ -17,8 +17,8 @@ class Structure:
     full_path = ""
 
     def __init__(self, project_root, path, template, file_name_format):
-        self.project_root = project_root
-        self.path = path
+        self.project_root = os.path.normpath(project_root)
+        self.path = os.path.normpath(path)
         self.template = template
         self.file_name_format = file_name_format
 
@@ -28,10 +28,6 @@ class Structure:
 
         :return: None
         """
-        if self.path.startswith("/"):
-            path = self.path[1:]
-        else:
-            path = self.path
 
         self.full_path = os.path.join(self.project_root, self.path)
 
