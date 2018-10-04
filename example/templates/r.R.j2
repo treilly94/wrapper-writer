@@ -1,13 +1,10 @@
 {% import "macros.j2" as macros %}
 
-{%- set name = container.methods[0].name -%}
-{%- set params = container.methods[0].params -%}
-{%- set returns = container.methods[0].returns -%}
-{%- set docs = container.methods[0].docs -%}
+{% for m in container.methods %}
 
-{{ macros.r_docs(name, docs, params) }}
+{{ macros.r_docs(m.name, m.docs, m.params) }}
 
-{{ name|lower_camel }} <- function(sc, {{ macros.show_params(params) }}) {
+{{ m.name|lower_camel }} <- function(sc, {{ macros.show_params(m.params) }}) {
 
 
   # Checks to see if there is spark connection
@@ -25,6 +22,7 @@
   # We also pass the parameters into the method
   # The types need to match in order to get the correct signutre otherwise you will get a no such method found error
 
-  invoke_static({{ macros.r_params(name, params) }}
+  invoke_static({{ macros.r_params(m.name, m.params) }}
                 )
 }
+{% endfor %}

@@ -15,5 +15,5 @@ structure:
     file_name_format: "{}.py"
   r:
     path: R/R/
-    template: r
+    template: r.R.j2
     file_name_format: "sdf_{}.R"
