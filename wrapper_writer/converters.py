@@ -1,3 +1,6 @@
+import string
+
+
 def lower_camel(name, split_char="_"):
     """Converts a given name into lower camelcase
 
@@ -22,3 +25,13 @@ def upper_camel(name, split_char="_"):
     :return: str
     """
     return "".join(w.capitalize() for w in name.split(split_char))
+
+
+class CustomFormatter(string.Formatter):
+    def convert_field(self, value, conversion):
+        if conversion == 'u':
+            return upper_camel(value)
+        elif conversion == 'l':
+            return lower_camel(value)
+        else:
+            return super().convert_field(value, conversion)

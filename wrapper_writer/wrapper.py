@@ -2,7 +2,7 @@ import os
 
 import jinja2
 
-from wrapper_writer.converters import upper_camel, lower_camel
+from wrapper_writer.converters import upper_camel, lower_camel, CustomFormatter
 
 
 class Wrapper:
@@ -53,8 +53,7 @@ class Wrapper:
         :return: str
         """
         # Format filename
-
-        filename = self.structure.file_name_format.format(self.container.name)
+        filename = CustomFormatter().format(self.structure.file_name_format, self.container.name)
 
         # Add path
         return os.path.join(self.structure.full_path, filename)
