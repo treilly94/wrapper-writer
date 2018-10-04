@@ -30,31 +30,17 @@ class ScalaParse:
             print("I/O error({0}): {1}".format(e.errno, e.strerror))
             sys.exit(1)
 
-    def prepare_files(self):
-        """
-        This funciton will all user to delete the contents of the file it exists
-        :return:
-        """
-        print("Checking if file exists ...")
-        if os.path.isfile(self.config_filename):
-            os.remove(self.config_filename)
-        else:
-            print("The config file does not exists")
-
     def find_method_regex(self):
         """
-        This function will find the method raw method signature from file to be parsed
+        This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
         retrieve_data = self.read_scala_file()
-        # if not self.if_config_exists:
-        #     self.prepare_files()
         ptrn = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             ptrn2 = ptrn.finditer(retrieve_data)
         except:
             print("Nothing In There")
-        # print(ptrn2)
         return ptrn2
 
     def multi_process(self):
@@ -139,6 +125,10 @@ class App:
         self.append_config = append_config
 
     def delete_config(self):
+        """
+        This function will check if a file exist then delete it
+        :return:
+        """
         print("Checking if file exists ...")
         if os.path.isfile(self.config_file):
             os.remove(self.config_file)
@@ -183,4 +173,8 @@ class App:
         pass
 
 
+if __name__ == '__main__':
+    t = App(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\", append_config=False, config_name="config_yesterdayrl.yml")
+    # t = App(logic_file="scalacode.scala")
+    t.run_scala()
 
