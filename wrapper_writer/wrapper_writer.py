@@ -1,4 +1,5 @@
 import os
+
 import yaml
 
 from wrapper_writer.container import Container
@@ -29,7 +30,7 @@ class WrapperWriter:
     containers = {}
     project_root = ""
     structure_classes = []
-    container_classes =[]
+    container_classes = []
     wrappers = []
 
     def __init__(self, method_config_path="./method_config.yml",
@@ -43,7 +44,7 @@ class WrapperWriter:
         then get the project root from the structures yml file.
         """
         # Read file
-        config ={}
+        config = {}
 
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
@@ -64,7 +65,6 @@ class WrapperWriter:
         else:
             self.project_root = os.getcwd()
 
-
     def instantiate_structure_class(self):
         """
         This function will instantiate the Structure class for each structure within the structures dictionary class
@@ -81,7 +81,7 @@ class WrapperWriter:
         """
         for i, j in self.containers.items():
             container_methods = []
-            for x,v in j.items():
+            for x, v in j.items():
                 one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
@@ -106,7 +106,6 @@ class WrapperWriter:
                 one_wrapper = Wrapper(self.project_root, j, i)
                 self.wrappers.append(one_wrapper)
 
-
     def run(self):
         """
         This function will run the above method in order to produce a wrapper file.
@@ -115,7 +114,6 @@ class WrapperWriter:
         self.instantiate_structure_class()
         self.instantiate_container_class()
         self.create_directories()
-
 
         self.instantiate_wrapper_class()
         for i in self.wrappers:
