@@ -33,33 +33,32 @@ class WrapperWriter:
 
     def __init__(self, method_config_path="./method_config.yml",
                  structure_config_path="./structure_config.yml"):
-        self.method_config_path = method_config_path
-        self.structure_config_path = structure_config_path
+        self.method_config_path = os.path.normpath(method_config_path)
+        self.structure_config_path = os.path.normpath(structure_config_path)
 
     def read_configs(self):
         """
         This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
         then get the project root from the structures yml file.
         """
-        # Read file
-        config = {}
 
+        # Read methods
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
         file.close()
 
-        # Read file
+        # Read Structure
         file = open(self.structure_config_path)
-        config = yaml.load(file)
+        structure_config = yaml.load(file)
         file.close()
 
         # Check if Structure exists
-        if "structure" not in config.keys():
+        if "structure" not in structure_config.keys():
             message = "the structure config must contain a structure key"
             raise Exception(message)
-        self.structures = config.get("structure")
-        if config.get("project_root"):
-            self.project_root = config.get("project_root")
+        self.structures = structure_config.get("structure")
+        if structure_config.get("project_root"):
+            self.project_root = os.path.normpath(structure_config.get("project_root"))
         else:
             self.project_root = os.getcwd()
 
