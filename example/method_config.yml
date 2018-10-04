@@ -7,7 +7,7 @@ Maths:
       new_col: String
     docs: This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
     returns: DataFrame
-  sum_columns:
+  multiply:
       params:
         df: DataFrame
         olumn_a: String
