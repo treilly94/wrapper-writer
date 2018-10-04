@@ -28,6 +28,7 @@ def upper_camel(name, split_char="_"):
 
 
 class CustomFormatter(string.Formatter):
+    """This class extends string.Formatter and adds the functionality to convert to upper or lower camelcase"""
     def convert_field(self, value, conversion):
         if conversion == 'u':
             return upper_camel(value)
