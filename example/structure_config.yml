@@ -7,13 +7,17 @@ project_root:
 structure:
   api:
     path: src/main/scala/com/example/api/
-    template: api
-    file_name_format: "{}API.scala"
+    template: api.scala.j2
+    file_name_format: "{!u}API.scala"
+  impl:
+    path: src/main/scala/com/example/implicits/
+    template: implicits.scala.j2
+    file_name_format: "{!u}Impl.scala"
   python:
     path: python/methods/
-    template: python
-    file_name_format: "{}API.py"
+    template: python.py.j2
+    file_name_format: "{}.py"
   r:
     path: R/R/
-    template: r
+    template: r.R.j2
     file_name_format: "sdf_{}.R"
