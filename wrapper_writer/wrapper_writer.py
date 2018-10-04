@@ -43,6 +43,8 @@ class WrapperWriter:
         then get the project root from the structures yml file.
         """
         # Read file
+        config ={}
+
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
         file.close()
@@ -54,7 +56,7 @@ class WrapperWriter:
 
         # Check if Structure exists
         if "structure" not in config.keys():
-            message = "config.yml must contain a structure key"
+            message = "the structure config must contain a structure key"
             raise Exception(message)
         self.structures = config.get("structure")
         if config.get("project_root"):

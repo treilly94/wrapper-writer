@@ -69,7 +69,7 @@ class TestWrapperWriter(TestCase):
         with self.assertRaises(Exception) as cm:
             w.read_configs()
         err = str(cm.exception)
-        self.assertEqual("config.yml must contain a structure key", err)
+        self.assertEqual("the structure config must contain a structure key", err)
 
     def test_instantiate_structure_class(self):
         w = WrapperWriter(self.method_config, self.structure_config)

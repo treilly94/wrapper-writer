@@ -32,6 +32,8 @@ class Wrapper:
 
         # Check template exists
         if not os.path.exists(template_path):
+            print("The template path it's trying to find is:")
+            print(template_path)
             raise FileNotFoundError
 
         # Create the jinja2 environment
