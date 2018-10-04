@@ -19,7 +19,7 @@ Operations:
   filter_on_list:
     params:
       df: DataFrame
-      target_ol: String
+      target_col: String
       values: List[Int]
     docs: This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
     returns: DataFrame
