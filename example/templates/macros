@@ -13,6 +13,7 @@
 {% macro r_docs(name, docs, params) %}
 #' {{ name|lower_camel }}
 #'
+#' {{ docs }}
 #' @param sc
 {% for p in params -%}
 #' @param {{ p }}

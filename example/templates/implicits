@@ -1,9 +1,11 @@
-{% import "macros" as macros %}
+% import "macros" as macros %}
 
-{%- set params = method.get("params") -%}
+{%- set name = container.methods[0].name -%}
+{%- set params = container.methods[0].params -%}
+{%- set returns = container.methods[0].returns -%}
+{%- set docs = container.methods[0].docs -%}
 {{ params.pop("df") }}
-{%- set returns = method.get("returns") -%}
-{%- set docs = method.get("docs") -%}
+
 package com.example.implicits
 
 import org.apache.spark.sql.DataFrame

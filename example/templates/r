@@ -1,8 +1,9 @@
 {% import "macros" as macros %}
 
-{%- set params = method.get("params") -%}
-{%- set returns = method.get("returns") -%}
-{%- set docs = method.get("docs") -%}
+{%- set name = container.methods[0].name -%}
+{%- set params = container.methods[0].params -%}
+{%- set returns = container.methods[0].returns -%}
+{%- set docs = container.methods[0].docs -%}
 
 {{ macros.r_docs(name, docs, params) }}
 
