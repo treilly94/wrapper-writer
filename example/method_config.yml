@@ -8,13 +8,14 @@ Maths:
     docs: This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
     returns: DataFrame
   multiply:
-      params:
-        df: DataFrame
-        olumn_a: String
-        column_b: String
-        new_col: String
-      docs: This function takes in two integers and multiplies them together and return the outcome.
-      returns: DataFrame
+    params:
+      df: DataFrame
+      olumn_a: String
+      column_b: String
+      new_col: String
+    docs: This function takes in two integers and multiplies them together and return the outcome.
+    returns: DataFrame
+
 Operations:
   filter_on_list:
     params:
