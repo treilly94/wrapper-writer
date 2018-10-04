@@ -12,7 +12,7 @@ structure:
   python:
     path: python/methods/
     template: python
-    file_name_format: "{}API.py"
+    file_name_format: "{}.py"
   r:
     path: R/R/
     template: r
