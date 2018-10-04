@@ -75,11 +75,11 @@ class TestWrapperWriter(TestCase):
         w = WrapperWriter(self.method_config, self.structure_config)
         w.structures = self.structure
         w.instantiate_structure_class()
-        self.assertEqual("/test_dir/python/path", w.structure_classes[0].path)
+        self.assertEqual(os.path.normpath("/test_dir/python/path"), w.structure_classes[0].path)
         self.assertEqual("python.txt", w.structure_classes[0].template)
         self.assertEqual("{}.py", w.structure_classes[0].file_name_format)
 
-        self.assertEqual("/test_dir/scala/path", w.structure_classes[1].path)
+        self.assertEqual(os.path.normpath("/test_dir/scala/path"), w.structure_classes[1].path)
         self.assertEqual("scala.txt", w.structure_classes[1].template)
         self.assertEqual("{}.scala", w.structure_classes[1].file_name_format)
 
@@ -147,7 +147,7 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("This function multiplies the two columns together", w.wrappers[0].container.methods[1].docs)
         self.assertEqual("String", w.wrappers[0].container.methods[1].returns)
 
-        self.assertEqual("test_dir/python/path", w.wrappers[0].structure.path)
+        self.assertEqual(os.path.normpath("test_dir/python/path"), w.wrappers[0].structure.path)
         self.assertEqual("python.txt", w.wrappers[0].structure.template)
         self.assertEqual(".py", w.wrappers[0].structure.file_name_format)
 
@@ -158,7 +158,7 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("This function does ratio estimation", w.wrappers[1].container.methods[0].docs)
         self.assertEqual("String", w.wrappers[1].container.methods[0].returns)
 
-        self.assertEqual("test_dir/python/path", w.wrappers[1].structure.path)
+        self.assertEqual(os.path.normpath("test_dir/python/path"), w.wrappers[1].structure.path)
         self.assertEqual("python.txt", w.wrappers[1].structure.template)
         self.assertEqual(".py", w.wrappers[1].structure.file_name_format)
 
@@ -175,7 +175,7 @@ class TestWrapperWriter(TestCase):
                          w.wrappers[2].container.methods[1].docs)
         self.assertEqual("String", w.wrappers[2].container.methods[1].returns)
 
-        self.assertEqual("test_dir/scala/path", w.wrappers[2].structure.path)
+        self.assertEqual(os.path.normpath("test_dir/scala/path"), w.wrappers[2].structure.path)
         self.assertEqual("scala.txt", w.wrappers[2].structure.template)
         self.assertEqual(".scala", w.wrappers[2].structure.file_name_format)
 
@@ -185,7 +185,7 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("This function does ratio estimation", w.wrappers[3].container.methods[0].docs)
         self.assertEqual("String", w.wrappers[3].container.methods[0].returns)
 
-        self.assertEqual("test_dir/scala/path", w.wrappers[3].structure.path)
+        self.assertEqual(os.path.normpath("test_dir/scala/path"), w.wrappers[3].structure.path)
         self.assertEqual("scala.txt", w.wrappers[3].structure.template)
         self.assertEqual(".scala", w.wrappers[3].structure.file_name_format)
 
