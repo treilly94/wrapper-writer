@@ -13,25 +13,23 @@ class WrapperWriter:
     The WrapperWriter class contains the details and functionality associated writing a wrapper file based on two
     configs.
 
-    :param structures: The dictionary which holds all the information from the structure config.
-    :type structures: dict
-    :param containers: The dictionary which holds all the information from the methods config.
-    :type containers: dict
-    :param project_root: The absolute path to the current working directory.
-    :type project_root: str
-    :param structure_classes: The list which holds all the structure classes.
-    :type structure_classes: List
-    :param container_classes: The list which holds all the container classes.
-    :type container_classes: List
-    :param wrappers: The list which holds all the wrapper classes.
-    :type wrappers: List
+    :param method_config_path: The path to the method config file relative to the cwd.
+    :type method_config_path: str
+    :param structure_config_path: The path to the structure config file relative to the cwd.
+    :type structure_config_path: str
     """
     structures = {}
+    """The dictionary which holds all the information from the structure config."""
     containers = {}
+    """The dictionary which holds all the information from the methods config."""
     project_root = ""
+    """The absolute path to the current working directory."""
     structure_classes = []
+    """The list which holds all the structure classes."""
     container_classes = []
+    """The list which holds all the container classes."""
     wrappers = []
+    """The list which holds all the wrapper classes."""
 
     def __init__(self, method_config_path="./method_config.yml",
                  structure_config_path="./structure_config.yml"):
