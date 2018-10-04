@@ -10,7 +10,7 @@ Maths:
   multiply:
     params:
       df: DataFrame
-      olumn_a: String
+      column_a: String
       column_b: String
       new_col: String
     docs: This function takes in two integers and multiplies them together and return the outcome.
