@@ -94,32 +94,50 @@ class Orchestrator:
     This class orchestrates the scala parser application
     """
 
-    def __init__(self, folder=None, logic_file=None, file_extension="\\*"):
+    def __init__(self, folder=None, logic_file=None, file_extension="*.scala"):
         self.folder = folder
         self.file = logic_file
         self.file_extension = file_extension
 
     def crossroad(self):
+        scala_files = []
+        prep_ends_with = self.file_extension[1:]
         if not (self.folder or self.file):
             raise TypeError("Provide File or Directory")
         if self.folder and not self.file:
             if os.path.exists(self.folder):
                 self.folder += self.file_extension
-                scala_files = []
+
                 for files in glob.glob(self.folder):
-                    if files.endswith(".scala"):
+                    if files.endswith(prep_ends_with):
                         scala_files.append(files)
-                for p in scala_files:
-                    x = ScalaParse(p, "config_redir.yml")
-                    x.multi_process()
+                return scala_files
+                # for p in scala_files:
+                #     x = ScalaParse(p, "config_redir.yml")
+                #     x.multi_process()
             else:
                 print("Throw exception here directory doesnt exist")
         elif self.file and not self.folder:
-            y = ScalaParse(self.file, "config_solo.yml")
-            y.multi_process()
+            # y = ScalaParse(self.file, "config_solo.yml")
+            # y.multi_process()
+            scala_files.append(self.file)
+            return scala_files
+
+    def run_scala(self):
+        scala_files_to_run = self.crossroad()
+        for p in scala_files_to_run:
+            x = ScalaParse(p, "config_sadhg.yml")
+            x.multi_process()
+
+    def run_python(self):
+        pass
+
+    def run_r(self):
+        pass
 
 
 if __name__ == '__main__':
-    t = Orchestrator(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example")
-    t.crossroad()
+    # t = Orchestrator(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\")
+    t = Orchestrator(logic_file="scalacode.scala")
+    t.run_scala()
 
