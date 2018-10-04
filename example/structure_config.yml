@@ -7,7 +7,7 @@ project_root:
 structure:
   api:
     path: src/main/scala/com/example/api/
-    template: api
+    template: api.scala.j2
     file_name_format: "{}API.scala"
   python:
     path: python/methods/
