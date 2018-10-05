@@ -23,7 +23,6 @@ object FilterOnList {
 }
 
         """).strip()
-    path = "C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\FilterOnList.scala"
 
     config_name = "config.yml"
 
@@ -33,11 +32,15 @@ object FilterOnList {
 
     method_config = {'FilterOnList': {'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'}, 'returns': 'DataFrame'}}}
 
+    project_root = os.getcwd()
+
+    goal_dir = os.path.join(project_root, "../example/src/main/scala/com/example/FilterOnList.scala")
+
     def test_read_scala_file(self):
         """
         Asset that the functions reads in the input file correctly
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         res = sp.read_scala_file()
         self.assertEqual(self.expected_code, res)
 
@@ -45,7 +48,7 @@ object FilterOnList {
         """
         Assert the regex search return is not None
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.find_method_regex()
         res_tup = tuple(result)
         self.assertIsNotNone(res_tup)
@@ -57,7 +60,7 @@ object FilterOnList {
         Delete file if there are the same, raise an assertion error if not
         :return:
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         sp.multi_process()
         config = yaml.load(open('config.yml'))
         self.assertDictEqual(self.method_config, config)
@@ -76,7 +79,7 @@ object FilterOnList {
         Assert that the return type string object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.extract_return_type(self.method_signature)
         expected = "DataFrame"
         self.assertEqual(expected, result)
@@ -86,7 +89,7 @@ object FilterOnList {
         Assert that the method name string object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.extract_method_name(self.method_signature)
         expected = "aggColumn"
         self.assertEqual(expected, result)
@@ -96,7 +99,7 @@ object FilterOnList {
         Assert that the method params dictionary object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.path, config_name=self.config_name)
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.extract_params(self.method_signature)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
