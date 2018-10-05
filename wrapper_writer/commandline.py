@@ -3,7 +3,6 @@ from wrapper_writer.wrapper_writer import WrapperWriter
 
 # Create the top-level parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--proj-root', help='The path to the root of the project')
 subparsers = parser.add_subparsers()
 
 # Create the parser for the Wrapper
