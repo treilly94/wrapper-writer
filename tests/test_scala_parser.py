@@ -1,7 +1,7 @@
 import unittest
 import yaml
 import os
-from wrapper_writer.scala_parser import App, ScalaParse
+from wrapper_writer.scala_parser import ScalaParse
 
 
 class TestScalaParser(unittest.TestCase):
@@ -67,14 +67,6 @@ object FilterOnList {
         config = yaml.load(open('config.yml'))
         self.assertDictEqual(self.method_config, config)
         os.remove(self.config_name)
-
-        # try:
-        #     self.assertDictEqual(self.method_config, config)
-        #
-        # except AssertionError:
-        #     print("The Test failed")
-
-
 
     def test_extract_return_type(self):
         """
