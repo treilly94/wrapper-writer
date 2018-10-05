@@ -61,3 +61,54 @@ Below is an example of the structure config.
 Methods Config
 ==============
 
+The default name of this file is **method_config.yml** and it is expected to be in the cwd, although this can be
+changed by passing arguments at runtime.
+
+The methods config file contains details of the methods to be wrapped. Below is a example of the structure:
+
+.. code-block:: yaml
+
+    container_name: # The name of the file/class/object that contains the methods
+        method_name: # The name of the method to be wrapped
+            params: # A dictionary of the methods parameters and their types
+                param1: type1
+                param2: type2
+            docs: # The methods documentation
+            returns: # The return type of the method
+            other: # Other is for any optional extra information that the user wants in the templates
+                other1: additional thing 1
+
+.. warning::
+    It is recommended that all method and container names are written in lowercase with words separated by underscores.
+    If they aren't the functionality to convert them in to different cases may not work.
+
+The below example shows three methods spread between two containers
+
+.. code-block:: yaml
+
+    maths:
+      sum_columns:
+        params:
+          df: DataFrame
+          column_a: String
+          column_b: String
+          new_col: String
+        docs: This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
+        returns: DataFrame
+      multiply:
+        params:
+          df: DataFrame
+          column_a: String
+          column_b: String
+          new_col: String
+        docs: This function takes in two integers and multiplies them together and return the outcome.
+        returns: DataFrame
+
+    operations:
+      filter_on_list:
+        params:
+          df: DataFrame
+          target_col: String
+          values: List[Int]
+        docs: This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
+        returns: DataFrame
