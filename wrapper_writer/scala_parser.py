@@ -43,30 +43,6 @@ class ScalaParse:
             print("Nothing In There")
         return pattern2
 
-    def multi_process(self):
-        """
-        This function will process each method found and write it to a yaml file
-        :return:
-        """
-        all_found = self.find_method_regex()
-        matches = tuple(all_found)
-        print(matches)
-        if not matches:
-            raise Exception("No Methods Found")
-        for i in matches:
-            ig = i.group()
-            base_raw = os.path.basename(self.filename)
-            container_name = os.path.splitext(base_raw)[0]
-            print(container_name)
-            return_type = self.extract_return_type(ig)
-            method_name = self.extract_method_name(ig)
-            params = self.extract_params(ig)
-            data = {container_name: {method_name: {"params": params, "returns": return_type}}}
-            print(self.if_config_exists)
-            print(data)
-            with open(self.config_filename, 'a') as yaml_file:
-                yaml.dump(data, yaml_file, default_flow_style=False)
-
     @staticmethod
     def extract_return_type(raw_res):
         """
@@ -107,6 +83,27 @@ class ScalaParse:
             dict_by_comma[k] = v.lstrip()
             new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
         return new_dict
+
+    def multi_process(self):
+        """
+        This function will process each method found and write it to a yaml file
+        :return:
+        """
+        all_found = self.find_method_regex()
+        matches = tuple(all_found)
+        if not matches:
+            raise Exception("No Methods Found")
+        for i in matches:
+            ig = i.group()
+            base_raw = os.path.basename(self.filename)
+            container_name = os.path.splitext(base_raw)[0]
+            return_type = self.extract_return_type(ig)
+            method_name = self.extract_method_name(ig)
+            params = self.extract_params(ig)
+            data = {container_name: {method_name: {"params": params, "returns": return_type}}}
+            with open(self.config_filename, 'a') as yaml_file:
+                yaml.dump(data, yaml_file, default_flow_style=False)
+
 
 
 class App:
