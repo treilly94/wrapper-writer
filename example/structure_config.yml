@@ -1,0 +1,23 @@
+# The absolute path of the root of the target project
+# If none is provided your cwd will be used
+project_root:
+
+# The structure of the project
+# All paths are relative to the project_root
+structure:
+  api:
+    path: src/main/scala/com/example/api/
+    template: api.scala.j2
+    file_name_format: "{!u}API.scala"
+  impl:
+    path: src/main/scala/com/example/implicits/
+    template: implicits.scala.j2
+    file_name_format: "{!u}Impl.scala"
+  python:
+    path: python/methods/
+    template: python.py.j2
+    file_name_format: "{}.py"
+  r:
+    path: R/R/
+    template: r.R.j2
+    file_name_format: "sdf_{}.R"

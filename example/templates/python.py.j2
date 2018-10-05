@@ -1,0 +1,15 @@
+{% import "macros.j2" as macros %}
+
+
+from pyspark.sql import DataFrame
+
+{% for m in container.methods %}
+
+def {{ m.name }}({{ macros.show_params(m.params) }}):
+	{{ macros.python_docs(m.docs) }}
+    # Get the Scala API
+    api = df._sc._jvm.com.example.api.{{ container.name|upper_camel }}API
+
+    return DataFrame(api.{{ m.name|lower_camel }}({{ macros.python_to_java_params(m.params) }}), df.sql_ctx)
+
+{% endfor %}
