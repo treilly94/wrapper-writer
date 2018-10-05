@@ -1,0 +1,449 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>API Documentation &#8212; Wrapper Writer  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Support" href="support.html" />
+    <link rel="prev" title="Templates" href="templates.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-wrapper_writer.wrapper_writer">
+<span id="wrapper-writer"></span><h2>Wrapper Writer<a class="headerlink" href="#module-wrapper_writer.wrapper_writer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter">
+<em class="property">class </em><code class="descclassname">wrapper_writer.wrapper_writer.</code><code class="descname">WrapperWriter</code><span class="sig-paren">(</span><em>method_config_path='./method_config.yml'</em>, <em>structure_config_path='./structure_config.yml'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The WrapperWriter class contains the details and functionality associated writing a wrapper file based on two
+configs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method_config_path</strong> (<em>str</em>) – The path to the method config file relative to the cwd.</li>
+<li><strong>structure_config_path</strong> (<em>str</em>) – The path to the structure config file relative to the cwd.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.container_classes">
+<code class="descname">container_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.container_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the container classes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.containers">
+<code class="descname">containers</code><em class="property"> = {}</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.containers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dictionary which holds all the information from the methods config.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.create_directories">
+<code class="descname">create_directories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.create_directories" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will take the structure_classes parameter and called the create_path and create_dir functions
+for each structure class within the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class">
+<code class="descname">instantiate_container_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Container class for each container within the container dictionary class
+parameter. It will store in class within a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class">
+<code class="descname">instantiate_structure_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Structure class for each structure within the structures dictionary class
+parameter. It will store in class within a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class">
+<code class="descname">instantiate_wrapper_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Wrapper class for each structure and each container within the
+structure and container class. It will store these wrapper classes within a list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.project_root">
+<code class="descname">project_root</code><em class="property"> = ''</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.project_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>The absolute path to the current working directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.read_configs">
+<code class="descname">read_configs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.read_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
+then get the project root from the structures yml file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will run the above method in order to produce a wrapper file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structure_classes">
+<code class="descname">structure_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structure_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the structure classes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structures">
+<code class="descname">structures</code><em class="property"> = {}</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dictionary which holds all the information from the structure config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.wrappers">
+<code class="descname">wrappers</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.wrappers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the wrapper classes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.wrapper">
+<span id="wrapper"></span><h2>Wrapper<a class="headerlink" href="#module-wrapper_writer.wrapper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.wrapper.Wrapper">
+<em class="property">class </em><code class="descclassname">wrapper_writer.wrapper.</code><code class="descname">Wrapper</code><span class="sig-paren">(</span><em>project_root</em>, <em>container</em>, <em>structure</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Wrapper Class contains the details and functionality associated with a particular wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project_root</strong> (<em>str</em>) – The root of the project the wrappers will be written to.</li>
+<li><strong>container</strong> (<a class="reference internal" href="#wrapper_writer.container.Container" title="wrapper_writer.container.Container"><em>Container</em></a>) – The container associated with the wrapper.</li>
+<li><strong>structure</strong> (<a class="reference internal" href="#wrapper_writer.structure.Structure" title="wrapper_writer.structure.Structure"><em>Structure</em></a>) – The method associated with the wrapper.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="wrapper_writer.wrapper.Wrapper.create_file_name">
+<code class="descname">create_file_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.create_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method formats the file name and adds it to the end of the path defined in the structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper.Wrapper.populate_template">
+<code class="descname">populate_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.populate_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method populates the template defined in the structure with the details of the container.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper.Wrapper.write_file">
+<code class="descname">write_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method populates the template, creates the appropriate file name, and writes the file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.structure">
+<span id="structure"></span><h2>Structure<a class="headerlink" href="#module-wrapper_writer.structure" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.structure.Structure">
+<em class="property">class </em><code class="descclassname">wrapper_writer.structure.</code><code class="descname">Structure</code><span class="sig-paren">(</span><em>project_root</em>, <em>path</em>, <em>template</em>, <em>file_name_format</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.structure.Structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Structure Class contains the details and functionality associated with a particular structure.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A structure is a group of wrappers that would use the same template, follow the same naming convention, and be placed in the same directory.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str</em>) – The relative path from the project root where the new files will be placed.</li>
+<li><strong>template</strong> (<em>str</em>) – The name of the template file to use.</li>
+<li><strong>file_name_format</strong> (<em>str</em>) – The format of the new file names using PyFormat where a {} represents the file name.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="wrapper_writer.structure.Structure.create_dir">
+<code class="descname">create_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.structure.Structure.create_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function makes directories from the full path variable. If the directory already exist then this will
+catch the error and print which directory exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.structure.Structure.create_path">
+<code class="descname">create_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.structure.Structure.create_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function combines the given path (relative path) with the current working directory to get the
+absolute path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.container">
+<span id="container"></span><h2>Container<a class="headerlink" href="#module-wrapper_writer.container" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.container.Container">
+<em class="property">class </em><code class="descclassname">wrapper_writer.container.</code><code class="descname">Container</code><span class="sig-paren">(</span><em>name</em>, <em>methods</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.container.Container" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Container Class contains the details and functionality associated with a particular container.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A container is any entity that contains one or more methods. e.g. a class, a object, or a file</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – The name of the container.</li>
+<li><strong>path</strong> (<em>str</em>) – The path of the container relative to the project root.</li>
+<li><strong>methods</strong> (<em>list</em>) – The methods associated with the container.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="wrapper_writer.container.Container.create_config">
+<code class="descname">create_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.container.Container.create_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method formats the details of the container and its methods into a yml syntax</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.method">
+<span id="method"></span><h2>Method<a class="headerlink" href="#module-wrapper_writer.method" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.method.Method">
+<em class="property">class </em><code class="descclassname">wrapper_writer.method.</code><code class="descname">Method</code><span class="sig-paren">(</span><em>name</em>, <em>params</em>, <em>docs</em>, <em>returns</em>, <em>other={}</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.method.Method" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Method Class contains the details associated with a particular method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – The name of the method.</li>
+<li><strong>params</strong> (<em>dict</em>) – A dictionary where the keys are the methods parameter names and the values are the types.</li>
+<li><strong>docs</strong> (<em>str</em>) – The docstring of the method.</li>
+<li><strong>returns</strong> (<em>str</em>) – The return type of the object.</li>
+<li><strong>other</strong> (<em>dict</em>) – A dictionary containing any additional values that may be required in the template.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.converters">
+<span id="converters"></span><h2>Converters<a class="headerlink" href="#module-wrapper_writer.converters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.converters.CustomFormatter">
+<em class="property">class </em><code class="descclassname">wrapper_writer.converters.</code><code class="descname">CustomFormatter</code><a class="headerlink" href="#wrapper_writer.converters.CustomFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class extends string.Formatter and adds the functionality to convert to upper or lower camelcase</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="wrapper_writer.converters.lower_camel">
+<code class="descclassname">wrapper_writer.converters.</code><code class="descname">lower_camel</code><span class="sig-paren">(</span><em>name</em>, <em>split_char='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.converters.lower_camel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a given name into lower camelcase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) – The name to be converted</li>
+<li><strong>split_char</strong> (<em>str</em>) – The character that separates words in the name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="wrapper_writer.converters.upper_camel">
+<code class="descclassname">wrapper_writer.converters.</code><code class="descname">upper_camel</code><span class="sig-paren">(</span><em>name</em>, <em>split_char='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.converters.upper_camel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a given name into upper camel case</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) – The name to be converted</li>
+<li><strong>split_char</strong> (<em>str</em>) – The character that separates words in the name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Wrapper Writer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Basic Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.wrapper_writer">Wrapper Writer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.wrapper">Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.container">Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.method">Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.converters">Converters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="templates.html" title="previous chapter">Templates</a></li>
+      <li>Next: <a href="support.html" title="next chapter">Support</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Tom Reilly, Kayleigh Bellis, Ian Edward.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/docs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

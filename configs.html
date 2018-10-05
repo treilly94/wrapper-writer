@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration Files &#8212; Wrapper Writer  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Templates" href="templates.html" />
+    <link rel="prev" title="Commandline Interface" href="cli.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-files">
+<h1>Configuration Files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h1>
+<p>There are currently two configuration files. They are both written in yaml syntax.</p>
+<div class="section" id="structure-config">
+<h2>Structure Config<a class="headerlink" href="#structure-config" title="Permalink to this headline">¶</a></h2>
+<p>The default name of this file is <strong>structure_config.yml</strong> and it is expected to be in the cwd, although this can be
+changed by passing arguments at runtime.</p>
+<p>The structure config defines the following details of the project:</p>
+<dl class="docutils">
+<dt><strong>project_root</strong></dt>
+<dd>The root of the project being worked on. If left blank this will default to the cwd.</dd>
+</dl>
+<p>It also contains the following details of each type of wrapper:</p>
+<dl class="docutils">
+<dt><strong>path</strong></dt>
+<dd>The location to put the generated files relative to the project root</dd>
+<dt><strong>template</strong></dt>
+<dd>The name of the template to use for these wrappers.</dd>
+<dt><strong>file_name_format</strong></dt>
+<dd>The format of the name of the generated files. This is a string that will be formatted.
+A <strong>{}</strong> symbol will represent the container name. The container name can be converted into Upper or Lower camelcase by
+placing either <strong>!u</strong> or <strong>!l</strong> inside <strong>{}</strong>.</dd>
+</dl>
+<p>Below is an example of the structure config.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># The absolute path of the root of the target project</span>
+<span class="c1"># If none is provided your cwd will be used</span>
+<span class="l l-Scalar l-Scalar-Plain">project_root</span><span class="p p-Indicator">:</span>
+
+<span class="c1"># The structure of the project</span>
+<span class="c1"># All paths are relative to the project_root</span>
+<span class="l l-Scalar l-Scalar-Plain">structure</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">api</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">src/main/scala/com/example/api/</span>
+    <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api.scala.j2</span>
+    <span class="l l-Scalar l-Scalar-Plain">file_name_format</span><span class="p p-Indicator">:</span> <span class="s">&quot;{!u}API.scala&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">impl</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">src/main/scala/com/example/implicits/</span>
+    <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">implicits.scala.j2</span>
+    <span class="l l-Scalar l-Scalar-Plain">file_name_format</span><span class="p p-Indicator">:</span> <span class="s">&quot;{!u}Impl.scala&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">python</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">python/methods/</span>
+    <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">python.py.j2</span>
+    <span class="l l-Scalar l-Scalar-Plain">file_name_format</span><span class="p p-Indicator">:</span> <span class="s">&quot;{}.py&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">r</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">R/R/</span>
+    <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">r.R.j2</span>
+    <span class="l l-Scalar l-Scalar-Plain">file_name_format</span><span class="p p-Indicator">:</span> <span class="s">&quot;sdf_{}.R&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods-config">
+<h2>Methods Config<a class="headerlink" href="#methods-config" title="Permalink to this headline">¶</a></h2>
+<p>The default name of this file is <strong>method_config.yml</strong> and it is expected to be in the cwd, although this can be
+changed by passing arguments at runtime.</p>
+<p>The methods config file contains details of the methods to be wrapped. Below is a example of the structure:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">container_name</span><span class="p p-Indicator">:</span> <span class="c1"># The name of the file/class/object that contains the methods</span>
+    <span class="l l-Scalar l-Scalar-Plain">method_name</span><span class="p p-Indicator">:</span> <span class="c1"># The name of the method to be wrapped</span>
+        <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span> <span class="c1"># A dictionary of the methods parameters and their types</span>
+            <span class="l l-Scalar l-Scalar-Plain">param1</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">type1</span>
+            <span class="l l-Scalar l-Scalar-Plain">param2</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">type2</span>
+        <span class="l l-Scalar l-Scalar-Plain">docs</span><span class="p p-Indicator">:</span> <span class="c1"># The methods documentation</span>
+        <span class="l l-Scalar l-Scalar-Plain">returns</span><span class="p p-Indicator">:</span> <span class="c1"># The return type of the method</span>
+        <span class="l l-Scalar l-Scalar-Plain">other</span><span class="p p-Indicator">:</span> <span class="c1"># Other is for any optional extra information that the user wants in the templates</span>
+            <span class="l l-Scalar l-Scalar-Plain">other1</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">additional thing 1</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is recommended that all method and container names are written in lowercase with words separated by underscores.
+If they aren’t the functionality to convert them in to different cases may not work.</p>
+</div>
+<p>The below example shows three methods spread between two containers</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maths</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">sum_columns</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">df</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+      <span class="l l-Scalar l-Scalar-Plain">column_a</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+      <span class="l l-Scalar l-Scalar-Plain">column_b</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+      <span class="l l-Scalar l-Scalar-Plain">new_col</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="l l-Scalar l-Scalar-Plain">docs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.</span>
+    <span class="l l-Scalar l-Scalar-Plain">returns</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+  <span class="l l-Scalar l-Scalar-Plain">multiply</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">df</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+      <span class="l l-Scalar l-Scalar-Plain">column_a</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+      <span class="l l-Scalar l-Scalar-Plain">column_b</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+      <span class="l l-Scalar l-Scalar-Plain">new_col</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="l l-Scalar l-Scalar-Plain">docs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">This function takes in two integers and multiplies them together and return the outcome.</span>
+    <span class="l l-Scalar l-Scalar-Plain">returns</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+
+<span class="l l-Scalar l-Scalar-Plain">operations</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">filter_on_list</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">df</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+      <span class="l l-Scalar l-Scalar-Plain">target_col</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+      <span class="l l-Scalar l-Scalar-Plain">values</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">List[Int]</span>
+    <span class="l l-Scalar l-Scalar-Plain">docs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">This function calls a protected function which filters the data based on where the targetCol doesn&#39;t have values that are in the values parameter.</span>
+    <span class="l l-Scalar l-Scalar-Plain">returns</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DataFrame</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Wrapper Writer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Basic Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Commandline Interface</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Basic Usage</a><ul>
+      <li>Previous: <a href="cli.html" title="previous chapter">Commandline Interface</a></li>
+      <li>Next: <a href="templates.html" title="next chapter">Templates</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Tom Reilly, Kayleigh Bellis, Ian Edward.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/configs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
