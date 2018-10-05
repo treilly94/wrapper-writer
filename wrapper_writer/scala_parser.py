@@ -105,7 +105,6 @@ class ScalaParse:
                 yaml.dump(data, yaml_file, default_flow_style=False)
 
 
-
 class App:
     """
     This App class orchestrates the scala parser application
@@ -170,8 +169,8 @@ class App:
         pass
 
 
-if __name__ == '__main__':
-    t = App(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\", append_config=False, config_name="config_yesterdayrl.yml")
-    # t = App(logic_file="scalacode.scala")
-    t.run_scala()
+# if __name__ == '__main__':
+#     t = App(folder="C:\\Users\\Ian Edwards\\projects\\dap-s\\wrapper-writer\\wrapper-writer\\example\\src\\main\\scala\\com\\example\\", append_config=False, config_name="config_yesterdayrl.yml")
+#     # t = App(logic_file="scalacode.scala")
+#     t.run_scala()
 

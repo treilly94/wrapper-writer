@@ -1,7 +1,8 @@
 import unittest
 import yaml
 import os
-from wrapper_writer.scala_parser import ScalaParse
+import mock
+from wrapper_writer.scala_parser import ScalaParse, App
 
 
 class TestScalaParser(unittest.TestCase):
@@ -97,6 +98,19 @@ object FilterOnList {
         result = sp.extract_params(self.method_signature)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
+
+    @mock.patch('wrapper_writer.scala_parser.os.path')
+    @mock.patch('wrapper_writer.scala_parser.os')
+    def test_delete_config(self, mock_os, mock_path):
+
+        #set up the mock
+        mock_path.isfile.return_value = False
+        app = App(config_name="config.yml")
+        app.delete_config()
+
+        #test that the remove call was not called
+        self.assertFalse(mock_os.remove.called, "Failed to not remove the file if not present")
+
 
 
 if __name__ == "__main__":
