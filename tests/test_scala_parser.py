@@ -34,7 +34,7 @@ object FilterOnList {
 
     project_root = os.getcwd()
 
-    goal_dir = os.path.join(project_root, "./resources/scala_code/FilterOnList.scala")
+    goal_dir = os.path.join(project_root, "/resources/scala_code/FilterOnList.scala")
 
     def test_read_scala_file(self):
         """
