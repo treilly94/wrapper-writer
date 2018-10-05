@@ -11,6 +11,7 @@ wrapper-writer
 This package dynamically creates wrappers for your methods in a given structure
 
 .. toctree::
-    :glob:
+   :maxdepth: 2
+   :caption: Contents:
 
-    docs/*
+   docs/*
