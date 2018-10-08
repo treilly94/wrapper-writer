@@ -65,7 +65,9 @@ object FilterOnList {
         """
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         sp.multi_process()
-        config = yaml.load(open('config.yml'))
+        # config = yaml.load(open('config.yml'))
+        with open("config.yml", 'r') as c:
+            config = yaml.load(c)
         self.assertDictEqual(self.method_config, config)
         os.remove(self.config_name)
 
