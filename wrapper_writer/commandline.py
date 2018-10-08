@@ -1,5 +1,6 @@
 import argparse
 from wrapper_writer.wrapper_writer import WrapperWriter
+from wrapper_writer.scala_parser import App, ScalaParse
 
 # Create the top-level parser
 parser = argparse.ArgumentParser()
@@ -13,18 +14,29 @@ parser_wrap.add_argument('-m', '--method-config', default='./method_config.yml',
 parser_wrap.add_argument('-s', '--structure-config', default='./structure_config.yml',
                          help='The path to the structure config file')
 
+
+
 # Create the parser for the Parser
 parser_parse = subparsers.add_parser('parse', help='Create a configuration by parsing existing files')
 parser_parse.set_defaults(command='parse')
+parser_parse.add_argument('-f', '--scala-folder', default=None,
+                         help='The folder path where code to be parsed lives')
+parser_parse.add_argument('-l', '--logic-file', default=None,
+                          help='The file path, where code to be parsed lives')
+parser_parse.add_argument('-a', '--append-config', default=False,
+                          help='True: Append an existing config file, False: Overwrite if config file exists')
+parser_parse.add_argument('-c', '--config-name', default='./')
 
 # Parse the argument lists
 args = parser.parse_args()
-
+# folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False
 
 def commandline():
 
     if args.command == "parse":
         print("Parsing ...")
+        App()
+
 
     elif args.command == "wrap":
         WrapperWriter(args.method_config, args.structure_config).run()

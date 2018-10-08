@@ -39,7 +39,7 @@ object FilterOnList {
 
     def test_read_scala_file(self):
         """
-        Asset that the functions reads in the input file correctly
+        Assert that the functions reads in the input file correctly
         """
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         res = sp.read_scala_file()
@@ -52,7 +52,9 @@ object FilterOnList {
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.find_method_regex()
         res_tup = tuple(result)
+        print(res_tup)
         self.assertIsNotNone(res_tup)
+
 
     def test_multi_process(self):
         """
@@ -97,6 +99,9 @@ object FilterOnList {
         result = sp.extract_params(self.method_signature)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
+
+
+class TestApp(unittest.TestCase):
 
     @mock.patch('wrapper_writer.scala_parser.os.path')
     @mock.patch('wrapper_writer.scala_parser.os')

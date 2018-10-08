@@ -3,6 +3,8 @@ import yaml
 import os
 import glob
 import sys
+from wrapper_writer.container import Container
+from wrapper_writer.method import Method
 
 
 class ScalaParse:
@@ -113,6 +115,7 @@ class App:
     :param file_extension: String object of file extension to look for
     """
 
+
     def __init__(self, folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False):
         self.folder = folder
         self.file = logic_file
@@ -155,18 +158,15 @@ class App:
         elif self.file and not self.folder:
             all_files.append(self.file)
             return all_files
+        else:
+            raise Exception("Please provide either a file or folder, not both")
+
 
     def run_scala(self):
         scala_files_to_run = self.prepare_input()
         for p in scala_files_to_run:
             x = ScalaParse(p, self.config_file, self.append_config)
             x.multi_process()
-
-    def run_python(self):
-        pass
-
-    def run_r(self):
-        pass
 
 
 
