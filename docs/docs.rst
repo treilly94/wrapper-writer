@@ -32,3 +32,7 @@ Converters
 ==========
 .. automodule:: wrapper_writer.converters
    :members:
+
+Scala Parser
+============
+.. automodule:: wrapper_writer.

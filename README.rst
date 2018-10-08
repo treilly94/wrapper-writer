@@ -261,3 +261,11 @@ converted into Upper or Lower camelcase. An example of the syntax is below.
     {{ container.name|upper_camel }}
     {{ container.name|lower_camel }}
 
+
+==============
+Scala Parser
+==============
+
+This module parses a scala file and create method config to use for Wrapper Writer
+
+
