@@ -1,0 +1,20 @@
+{% import "macros.j2" as macros %}
+
+package com.example.api
+
+import java.util
+import scala.collection.JavaConversions._
+import org.apache.spark.sql.{DataFrame, Dataset, Row}
+import com.example.{{ container.name|upper_camel }}
+
+object {{ container.name|upper_camel }}API {
+
+  {% for m in container.methods %}
+
+  {{ macros.scala_docs(m.docs) }}
+  def {{ m.name|lower_camel }}({{ macros.show_params_and_types(m.params) }}): {{ m.returns }} = {
+    {{ container.name|upper_camel }}.{{ m.name|lower_camel }}({{ macros.show_params(m.params) }})
+  }
+
+  {% endfor %}
+}

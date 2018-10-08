@@ -1,117 +1,117 @@
 import os
 
-import click
-import jinja2
 import yaml
 
-from wrapper_writer.converters import upper_camel, lower_camel
+from wrapper_writer.container import Container
+from wrapper_writer.method import Method
+from wrapper_writer.structure import Structure
+from wrapper_writer.wrapper import Wrapper
 
 
 class WrapperWriter:
-    config_dir = ""
+    """
+    The WrapperWriter class contains the details and functionality associated writing a wrapper file based on two
+    configs.
+
+    :param method_config_path: The path to the method config file relative to the cwd.
+    :type method_config_path: str
+    :param structure_config_path: The path to the structure config file relative to the cwd.
+    :type structure_config_path: str
+    """
+    structures = {}
+    """The dictionary which holds all the information from the structure config."""
+    containers = {}
+    """The dictionary which holds all the information from the methods config."""
     project_root = ""
-    structure = {}
-    methods = {}
+    """The absolute path to the current working directory."""
+    structure_classes = []
+    """The list which holds all the structure classes."""
+    container_classes = []
+    """The list which holds all the container classes."""
+    wrappers = []
+    """The list which holds all the wrapper classes."""
 
-    def __init__(self, config_dir):
-        self.config_dir = config_dir
+    def __init__(self, method_config_path="./method_config.yml",
+                 structure_config_path="./structure_config.yml"):
+        self.method_config_path = os.path.normpath(method_config_path)
+        self.structure_config_path = os.path.normpath(structure_config_path)
 
-    def create_wrappers(self):
-        """This method reads the configuration files and applies them to the project"""
-        config_file_path = os.path.join(self.config_dir, "config.yml")
-        self.read_yaml(config_file_path)
-        self.create_directories()
+    def read_configs(self):
+        """
+        This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
+        then get the project root from the structures yml file.
+        """
 
-    def read_yaml(self, path):
-        """This method reads a yaml file into a dictionary"""
-        # Read file
-        file = open(path)
-        config = yaml.load(file)
+        # Read methods
+        file = open(self.method_config_path)
+        self.containers = yaml.load(file)
+        file.close()
+
+        # Read Structure
+        file = open(self.structure_config_path)
+        structure_config = yaml.load(file)
         file.close()
 
         # Check if Structure exists
-        if "structure" not in config.keys():
-            message = "config.yml must contain a structure key"
+        if "structure" not in structure_config.keys():
+            message = "the structure config must contain a structure key"
             raise Exception(message)
-        self.structure = config.get("structure")
-
-        # Check if methods exist
-        if "methods" not in config.keys():
-            message = "config.yml must contain a methods key"
-            raise Exception(message)
-        self.methods = config.get("methods")
-
-        self.project_root = self.get_project_root(config)
-
-    def get_project_root(self, content):
-        """This method gets the root from the structure file or sets it to the current working directory"""
-        # Check if project root exists
-        if "project_root" not in content.keys():
-            message = "config.yml must contain a project_root key, if you wish to use the default please include " \
-                      "the key with no value"
-            raise Exception(message)
-        # Get project root or use default
-        if content.get("project_root") is not None:
-            return content.get("project_root")
+        self.structures = structure_config.get("structure")
+        if structure_config.get("project_root"):
+            self.project_root = os.path.normpath(structure_config.get("project_root"))
         else:
-            return os.getcwd()
+            self.project_root = os.getcwd()
 
-    def wrapper_assembler(self, name, template):
-        """This name that assembles the wrapper from a template and the classes methods"""
-        # Get methods
-        method = self.methods[name]
-        # Get and render the template
-        template_dir = os.path.join(self.config_dir, "templates")
-        template_path = os.path.join(template_dir, template)
-        # Check template exists
-        if not os.path.exists(template_path):
-            raise FileNotFoundError
+    def instantiate_structure_class(self):
+        """
+        This function will instantiate the Structure class for each structure within the structures dictionary class
+        parameter. It will store in class within a list.
+        """
+        for i in self.structures.values():
+            one_structure = Structure(self.project_root, i.get("path"), i.get("template"), i.get("file_name_format"))
+            self.structure_classes.append(one_structure)
 
-        template_loader = jinja2.FileSystemLoader(searchpath=template_dir)
-        template_env = jinja2.Environment(loader=template_loader)
-
-        template_env.filters["lower_camel"] = lower_camel
-        template_env.filters["upper_camel"] = upper_camel
-
-        template = template_env.get_template(template)
-        return template.render(name=name, method=method)
-
-    def write_file(self, full_path, part, method):
-        """This method Writes the output from wrapper assembler to a file"""
-        file_details = self.structure[part]
-
-        output = self.wrapper_assembler(method, file_details.get("template"))
-
-        file_name = os.path.join(full_path, method + file_details.get("file_extension"))
-        file = open(file_name, "w")
-        file.write(output)
-        file.close()
+    def instantiate_container_class(self):
+        """
+        This function will instantiate the Container class for each container within the container dictionary class
+        parameter. It will store in class within a list.
+        """
+        for i, j in self.containers.items():
+            container_methods = []
+            for x, v in j.items():
+                one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
+                container_methods.append(one_method)
+            one_container = Container(i, container_methods)
+            self.container_classes.append(one_container)
 
     def create_directories(self):
-        """This method creates the directory structure defined in the structure file"""
-        for part in self.structure.keys():
-            print("Started " + part)
-            # Construct path
-            path = self.structure[part].get("path")
-            full_path = self.project_root + path  # TODO make this use a proper os.path.join
-            # Create path
-            try:
-                os.makedirs(full_path)
-            except FileExistsError:
-                print(full_path + " already exists")
-            # Create method files
-            for method in self.methods:
-                self.write_file(full_path, part, method)
-            print("Finished " + part)
+        """
+        This function will take the structure_classes parameter and called the create_path and create_dir functions
+        for each structure class within the list.
+        """
+        for i in self.structure_classes:
+            i.create_path()
+            i.create_dir()
 
+    def instantiate_wrapper_class(self):
+        """
+        This function will instantiate the Wrapper class for each structure and each container within the
+        structure and container class. It will store these wrapper classes within a list.
+        """
+        for i in self.structure_classes:
+            for j in self.container_classes:
+                one_wrapper = Wrapper(self.project_root, j, i)
+                self.wrappers.append(one_wrapper)
 
+    def run(self):
+        """
+        This function will run the above method in order to produce a wrapper file.
+        """
+        self.read_configs()
+        self.instantiate_structure_class()
+        self.instantiate_container_class()
+        self.create_directories()
 
-@click.command()
-@click.option("--config_dir", help="The directory containing the config file/templates")
-def write_wrappers(config_dir):
-    method = WrapperWriter(config_dir)
-    method.create_wrappers()
-
-
-if __name__ == "__main__":
-    write_wrappers()
+        self.instantiate_wrapper_class()
+        for i in self.wrappers:
+            i.write_file()
