@@ -27,8 +27,6 @@ object FilterOnList {
 
     config_name = "config.yml"
 
-    reg_tuple = "(<_sre.SRE_Match object; span=(127, 207), match='def filterOnList(df: DataFrame, targetCol: String>", "<_sre.SRE_Match object; span=(268, 347), match='def filterFunct(df: DataFrame, targetCol: String,>)"
-
     method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
     method_config = {'FilterOnList': {'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'}, 'returns': 'DataFrame'}}}
@@ -65,7 +63,6 @@ object FilterOnList {
         """
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         sp.multi_process()
-        # config = yaml.load(open('config.yml'))
         with open("config.yml", 'r') as c:
             config = yaml.load(c)
         self.assertDictEqual(self.method_config, config)
