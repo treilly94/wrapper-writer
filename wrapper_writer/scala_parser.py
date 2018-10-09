@@ -138,28 +138,25 @@ class ScalaParse:
 
 class Parser:
     """
-    This App class orchestrates the scala parser application
+    The Parser class contains the details and functionality associated with parsing one or more files into a config file.
 
-
+    :param target_format: A regex string that defines the naming convention of the files to parse.
+    :type target_format: str
+    :param config_name: The name of the config file to write.
+    :type config_name: str
+    :param append_config: Whether to append to the config file or to overwrite it
+    :type append_config: bool
     """
 
     containers = []
+    """The list which holds all the container classes."""
+    files = []
+    """The list which holds all the absolute paths to the files."""
 
     def __init__(self, target_format="*.scala", config_name="method_config.yml", append_config=False):
         self.target_format = target_format
         self.config_name = config_name
         self.append_config = append_config
-
-    def delete_config(self):
-        """
-        This function will check if a file exist then delete it
-        :return:
-        """
-        print("Checking if file exists ...")
-        if os.path.isfile(self.config_name):
-            os.remove(self.config_name)
-        else:
-            print("The config file does not exists")
 
     def prepare_input(self):
         """
@@ -194,10 +191,16 @@ class Parser:
             x = ScalaParse(p, self.config_name, self.append_config)
             x.multi_process()
 
+    def delete_config(self):
+        """
+        This function will check if a file exist then delete it
+        :return:
+        """
+        print("Checking if file exists ...")
+        if os.path.isfile(self.config_name):
+            os.remove(self.config_name)
+        else:
+            print("The config file does not exists")
 
-if __name__ == '__main__':
-    t = Parser(logic_file="FilterOnList.scala", append_config=False, config_name="config_yesterdayrl.yml")
-    # t = App(logic_file="C:\Users\Ian Edwards\projects\dap-s\wrapper-writer\wrapper-writer\tests\resources\input\FilterOnList.scala")
-    # t = App(logic_file="scalacode.scala")
-    t.run_scala()
+
 
