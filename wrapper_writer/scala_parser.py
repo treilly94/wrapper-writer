@@ -198,9 +198,4 @@ class Parser:
             print("The config file does not exists")
 
 
-if __name__ == '__main__':
-    t = Parser(logic_file="FilterOnList.scala", append_config=False, config_name="config_yesterdayrl.yml")
-    # t = App(logic_file="C:\Users\Ian Edwards\projects\dap-s\wrapper-writer\wrapper-writer\tests\resources\input\FilterOnList.scala")
-    # t = App(logic_file="scalacode.scala")
-    t.run_scala()
 
