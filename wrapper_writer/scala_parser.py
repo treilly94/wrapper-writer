@@ -46,6 +46,11 @@ class ScalaParse:
             print("Nothing In There")
         return pattern2
 
+    def find_doc_string(self, data):
+        matches = re.finditer(r"", data, re.MULTILINE)
+
+
+
     @staticmethod
     def extract_return_type(raw_res):
         """
