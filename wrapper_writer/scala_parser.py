@@ -6,9 +6,70 @@ from wrapper_writer.container import Container
 from wrapper_writer.method import Method
 
 
-class ScalaParse:
-    container_classes = []
-    doc_strings = []
+class App:
+    """
+    This App class orchestrates the scala parser application
+    :param folder: String object of the folder path which is provided by the user to indicate where files live
+    :param file: String object if the file to be parsed
+    :param file_extension: String object of file extension to look for
+    """
+    containers = []
+    files = []
+
+    def __init__(self, folder=None, logic_file=None, file_extension="*.scala", config_name="config_sp.yml", append_config=False):
+        self.folder = folder
+        self.filename = logic_file
+        self.file_extension = file_extension
+        self.config_file = config_name
+        self.append_config = append_config
+
+    def delete_config(self):
+        """
+        This function will check if a file exist then delete it
+        :return:
+        """
+        print("Checking if file exists ...")
+        if os.path.isfile(self.config_file):
+            os.remove(self.config_file)
+            print("File Deleted")
+        else:
+            print("The config file does not exists")
+
+    def prepare_input(self):
+        """
+        This function will prepare the use input,
+        :return: all files to be parsed
+        """
+        if not self.append_config:
+            self.delete_config()
+
+        # all_files = []
+        prep_ends_with = self.file_extension[1:]
+        if not (self.folder or self.filename):
+            raise TypeError("Provide File or Directory")
+        if self.folder and not self.filename:
+            if os.path.exists(self.folder):
+                self.folder += self.file_extension
+                for files in glob.glob(self.folder):
+                    if files.endswith(prep_ends_with):
+                        # all_files.append(files)
+                        self.files.append(files)
+                # return all_files
+            else:
+                print("Throw exception here directory doesnt exist")
+        elif self.filename and not self.folder:
+            self.files.append(self.filename)
+            # return all_files
+        else:
+            raise Exception("Please provide either a file or folder, not both")
+
+    def write_config(self):
+        for i in self.containers:
+            with open(self.config_file, 'a') as txt_file:
+                txt_file.write(i)
+
+
+class ScalaParse(App):
     """
     This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
     :param filename: The name of the file to parse
@@ -26,7 +87,7 @@ class ScalaParse:
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
-        retrieve_data = self.read_scala_file()
+        retrieve_data = self.read_scala_file(item)
         pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             pattern2 = pattern.finditer(retrieve_data)
@@ -94,50 +155,30 @@ class ScalaParse:
             new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
         return new_dict
 
-    """The Method Class contains the details associated with a particular method.
-
-    :param name: The name of the method.
-    :type name: str
-    :param params: A dictionary where the keys are the methods parameter names and the values are the types.
-    :type params: dict
-    :param docs: The docstring of the method.
-    :type docs: str
-    :param returns: The return type of the object.
-    :type returns: str
-    :param other: A dictionary containing any additional values that may be required in the template.
-    :type other: dict
-    """
-
-    # def __init__(self, name, params, docs, returns, other={}):
-
     def multi_process(self):
         """
         This function will process each method found and write it to a yaml file
         :return:
         """
-        all_found = self.find_method_regex()
-        matches = tuple(all_found)
-        if not matches:
-            raise Exception("No Methods Found")
-        container_methods = []
-        for i in matches:
-            ig = i.group()
-            base_raw = os.path.basename(self.filename)
-            container_name = os.path.splitext(base_raw)[0]
-            return_type = self.extract_return_type(ig)
-            method_name = self.extract_method_name(ig)
-            other = {"other": "Other Stuff"}
-            dummy_docs = "This is a doc string"
-            params = self.extract_params(ig)
-            one_method = Method(method_name, params, dummy_docs, return_type)
-            container_methods.append(one_method)
-            # data = {container_name: {method_name: {"params": params, "returns": return_type}}}
-            # with open(self.config_filename, 'a') as yaml_file:
-            #     yaml.dump(data, yaml_file, default_flow_style=False)
-        one_container = Container(container_name, container_methods)
-        cc = one_container.create_config()
-        print(cc)
-        # self.container_classes.append(one_container)
+        for item in self.files:
+            all_found = self.find_method_regex(item)
+            matches = tuple(all_found)
+            if not matches:
+                raise Exception("No Methods Found")
+            container_methods = []
+            for i in matches:
+                ig = i.group()
+                base_raw = os.path.basename(item)
+                container_name = os.path.splitext(base_raw)[0]
+                return_type = self.extract_return_type(ig)
+                method_name = self.extract_method_name(ig)
+                dummy_docs = "This is a doc string"
+                params = self.extract_params(ig)
+                one_method = Method(method_name, params, dummy_docs, return_type)
+                container_methods.append(one_method)
+            one_container = Container(container_name, container_methods)
+            cc = one_container.create_config()
+            App.containers.append(cc)
 
 
 class Parser:
