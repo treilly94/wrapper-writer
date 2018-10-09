@@ -113,7 +113,7 @@ class ScalaParse(Parser):
         self.config_filename = config_name
         self.if_config_exists = append_config
 
-    def find_method_regex(self):
+    def find_method_regex(self, item):
         """
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
@@ -209,5 +209,5 @@ class ScalaParse(Parser):
                 container_methods.append(one_method)
             one_container = Container(container_name, container_methods)
             cc = one_container.create_config()
-            App.containers.append(cc)
+            self.containers.append(cc)
 
