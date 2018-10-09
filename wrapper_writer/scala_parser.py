@@ -108,6 +108,8 @@ class ScalaParse(Parser):
     :param append_config: boolean value, True will overwrite an existing file, False will append to file
     """
 
+    doc_strings = []
+
     def __init__(self, filename, config_name, append_config=False):
         self.filename = filename
         self.config_filename = config_name

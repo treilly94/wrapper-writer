@@ -1,8 +1,9 @@
-import unittest
-import yaml
 import os
-import mock
-from wrapper_writer.scala_parser import ScalaParse, Parser
+import unittest
+
+import yaml
+
+from wrapper_writer.scala_parser import ScalaParse
 
 
 class TestScalaParser(unittest.TestCase):
@@ -39,7 +40,6 @@ object FilterOnList {
 
     goal_dir = os.path.normpath(goal_dir_raw)
 
-
     def test_read_scala_file(self):
         """
         Assert that the functions reads in the input file correctly
@@ -47,6 +47,7 @@ object FilterOnList {
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         res = sp.read_scala_file()
         self.assertEqual(self.expected_code, res)
+
     def test_find_method_regex(self):
         """
         Assert the regex search return is not None
@@ -102,7 +103,7 @@ object FilterOnList {
         self.assertEqual(expected, result)
 
     def test_find_doc_string(self):
-        with open(os.path.normpath(os.path.join(os.getcwd(), "../example/src/main/scala/com/example/Operations.scala")),
+        with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
                   'r') as myfile:
             data = myfile.read()
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
@@ -122,8 +123,6 @@ object FilterOnList {
         sp.doc_strings = []
 
     def test_no_docstring(self):
-
-
         data = "def func(df:DataFrame, col:String): DataFrame"
         no_doc = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         print(data)
@@ -133,23 +132,4 @@ object FilterOnList {
         no_doc.find_doc_string(data)
         print(no_doc.doc_strings)
 
-
         self.assertEqual([], no_doc.doc_strings)
-
-
-class TestApp(unittest.TestCase):
-
-    @mock.patch('wrapper_writer.scala_parser.os.path')
-    @mock.patch('wrapper_writer.scala_parser.os')
-    def test_delete_config(self, mock_os, mock_path):
-        # set up the mock
-        mock_path.isfile.return_value = False
-        app = Parser(config_name="config.yml")
-        app.delete_config()
-
-        # test that the remove call was not called
-        self.assertFalse(mock_os.remove.called, "Failed to not remove the file if not present")
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
