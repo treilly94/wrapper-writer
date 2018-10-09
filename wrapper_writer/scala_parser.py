@@ -1,8 +1,7 @@
-import re
-import yaml
-import os
 import glob
-import sys
+import os
+import re
+
 from wrapper_writer.container import Container
 from wrapper_writer.method import Method
 
@@ -74,6 +73,7 @@ class ScalaParse:
             dict_by_comma[k] = v.lstrip()
             new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
         return new_dict
+
     """The Method Class contains the details associated with a particular method.
 
     :param name: The name of the method.
@@ -87,6 +87,7 @@ class ScalaParse:
     :param other: A dictionary containing any additional values that may be required in the template.
     :type other: dict
     """
+
     # def __init__(self, name, params, docs, returns, other={}):
 
     def multi_process(self):
@@ -159,7 +160,8 @@ class Parser:
 
         self.files.extend(list(selected_files))
 
-    def read_file(self, file_path):
+    @staticmethod
+    def read_file(file_path):
         """
         This method reads a file_path and returns its contents as a string
 
@@ -169,8 +171,6 @@ class Parser:
         """
         with open(file_path) as f:
             return f.read()
-
-
 
     def prepare_input(self):
         """
@@ -215,6 +215,3 @@ class Parser:
             os.remove(self.config_name)
         else:
             print("The config file does not exists")
-
-
-
