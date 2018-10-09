@@ -21,18 +21,6 @@ class ScalaParse:
         self.config_filename = config_name
         self.if_config_exists = append_config
 
-    def read_scala_file(self):
-        """
-        :return:
-        """
-        try:
-            with open(self.filename) as logic_file:
-                data = logic_file.read()
-            return data
-        except IOError as e:
-            print("I/O error({0}): {1}".format(e.errno, e.strerror))
-            sys.exit(1)
-
     def find_method_regex(self):
         """
         This function will find the raw method signature from file to be parsed
@@ -170,6 +158,17 @@ class Parser:
         selected_files = filter(regex.search, all_files)
 
         self.files.extend(list(selected_files))
+
+    def read_file(self, file_path):
+        """
+        This method reads a file_path and returns its contents as a string
+
+        :param file_path: The absolute path to the file to open
+        :type file_path: str
+        :return: str
+        """
+        with open(file_path) as f:
+            return f.read()
 
 
 

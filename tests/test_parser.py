@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase, mock
 
 from wrapper_writer.scala_parser import Parser
@@ -16,6 +17,30 @@ class TestParser(TestCase):
         expected = ['alpha.scala', 'beta.scala']
 
         self.assertEqual(expected, parser.files)
+
+    def test_read_file(self):
+        path = os.path.join(os.getcwd(), "tests", "resources", "input", "FilterOnList.scala")
+
+        parser = Parser()
+        res = parser.read_file(path)
+
+        expected = """package com.example
+
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions.col
+
+object FilterOnList {
+
+  def filterOnList(df: DataFrame, targetCol: String, values: List[Int]): DataFrame = {
+    filterFunct(df, targetCol, values)
+  }
+
+  protected def filterFunct(df: DataFrame, targetCol: String, values: List[Int]): DataFrame = {
+    df.where(!col(targetCol).isin(values: _*))
+  }
+}"""
+
+        self.assertEqual(expected, res)
 
     @mock.patch('wrapper_writer.scala_parser.os.path')
     @mock.patch('wrapper_writer.scala_parser.os')
