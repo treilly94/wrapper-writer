@@ -10,8 +10,6 @@ class Parser:
     """
     The Parser class contains the details and functionality associated with parsing one or more files into a config file.
 
-    :param target_format: A regex string that defines the naming convention of the files to parse.
-    :type target_format: str
     :param config_name: The name of the config file to write.
     :type config_name: str
     :param append_config: Whether to append to the config file or to overwrite it
@@ -23,8 +21,7 @@ class Parser:
     files = []
     """The list which holds all the absolute paths to the files."""
 
-    def __init__(self, target_format="*.scala", config_name="method_config.yml", append_config=False):
-        self.target_format = target_format
+    def __init__(self, config_name="method_config.yml", append_config=False):
         self.config_name = config_name
         self.append_config = append_config
 
