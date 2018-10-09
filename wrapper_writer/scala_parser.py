@@ -3,8 +3,8 @@ import yaml
 import os
 import glob
 import sys
-from container import Container
-from method import Method
+from wrapper_writer.container import Container
+from wrapper_writer.method import Method
 
 
 class ScalaParse:
@@ -152,6 +152,26 @@ class Parser:
         self.target_format = target_format
         self.config_name = config_name
         self.append_config = append_config
+
+    def get_files(self, directory, target_format):
+        """
+        This method gets all files in a given directory that matches a given format and appends them to the files list.
+
+        :param directory: The absolute path of the directory to look for files within
+        :type directory: str
+        :param target_format: A regex string that defines the naming convention of the files to parse.
+        :type target_format: str
+        """
+
+        all_files = os.listdir(directory)
+
+        regex = re.compile(target_format)
+
+        selected_files = filter(regex.search, all_files)
+
+        self.files.extend(list(selected_files))
+
+
 
     def prepare_input(self):
         """

@@ -101,20 +101,3 @@ object FilterOnList {
         self.assertEqual(expected, result)
 
 
-class TestApp(unittest.TestCase):
-
-    @mock.patch('wrapper_writer.scala_parser.os.path')
-    @mock.patch('wrapper_writer.scala_parser.os')
-    def test_delete_config(self, mock_os, mock_path):
-
-        # set up the mock
-        mock_path.isfile.return_value = False
-        app = Parser(config_name="config.yml")
-        app.delete_config()
-
-        # test that the remove call was not called
-        self.assertFalse(mock_os.remove.called, "Failed to not remove the file if not present")
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
