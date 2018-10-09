@@ -117,8 +117,8 @@ object FilterOnList {
 @param targetCol String - Column to be filtered on.
 @param values List[Int] - List of values to compared.
 @return DataFrame"""
-        self.assertEqual(expected1, self.sp.doc_strings[0])
-        self.assertEqual(expected2, self.sp.doc_strings[1])
+        self.assertEqual(expected1, sp.doc_strings[0])
+        self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []
 
     def test_no_docstring(self):
