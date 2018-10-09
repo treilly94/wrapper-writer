@@ -1,6 +1,6 @@
 import argparse
 from wrapper_writer.wrapper_writer import WrapperWriter
-from wrapper_writer.scala_parser import App, ScalaParse
+from wrapper_writer.scala_parser import Parser, ScalaParse
 
 # Create the top-level parser
 parser = argparse.ArgumentParser()
@@ -35,7 +35,7 @@ def commandline():
 
     if args.command == "parse":
         print("Parsing ...")
-        App()
+        Parser()
 
 
     elif args.command == "wrap":

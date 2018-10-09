@@ -2,7 +2,7 @@ import unittest
 import yaml
 import os
 import mock
-from wrapper_writer.scala_parser import ScalaParse, App
+from wrapper_writer.scala_parser import ScalaParse, Parser
 
 
 class TestScalaParser(unittest.TestCase):
@@ -109,7 +109,7 @@ class TestApp(unittest.TestCase):
 
         # set up the mock
         mock_path.isfile.return_value = False
-        app = App(config_name="config.yml")
+        app = Parser(config_name="config.yml")
         app.delete_config()
 
         # test that the remove call was not called

@@ -131,7 +131,7 @@ class ScalaParse:
         # self.container_classes.append(one_container)
 
 
-class App:
+class Parser:
     """
     This App class orchestrates the scala parser application
     :param folder: String object of the folder path which is provided by the user to indicate where files live
@@ -192,7 +192,7 @@ class App:
 
 
 if __name__ == '__main__':
-    t = App(logic_file="FilterOnList.scala", append_config=False, config_name="config_yesterdayrl.yml")
+    t = Parser(logic_file="FilterOnList.scala", append_config=False, config_name="config_yesterdayrl.yml")
     # t = App(logic_file="C:\Users\Ian Edwards\projects\dap-s\wrapper-writer\wrapper-writer\tests\resources\input\FilterOnList.scala")
     # t = App(logic_file="scalacode.scala")
     t.run_scala()
