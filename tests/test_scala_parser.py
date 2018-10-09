@@ -29,13 +29,17 @@ object FilterOnList {
 
     method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
-    method_config = {'FilterOnList': {'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'}, 'returns': 'DataFrame'}}}
+    method_config = {'FilterOnList': {
+        'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
+                        'returns': 'DataFrame'}}}
 
     project_root = os.getcwd()
 
     goal_dir_raw = os.path.join(project_root, "tests/resources/input/FilterOnList.scala")
 
     goal_dir = os.path.normpath(goal_dir_raw)
+
+
 
     def test_read_scala_file(self):
         """
@@ -54,7 +58,6 @@ object FilterOnList {
         res_tup = tuple(result)
         print(res_tup)
         self.assertIsNotNone(res_tup)
-
 
     def test_multi_process(self):
         """
@@ -100,13 +103,47 @@ object FilterOnList {
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
 
+    def test_find_doc_string(self):
+        with open(os.path.normpath(os.path.join(os.getcwd(), "../example/src/main/scala/com/example/Operations.scala")),
+                  'r') as myfile:
+            data = myfile.read()
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp.find_doc_string(data)
+        expected1 = """ This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
+@param df DataFrame - Stores all the data.
+@param targetCol String - Column to be filtered on.
+@param values List[Int] - List of values to compared.
+@return DataFrame"""
+        expected2 = """ This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter.
+@param df DataFrame - Stores all the data.
+@param targetCol String - Column to be filtered on.
+@param values List[Int] - List of values to compared.
+@return DataFrame"""
+        self.assertEqual(expected1, self.sp.doc_strings[0])
+        self.assertEqual(expected2, self.sp.doc_strings[1])
+        sp.doc_strings = []
+
+    def test_no_docstring(self):
+
+
+        data = "def func(df:DataFrame, col:String): DataFrame"
+        no_doc = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        print(data)
+        print(no_doc.doc_strings)
+        no_doc.doc_strings = []
+        print(no_doc.doc_strings)
+        no_doc.find_doc_string(data)
+        print(no_doc.doc_strings)
+
+
+        self.assertEqual([], no_doc.doc_strings)
+
 
 class TestApp(unittest.TestCase):
 
     @mock.patch('wrapper_writer.scala_parser.os.path')
     @mock.patch('wrapper_writer.scala_parser.os')
     def test_delete_config(self, mock_os, mock_path):
-
         # set up the mock
         mock_path.isfile.return_value = False
         app = Parser(config_name="config.yml")

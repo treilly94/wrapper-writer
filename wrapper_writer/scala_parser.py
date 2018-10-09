@@ -3,12 +3,13 @@ import yaml
 import os
 import glob
 import sys
-from container import Container
-from method import Method
+from wrapper_writer.container import Container
+from wrapper_writer.method import Method
 
 
 class ScalaParse:
     container_classes = []
+    doc_strings = []
     """
     This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
     :param filename: The name of the file to parse
@@ -47,7 +48,21 @@ class ScalaParse:
         return pattern2
 
     def find_doc_string(self, data):
-        matches = re.finditer(r"", data, re.MULTILINE)
+        """
+        This function will check the data for the relevant regex string, in order to pick out the doc strings from a
+        function.
+
+        :param data: The data given as a string for the regex to read.
+        """
+        matches = re.finditer(r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/", data, re.MULTILINE)
+        for match in matches:
+            group = match.group(1)
+            if group:
+                doc = group.replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace("\n     ", " ")
+            else:
+                doc=None
+            self.doc_strings.append(doc)
+
 
 
 
