@@ -6,34 +6,57 @@ from wrapper_writer.container import Container
 from wrapper_writer.method import Method
 
 
-class App:
+class Parser:
     """
-    This App class orchestrates the scala parser application
-    :param folder: String object of the folder path which is provided by the user to indicate where files live
-    :param file: String object if the file to be parsed
-    :param file_extension: String object of file extension to look for
-    """
-    containers = []
-    files = []
+    The Parser class contains the details and functionality associated with parsing one or more files into a config file.
 
-    def __init__(self, folder=None, logic_file=None, file_extension="*.scala", config_name="config_sp.yml", append_config=False):
-        self.folder = folder
-        self.filename = logic_file
-        self.file_extension = file_extension
-        self.config_file = config_name
+    :param target_format: A regex string that defines the naming convention of the files to parse.
+    :type target_format: str
+    :param config_name: The name of the config file to write.
+    :type config_name: str
+    :param append_config: Whether to append to the config file or to overwrite it
+    :type append_config: bool
+    """
+
+    containers = []
+    """The list which holds all the container classes."""
+    files = []
+    """The list which holds all the absolute paths to the files."""
+
+    def __init__(self, target_format="*.scala", config_name="method_config.yml", append_config=False):
+        self.target_format = target_format
+        self.config_name = config_name
         self.append_config = append_config
 
-    def delete_config(self):
+    def get_files(self, directory, target_format):
         """
-        This function will check if a file exist then delete it
-        :return:
+        This method gets all files in a given directory that matches a given format and appends them to the files list.
+
+        :param directory: The absolute path of the directory to look for files within
+        :type directory: str
+        :param target_format: A regex string that defines the naming convention of the files to parse.
+        :type target_format: str
         """
-        print("Checking if file exists ...")
-        if os.path.isfile(self.config_file):
-            os.remove(self.config_file)
-            print("File Deleted")
-        else:
-            print("The config file does not exists")
+
+        all_files = os.listdir(directory)
+
+        regex = re.compile(target_format)
+
+        selected_files = filter(regex.search, all_files)
+
+        self.files.extend(list(selected_files))
+
+    @staticmethod
+    def read_file(file_path):
+        """
+        This method reads a file_path and returns its contents as a string
+
+        :param file_path: The absolute path to the file to open
+        :type file_path: str
+        :return: str
+        """
+        with open(file_path) as f:
+            return f.read()
 
     def prepare_input(self):
         """
@@ -68,8 +91,19 @@ class App:
             with open(self.config_file, 'a') as txt_file:
                 txt_file.write(i)
 
+    def delete_config(self):
+        """
+        This function will check if a file exist then delete it
+        :return:
+        """
+        print("Checking if file exists ...")
+        if os.path.isfile(self.config_name):
+            os.remove(self.config_name)
+        else:
+            print("The config file does not exists")
 
-class ScalaParse(App):
+
+class ScalaParse(Parser):
     """
     This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
     :param filename: The name of the file to parse
@@ -180,99 +214,3 @@ class ScalaParse(App):
             cc = one_container.create_config()
             App.containers.append(cc)
 
-
-class Parser:
-    """
-    The Parser class contains the details and functionality associated with parsing one or more files into a config file.
-
-    :param target_format: A regex string that defines the naming convention of the files to parse.
-    :type target_format: str
-    :param config_name: The name of the config file to write.
-    :type config_name: str
-    :param append_config: Whether to append to the config file or to overwrite it
-    :type append_config: bool
-    """
-
-    containers = []
-    """The list which holds all the container classes."""
-    files = []
-    """The list which holds all the absolute paths to the files."""
-
-    def __init__(self, target_format="*.scala", config_name="method_config.yml", append_config=False):
-        self.target_format = target_format
-        self.config_name = config_name
-        self.append_config = append_config
-
-    def get_files(self, directory, target_format):
-        """
-        This method gets all files in a given directory that matches a given format and appends them to the files list.
-
-        :param directory: The absolute path of the directory to look for files within
-        :type directory: str
-        :param target_format: A regex string that defines the naming convention of the files to parse.
-        :type target_format: str
-        """
-
-        all_files = os.listdir(directory)
-
-        regex = re.compile(target_format)
-
-        selected_files = filter(regex.search, all_files)
-
-        self.files.extend(list(selected_files))
-
-    @staticmethod
-    def read_file(file_path):
-        """
-        This method reads a file_path and returns its contents as a string
-
-        :param file_path: The absolute path to the file to open
-        :type file_path: str
-        :return: str
-        """
-        with open(file_path) as f:
-            return f.read()
-
-    def prepare_input(self):
-        """
-        This function will prepare the use input,
-        :return: all files to be parsed
-        """
-        if not self.append_config:
-            self.delete_config()
-
-        all_files = []
-        prep_ends_with = self.target_format[1:]
-        if not (self.folder or self.file):
-            raise TypeError("Provide File or Directory")
-        if self.folder and not self.file:
-            if os.path.exists(self.folder):
-                self.folder += self.target_format
-                for files in glob.glob(self.folder):
-                    if files.endswith(prep_ends_with):
-                        all_files.append(files)
-                return all_files
-            else:
-                print("Throw exception here directory doesnt exist")
-        elif self.file and not self.folder:
-            all_files.append(self.file)
-            return all_files
-        else:
-            raise Exception("Please provide either a file or folder, not both")
-
-    def run_scala(self):
-        scala_files_to_run = self.prepare_input()
-        for p in scala_files_to_run:
-            x = ScalaParse(p, self.config_name, self.append_config)
-            x.multi_process()
-
-    def delete_config(self):
-        """
-        This function will check if a file exist then delete it
-        :return:
-        """
-        print("Checking if file exists ...")
-        if os.path.isfile(self.config_name):
-            os.remove(self.config_name)
-        else:
-            print("The config file does not exists")
