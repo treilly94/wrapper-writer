@@ -134,16 +134,15 @@ class ScalaParse:
 class Parser:
     """
     This App class orchestrates the scala parser application
-    :param folder: String object of the folder path which is provided by the user to indicate where files live
-    :param file: String object if the file to be parsed
-    :param file_extension: String object of file extension to look for
+
+
     """
 
-    def __init__(self, folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False):
-        self.folder = folder
-        self.file = logic_file
-        self.file_extension = file_extension
-        self.config_file = config_name
+    containers = []
+
+    def __init__(self, target_format="*.scala", config_name="method_config.yml", append_config=False):
+        self.target_format = target_format
+        self.config_name = config_name
         self.append_config = append_config
 
     def delete_config(self):
@@ -152,8 +151,8 @@ class Parser:
         :return:
         """
         print("Checking if file exists ...")
-        if os.path.isfile(self.config_file):
-            os.remove(self.config_file)
+        if os.path.isfile(self.config_name):
+            os.remove(self.config_name)
         else:
             print("The config file does not exists")
 
@@ -166,12 +165,12 @@ class Parser:
             self.delete_config()
 
         all_files = []
-        prep_ends_with = self.file_extension[1:]
+        prep_ends_with = self.target_format[1:]
         if not (self.folder or self.file):
             raise TypeError("Provide File or Directory")
         if self.folder and not self.file:
             if os.path.exists(self.folder):
-                self.folder += self.file_extension
+                self.folder += self.target_format
                 for files in glob.glob(self.folder):
                     if files.endswith(prep_ends_with):
                         all_files.append(files)
@@ -187,7 +186,7 @@ class Parser:
     def run_scala(self):
         scala_files_to_run = self.prepare_input()
         for p in scala_files_to_run:
-            x = ScalaParse(p, self.config_file, self.append_config)
+            x = ScalaParse(p, self.config_name, self.append_config)
             x.multi_process()
 
 

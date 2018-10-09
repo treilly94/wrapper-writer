@@ -29,7 +29,7 @@ parser_parse.add_argument('-c', '--config-name', default='./')
 
 # Parse the argument lists
 args = parser.parse_args()
-# folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False
+# folder=None, logic_file=None, target_format="*.scala", config_name="config_sadhg.yml", append_config=False
 
 def commandline():
 
