@@ -40,7 +40,6 @@ object FilterOnList {
     goal_dir = os.path.normpath(goal_dir_raw)
 
 
-
     def test_read_scala_file(self):
         """
         Assert that the functions reads in the input file correctly
@@ -48,7 +47,6 @@ object FilterOnList {
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         res = sp.read_scala_file()
         self.assertEqual(self.expected_code, res)
-
     def test_find_method_regex(self):
         """
         Assert the regex search return is not None

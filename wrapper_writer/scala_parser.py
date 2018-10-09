@@ -1,8 +1,7 @@
-import re
-import yaml
-import os
 import glob
-import sys
+import os
+import re
+
 from wrapper_writer.container import Container
 from wrapper_writer.method import Method
 
@@ -21,18 +20,6 @@ class ScalaParse:
         self.filename = filename
         self.config_filename = config_name
         self.if_config_exists = append_config
-
-    def read_scala_file(self):
-        """
-        :return:
-        """
-        try:
-            with open(self.filename) as logic_file:
-                data = logic_file.read()
-            return data
-        except IOError as e:
-            print("I/O error({0}): {1}".format(e.errno, e.strerror))
-            sys.exit(1)
 
     def find_method_regex(self):
         """
@@ -106,6 +93,7 @@ class ScalaParse:
             dict_by_comma[k] = v.lstrip()
             new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
         return new_dict
+
     """The Method Class contains the details associated with a particular method.
 
     :param name: The name of the method.
@@ -119,6 +107,7 @@ class ScalaParse:
     :param other: A dictionary containing any additional values that may be required in the template.
     :type other: dict
     """
+
     # def __init__(self, name, params, docs, returns, other={}):
 
     def multi_process(self):
@@ -173,6 +162,36 @@ class Parser:
         self.config_name = config_name
         self.append_config = append_config
 
+    def get_files(self, directory, target_format):
+        """
+        This method gets all files in a given directory that matches a given format and appends them to the files list.
+
+        :param directory: The absolute path of the directory to look for files within
+        :type directory: str
+        :param target_format: A regex string that defines the naming convention of the files to parse.
+        :type target_format: str
+        """
+
+        all_files = os.listdir(directory)
+
+        regex = re.compile(target_format)
+
+        selected_files = filter(regex.search, all_files)
+
+        self.files.extend(list(selected_files))
+
+    @staticmethod
+    def read_file(file_path):
+        """
+        This method reads a file_path and returns its contents as a string
+
+        :param file_path: The absolute path to the file to open
+        :type file_path: str
+        :return: str
+        """
+        with open(file_path) as f:
+            return f.read()
+
     def prepare_input(self):
         """
         This function will prepare the use input,
@@ -216,6 +235,3 @@ class Parser:
             os.remove(self.config_name)
         else:
             print("The config file does not exists")
-
-
-
