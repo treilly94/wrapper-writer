@@ -120,7 +120,7 @@ class ScalaParse(Parser):
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
-        retrieve_data = self.read_scala_file(item)
+        retrieve_data = self.read_file(item)
         pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             pattern2 = pattern.finditer(retrieve_data)
