@@ -1,4 +1,3 @@
-import glob
 import os
 import re
 
@@ -54,34 +53,6 @@ class Parser:
         """
         with open(file_path) as f:
             return f.read()
-
-    def prepare_input(self):
-        """
-        This function will prepare the use input,
-        :return: all files to be parsed
-        """
-        if not self.append_config:
-            self.delete_config()
-
-        # all_files = []
-        prep_ends_with = self.file_extension[1:]
-        if not (self.folder or self.filename):
-            raise TypeError("Provide File or Directory")
-        if self.folder and not self.filename:
-            if os.path.exists(self.folder):
-                self.folder += self.file_extension
-                for files in glob.glob(self.folder):
-                    if files.endswith(prep_ends_with):
-                        # all_files.append(files)
-                        self.files.append(files)
-                # return all_files
-            else:
-                print("Throw exception here directory doesnt exist")
-        elif self.filename and not self.folder:
-            self.files.append(self.filename)
-            # return all_files
-        else:
-            raise Exception("Please provide either a file or folder, not both")
 
     def write_config(self):
         for i in self.containers:
@@ -141,11 +112,8 @@ class ScalaParse(Parser):
             if group:
                 doc = group.replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace("\n     ", " ")
             else:
-                doc=None
+                doc = None
             self.doc_strings.append(doc)
-
-
-
 
     @staticmethod
     def extract_return_type(raw_res):
@@ -212,4 +180,3 @@ class ScalaParse(Parser):
             one_container = Container(container_name, container_methods)
             cc = one_container.create_config()
             self.containers.append(cc)
-
