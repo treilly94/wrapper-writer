@@ -182,7 +182,7 @@ object FilterOnList {
 
     def test_docstring_not_found(self):
         """
-        Assert the docstring is not found
+        Assert the docstring is not not found
         :return:
         """
         data = "def func(df:DataFrame, col:String): DataFrame"

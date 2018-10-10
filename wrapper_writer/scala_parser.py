@@ -19,6 +19,8 @@ class Parser:
     """The list which holds all the container classes."""
     files = []
     """The list which holds all the absolute paths to the files."""
+    doc_strings = []
+    """This list which hold all the doc strings."""
 
     def __init__(self, config_name="method_config.yml", append_config=False):
         self.config_name = config_name
@@ -76,24 +78,20 @@ class Parser:
 class ScalaParse(Parser):
     """
     This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
-    :param filename: The name of the file to parse
-    :param config_name: The name of the yaml config file
-    :param append_config: boolean value, True will overwrite an existing file, False will append to file
     """
 
-    doc_strings = []
-
-    def find_method_regex(self, retrieve_data):
+    @staticmethod
+    def find_method_regex(retrieve_data):
         """
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
         pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
-            pattern2 = pattern.finditer(retrieve_data)
-        except:
+            pattern = pattern.finditer(retrieve_data)
+        except Warning:
             print("Nothing In There")
-        return pattern2
+        return pattern
 
     def find_doc_string(self, data):
         """
@@ -102,7 +100,7 @@ class ScalaParse(Parser):
 
         :param data: The data given as a string for the regex to read.
         """
-        matches = re.finditer(r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/", data, re.MULTILINE)
+        matches = re.finditer(r"/\*\*([\s,\w*@+.='\[\]\-/%]*)\*/", data, re.MULTILINE)
         for match in matches:
             group = match.group(1)
             if group:
@@ -145,22 +143,26 @@ class ScalaParse(Parser):
         retrieve_params = r"\((.*)\)"
         retrieve_params_find = re.search(retrieve_params, raw_res)
         retrieve_params = retrieve_params_find.group(1)
-        if retrieve_params == "":
+        em_l = []
+        remove_space = {}
+        if not retrieve_params:
             return {}
         else:
-            dict_by_comma = dict(item.split(":") for item in retrieve_params.split(","))
-            for k, v in dict_by_comma.items():
-                dict_by_comma[k] = v.lstrip()
-                new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
-            return new_dict
+            for x in retrieve_params.split(','):
+                em_l.append(x)
+            s = dict(s.split(":") for s in em_l)
+            for k, v in s.items():
+                s[k] = v.lstrip()
+                remove_space = {k.lstrip(): v for k, v in s.items()}
+            return remove_space
 
     def multi_process(self):
         """
         This function will process each method found and write it to a yaml file
         :return:
         """
-        for filepath in self.files:
-            retrieve_data = self.read_file(filepath)
+        for file_path in self.files:
+            retrieve_data = self.read_file(file_path)
             self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
             matches = tuple(all_found)
@@ -168,14 +170,15 @@ class ScalaParse(Parser):
             if not matches:
                 raise Exception("No Methods Found")
             container_methods = []
+            container_name = None
             for i in matches:
                 ig = i.group()
-                base_raw = os.path.basename(filepath)
+                base_raw = os.path.basename(file_path)
                 container_name = os.path.splitext(base_raw)[0]
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
                 params = self.extract_params(ig)
-                if self.doc_strings == None:
+                if not self.doc_strings:
                     docs = ""
                 else:
                     docs = self.doc_strings[count]
