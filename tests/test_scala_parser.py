@@ -44,7 +44,7 @@ object FilterOnList {
         """
         Assert the regex search return is not None
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.find_method_regex(self.expected_code)
         res_tup = tuple(result)
         print(res_tup)
@@ -57,7 +57,7 @@ object FilterOnList {
         Delete file if there are the same, raise an assertion error if not
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         sp.multi_process()
         with open("config.yml", 'r') as c:
             config = yaml.load(c)
@@ -69,7 +69,7 @@ object FilterOnList {
         Assert that the return type string object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.extract_return_type(self.method_signature)
         expected = "DataFrame"
         self.assertEqual(expected, result)
@@ -79,7 +79,7 @@ object FilterOnList {
         Assert that the method name string object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.extract_method_name(self.method_signature)
         expected = "aggColumn"
         self.assertEqual(expected, result)
@@ -89,7 +89,7 @@ object FilterOnList {
         Assert that the method params dictionary object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.extract_params(self.method_signature)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
@@ -99,7 +99,7 @@ object FilterOnList {
         Assert that the method params dictionary object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.extract_params("def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame")
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
@@ -110,7 +110,7 @@ object FilterOnList {
         Assert that the method params dictionary object is same as expected
         :return:
         """
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        sp = ScalaParse()
         result = sp.extract_params("def aggColumn(): DataFrame")
         expected = {}
         self.assertEqual(expected, result)
@@ -119,7 +119,7 @@ object FilterOnList {
         with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
                   'r') as myfile:
             data = myfile.read()
-        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+            sp = ScalaParse()
         sp.find_doc_string(data)
         expected1 = """ This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
 @param df DataFrame - Stores all the data.
@@ -137,7 +137,7 @@ object FilterOnList {
 
     def test_docstring_notfound(self):
         data = "def func(df:DataFrame, col:String): DataFrame"
-        no_doc = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        no_doc = ScalaParse()
         print(data)
         print(no_doc.doc_strings)
         no_doc.doc_strings = []
