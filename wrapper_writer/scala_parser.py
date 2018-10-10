@@ -7,7 +7,7 @@ from wrapper_writer.method import Method
 
 class Parser:
     """
-    The Parser class contains the details and functionality associated with parsing one or more files into a config file.
+    The Parser class contains the details and functionality associated with parsing one or more files into a config file
 
     :param config_name: The name of the config file to write.
     :type config_name: str
@@ -145,7 +145,7 @@ class ScalaParse(Parser):
         retrieve_params = r"\((.*)\)"
         retrieve_params_find = re.search(retrieve_params, raw_res)
         retrieve_params = retrieve_params_find.group(1)
-        if retrieve_params =="":
+        if retrieve_params == "":
             return {}
         else:
             dict_by_comma = dict(item.split(":") for item in retrieve_params.split(","))
@@ -164,7 +164,7 @@ class ScalaParse(Parser):
             doc_string = self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
             matches = tuple(all_found)
-            count=0
+            count = 0
             if not matches:
                 raise Exception("No Methods Found")
             container_methods = []
