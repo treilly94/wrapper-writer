@@ -20,8 +20,8 @@ parser_parse = subparsers.add_parser('parse', help='Create a configuration by pa
 parser_parse.set_defaults(command='parse')
 parser_parse.add_argument('-c', '--config-name', default='method_config.yml',
                           help="The name of the config file to write to")
-parser_parse.add_argument('-a', '--append-config', default=False,
-                          help='True: Append an existing config file, False: Overwrite if config file exists')
+parser_parse.add_argument('-a', '--append-config', default="w",
+                          help='a: Append an existing config file, w: Overwrite if config file exists')
 parser_parse.add_argument('-f', '--files', default=None,
                           help='A comma separated list of absolute file paths to be parsed')
 parser_parse.add_argument('-d', '--directory', default=None,
