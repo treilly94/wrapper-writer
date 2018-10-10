@@ -15,10 +15,8 @@ class Parser:
     :type append_config: bool
     """
 
-    containers = []
-    """The list which holds all the container classes."""
-    files = []
-    """The list which holds all the absolute paths to the files."""
+    containers = []  #: The list which holds all the container classes.
+    files = []  #: The list which holds all the absolute paths to the files.
 
     def __init__(self, config_name="method_config.yml", append_config=False):
         self.config_name = config_name
