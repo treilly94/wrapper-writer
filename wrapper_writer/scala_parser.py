@@ -174,7 +174,6 @@ class ScalaParse(Parser):
                 container_name = os.path.splitext(base_raw)[0]
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
-                dummy_docs = "This is a doc string"
                 params = self.extract_params(ig)
                 one_method = Method(method_name, params, doc_string[count], return_type)
                 container_methods.append(one_method)
