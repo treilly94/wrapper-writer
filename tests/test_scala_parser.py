@@ -157,6 +157,10 @@ object FilterOnList {
         self.assertEqual(expected, result)
 
     def test_docstring_found(self):
+        """
+        Assert that the docstring found is same as expected
+        :return:
+        """
         with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
                   'r') as myfile:
             data = myfile.read()
@@ -177,8 +181,12 @@ object FilterOnList {
         sp.doc_strings = []
 
     def test_docstring_not_found(self):
+        """
+        Assert the docstring is not found
+        :return:
+        """
         data = "def func(df:DataFrame, col:String): DataFrame"
         no_doc = ScalaParse()
         no_doc.doc_strings = []
         no_doc.find_doc_string(data)
-        self.assertEqual([], no_doc.doc_strings)
+        self.assertFalse(no_doc.doc_strings)
