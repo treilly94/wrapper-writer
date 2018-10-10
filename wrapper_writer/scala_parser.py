@@ -20,9 +20,8 @@ class Parser:
     files = []
     """The list which holds all the absolute paths to the files."""
 
-    def __init__(self, directory=None, config_name="method_config.yml", append_config=False, target_format="*.scala", ):
-        self.directory = directory
-        self.target_format = target_format
+    def __init__(self, config_name="method_config.yml", append_config=False):
+
         self.config_name = config_name
         self.append_config = append_config
 
