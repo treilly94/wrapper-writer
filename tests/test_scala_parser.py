@@ -147,7 +147,7 @@ object FilterOnList {
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
 
-    def test_extract_params_notfound(self):
+    def test_extract_params_not_found(self):
         """
         Assert that the method params dictionary object is same as expected
         :return:
@@ -177,14 +177,9 @@ object FilterOnList {
         self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []
 
-    def test_docstring_notfound(self):
+    def test_docstring_not_found(self):
         data = "def func(df:DataFrame, col:String): DataFrame"
         no_doc = ScalaParse()
-        print(data)
-        print(no_doc.doc_strings)
         no_doc.doc_strings = []
-        print(no_doc.doc_strings)
         no_doc.find_doc_string(data)
-        print(no_doc.doc_strings)
-
         self.assertEqual([], no_doc.doc_strings)
