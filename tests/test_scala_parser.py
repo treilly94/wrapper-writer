@@ -28,7 +28,7 @@ object FilterOnList {
 
     config_name = "config.yml"
 
-    method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+    method_signature = "def aggColumn(df:DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
     method_config = {'FilterOnList': {
         'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
@@ -92,6 +92,17 @@ object FilterOnList {
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.extract_params(self.method_signature)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
+        self.assertEqual(expected, result)
+
+
+    def test_no_params(self):
+        """
+        Assert that the method params dictionary object is same as expected
+        :return:
+        """
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        result = sp.extract_params("def aggColumn(): DataFrame")
+        expected = {}
         self.assertEqual(expected, result)
 
     def test_find_doc_string(self):

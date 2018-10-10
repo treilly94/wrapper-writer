@@ -147,13 +147,15 @@ class ScalaParse(Parser):
         """
         retrieve_params = r"\((.*)\)"
         retrieve_params_find = re.search(retrieve_params, raw_res)
-        retrieve_params_raw = retrieve_params_find.group()
-        retrieve_params_clean = retrieve_params_raw[1:-1]
-        dict_by_comma = dict(item.split(":") for item in retrieve_params_clean.split(","))
-        for k, v in dict_by_comma.items():
-            dict_by_comma[k] = v.lstrip()
-            new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
-        return new_dict
+        retrieve_params = retrieve_params_find.group(1)
+        if retrieve_params =="":
+            return {}
+        else:
+            dict_by_comma = dict(item.split(":") for item in retrieve_params.split(","))
+            for k, v in dict_by_comma.items():
+                dict_by_comma[k] = v.lstrip()
+                new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
+            return new_dict
 
     def multi_process(self):
         """
