@@ -58,6 +58,7 @@ object FilterOnList {
         :return:
         """
         sp = ScalaParse()
+        sp.files = []
         sp.files.append(self.goal_dir)
         sp.multi_process()
         expected = ['Maths:\n'
