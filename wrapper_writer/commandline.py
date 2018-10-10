@@ -44,6 +44,8 @@ def commandline():
 
         p.multi_process()
 
+        p.write_config()
+
     # Wrap
     elif args.command == "wrap":
         WrapperWriter(args.method_config, args.structure_config).run()
