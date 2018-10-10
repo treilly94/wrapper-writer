@@ -72,10 +72,6 @@ object FilterOnList {
                     '    docs:  This function calls a protected function which filters the data '
                     "based on where the targetCol doesn't have values that are in the values "
                     'parameter.\n'
-                    '@param df DataFrame - Stores all the data.\n'
-                    '@param targetCol String - Column to be filtered on.\n'
-                    '@param values List[Int] - List of values to compared.\n'
-                    '@return DataFrame\n'
                     '    returns: DataFrame\n'
                     '    other:\n'
                     '  sum:\n'
@@ -85,10 +81,6 @@ object FilterOnList {
                     '    docs:  This function will take in a DataFrame and filter the data based '
                     "on where the targetCol doesn't have values that are in the values "
                     'parameter.\n'
-                    '@param df DataFrame - Stores all the data.\n'
-                    '@param targetCol String - Column to be filtered on.\n'
-                    '@param values List[Int] - List of values to compared.\n'
-                    '@return DataFrame\n'
                     '    returns: Column\n'
                     '    other:\n'
                     '  multiply:\n'
@@ -98,10 +90,6 @@ object FilterOnList {
                     '    docs:  This function will take in a DataFrame and filter the data based '
                     "on where the targetCol doesn't have values that are in the values "
                     'parameter.\n'
-                    '@param df DataFrame - Stores all the data.\n'
-                    '@param targetCol String - Column to be filtered on.\n'
-                    '@param values List[Int] - List of values to compared.\n'
-                    '@return DataFrame\n'
                     '    returns: Int\n'
                     '    other:\n']
         self.assertEqual(expected, sp.containers)
@@ -166,16 +154,8 @@ object FilterOnList {
             data = myfile.read()
             sp = ScalaParse()
         sp.find_doc_string(data)
-        expected1 = """ This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"""
-        expected2 = """ This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"""
+        expected1 = """ This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
+        expected2 = """ This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
         self.assertEqual(expected1, sp.doc_strings[0])
         self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []

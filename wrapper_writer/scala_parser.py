@@ -113,6 +113,9 @@ class ScalaParse(Parser):
                 doc = group.replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace("\n     ", " ")
             else:
                 doc = None
+
+            doc = re.sub("\n?@.*\n?", "", doc)
+
             self.doc_strings.append(doc)
 
     @staticmethod
