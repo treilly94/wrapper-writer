@@ -21,7 +21,6 @@ class Parser:
     """The list which holds all the absolute paths to the files."""
 
     def __init__(self, config_name="method_config.yml", append_config=False):
-
         self.config_name = config_name
         self.append_config = append_config
 
