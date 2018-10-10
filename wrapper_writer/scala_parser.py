@@ -114,6 +114,7 @@ class ScalaParse(Parser):
             else:
                 doc = None
 
+            # Temporary fix to remove things starting with a @
             doc = re.sub("\n?@.*\n?", "", doc)
 
             self.doc_strings.append(doc)
