@@ -69,27 +69,27 @@ object FilterOnList {
                     '      columnA: String\n'
                     '      columnB: String\n'
                     '      newCol: String\n'
-                    '    docs:  This function calls a protected function which filters the data '
+                    '    docs: \"This function calls a protected function which filters the data '
                     "based on where the targetCol doesn't have values that are in the values "
-                    'parameter.\n'
+                    'parameter.\"\n'
                     '    returns: DataFrame\n'
                     '    other:\n'
                     '  sum:\n'
                     '    params:\n'
                     '      columnA: String\n'
                     '      columnB: String\n'
-                    '    docs:  This function will take in a DataFrame and filter the data based '
+                    '    docs: \"This function will take in a DataFrame and filter the data based '
                     "on where the targetCol doesn't have values that are in the values "
-                    'parameter.\n'
+                    'parameter.\"\n'
                     '    returns: Column\n'
                     '    other:\n'
                     '  multiply:\n'
                     '    params:\n'
                     '      columnA: Int\n'
                     '      columnB: Int\n'
-                    '    docs:  This function will take in a DataFrame and filter the data based '
+                    '    docs: \"This function will take in a DataFrame and filter the data based '
                     "on where the targetCol doesn't have values that are in the values "
-                    'parameter.\n'
+                    'parameter.\"\n'
                     '    returns: Int\n'
                     '    other:\n']
         self.assertEqual(expected, sp.containers)
@@ -154,8 +154,8 @@ object FilterOnList {
             data = myfile.read()
             sp = ScalaParse()
         sp.find_doc_string(data)
-        expected1 = """ This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
-        expected2 = """ This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
+        expected1 = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
+        expected2 = """This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
         self.assertEqual(expected1, sp.doc_strings[0])
         self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []
