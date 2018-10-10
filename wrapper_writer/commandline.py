@@ -1,6 +1,6 @@
 import argparse
 from wrapper_writer.wrapper_writer import WrapperWriter
-from wrapper_writer.scala_parser import App, ScalaParse
+from wrapper_writer.scala_parser import Parser, ScalaParse
 
 # Create the top-level parser
 parser = argparse.ArgumentParser()
@@ -29,13 +29,13 @@ parser_parse.add_argument('-c', '--config-name', default='./')
 
 # Parse the argument lists
 args = parser.parse_args()
-# folder=None, logic_file=None, file_extension="*.scala", config_name="config_sadhg.yml", append_config=False
+# folder=None, logic_file=None, target_format="*.scala", config_name="config_sadhg.yml", append_config=False
 
 def commandline():
 
     if args.command == "parse":
         print("Parsing ...")
-        App()
+        Parser()
 
 
     elif args.command == "wrap":
