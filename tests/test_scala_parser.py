@@ -30,6 +30,8 @@ object FilterOnList {
 
     method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
+    method_signature_no_space = "def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame"
+
     method_config = {'FilterOnList': {
         'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
                         'returns': 'DataFrame'}}}
@@ -47,13 +49,12 @@ object FilterOnList {
         sp = ScalaParse()
         result = sp.find_method_regex(self.expected_code)
         res_tup = tuple(result)
-        print(res_tup)
         self.assertIsNotNone(res_tup)
 
     def test_multi_process(self):
         """
         Assert the file output, matches the expected,
-        The test will write the output file, read its contents, read the contents of expected file, compare the two.
+        The test will check if multiprocess function appends the expected string block to the container
         Delete file if there are the same, raise an assertion error if not
         :return:
         """
@@ -141,11 +142,11 @@ object FilterOnList {
         :return:
         """
         sp = ScalaParse()
-        result = sp.extract_params("def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame")
+        result = sp.extract_params(self.method_signature_no_space)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
 
-    def test_extract_params_notfound(self):
+    def test_extract_params_not_found(self):
         """
         Assert that the method params dictionary object is same as expected
         :return:
@@ -156,6 +157,10 @@ object FilterOnList {
         self.assertEqual(expected, result)
 
     def test_docstring_found(self):
+        """
+        Assert that the docstring found is same as expected
+        :return:
+        """
         with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
                   'r') as myfile:
             data = myfile.read()
@@ -175,14 +180,13 @@ object FilterOnList {
         self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []
 
-    def test_docstring_notfound(self):
+    def test_docstring_not_found(self):
+        """
+        Assert the docstring is not found
+        :return:
+        """
         data = "def func(df:DataFrame, col:String): DataFrame"
         no_doc = ScalaParse()
-        print(data)
-        print(no_doc.doc_strings)
         no_doc.doc_strings = []
-        print(no_doc.doc_strings)
         no_doc.find_doc_string(data)
-        print(no_doc.doc_strings)
-
-        self.assertEqual([], no_doc.doc_strings)
+        self.assertFalse(no_doc.doc_strings)

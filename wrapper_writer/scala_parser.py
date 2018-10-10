@@ -164,10 +164,8 @@ class ScalaParse(Parser):
         """
         for filepath in self.files:
             retrieve_data = self.read_file(filepath)
-            print(retrieve_data)
             self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
-            print(self.doc_strings)
             matches = tuple(all_found)
             count = 0
             if not matches:
