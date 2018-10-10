@@ -57,6 +57,9 @@ class Parser:
             return f.read()
 
     def write_config(self):
+        """
+        This method writes the current list of containers to the config file.
+        """
         for i in self.containers:
             with open(self.config_name, 'a') as txt_file:
                 txt_file.write(i)
