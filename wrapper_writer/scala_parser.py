@@ -20,7 +20,7 @@ class Parser:
     files = []
     """The list which holds all the absolute paths to the files."""
 
-    def __init__(self, config_name="method_config.yml", append_config=False):
+    def __init__(self, config_name="method_config.yml", append_config="w"):
         self.config_name = config_name
         self.append_config = append_config
 
@@ -60,9 +60,12 @@ class Parser:
         """
         This method writes the current list of containers to the config file.
         """
+        combined = ""
+
         for i in self.containers:
-            with open(self.config_name, 'a') as txt_file:
-                txt_file.write(i)
+            combined += i
+        with open(self.config_name, self.append_config) as txt_file:
+            txt_file.write(combined)
 
     def delete_config(self):
         """
