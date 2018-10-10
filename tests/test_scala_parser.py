@@ -28,7 +28,7 @@ object FilterOnList {
 
     config_name = "config.yml"
 
-    method_signature = "def aggColumn(df:DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+    method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
     method_config = {'FilterOnList': {
         'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
@@ -45,7 +45,7 @@ object FilterOnList {
         Assert the regex search return is not None
         """
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
-        result = sp.find_method_regex()
+        result = sp.find_method_regex(self.expected_code)
         res_tup = tuple(result)
         print(res_tup)
         self.assertIsNotNone(res_tup)
@@ -91,6 +91,16 @@ object FilterOnList {
         """
         sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         result = sp.extract_params(self.method_signature)
+        expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
+        self.assertEqual(expected, result)
+
+    def test_extract_params_nospace(self):
+        """
+        Assert that the method params dictionary object is same as expected
+        :return:
+        """
+        sp = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
+        result = sp.extract_params("def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame")
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
 
