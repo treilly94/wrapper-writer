@@ -25,18 +25,18 @@ class Container:
         # Loop through methods
         for m in self.methods:
             # Method name
-            config += "\t%s:\n" % m.name
+            config += "  %s:\n" % m.name
             # Method params
-            config += "\t\tparams:\n"
+            config += "    params:\n"
             for k, v in m.params.items():
-                config += "\t\t\t%s: %s\n" % (k, v)
+                config += "      %s: %s\n" % (k, v)
             # Method docs
-            config += "\t\tdocs: %s\n" % m.docs
+            config += "    docs: %s\n" % m.docs
             # Method returns
-            config += "\t\treturns: %s\n" % m.returns
+            config += "    returns: %s\n" % m.returns
             # Method other
-            config += "\t\tother:\n"
+            config += "    other:\n"
             for k, v in m.other.items():
-                config += "\t\t\t%s: %s\n" % (k, v)
+                config += "      %s: %s\n" % (k, v)
 
         return config
