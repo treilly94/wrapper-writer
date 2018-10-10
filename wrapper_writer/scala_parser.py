@@ -15,14 +15,10 @@ class Parser:
     :type append_config: bool
     """
 
-    containers = []
-    """The list which holds all the container classes."""
-    files = []
-    """The list which holds all the absolute paths to the files."""
-    doc_strings = []
-    """This list which hold all the doc strings."""
+    containers = []  #: The list which holds all the container classes.
+    files = []  #: The list which holds all the absolute paths to the files.
 
-    def __init__(self, config_name="method_config.yml", append_config=False):
+    def __init__(self, config_name="method_config.yml", append_config="w"):
         self.config_name = config_name
         self.append_config = append_config
 
@@ -59,9 +55,15 @@ class Parser:
             return f.read()
 
     def write_config(self):
+        """
+        This method writes the current list of containers to the config file.
+        """
+        combined = ""
+
         for i in self.containers:
-            with open(self.config_name, 'a') as txt_file:
-                txt_file.write(i)
+            combined += i
+        with open(self.config_name, self.append_config) as txt_file:
+            txt_file.write(combined)
 
     def delete_config(self):
         """
@@ -78,20 +80,24 @@ class Parser:
 class ScalaParse(Parser):
     """
     This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
+    :param filename: The name of the file to parse
+    :param config_name: The name of the yaml config file
+    :param append_config: boolean value, True will overwrite an existing file, False will append to file
     """
 
-    @staticmethod
-    def find_method_regex(retrieve_data):
+    doc_strings = []  #: This is a list of all the doc_strings gathered from the regex
+
+    def find_method_regex(self, retrieve_data):
         """
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
         pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
-            pattern = pattern.finditer(retrieve_data)
-        except Warning:
+            pattern2 = pattern.finditer(retrieve_data)
+        except:
             print("Nothing In There")
-        return pattern
+        return pattern2
 
     def find_doc_string(self, data):
         """
@@ -100,14 +106,18 @@ class ScalaParse(Parser):
 
         :param data: The data given as a string for the regex to read.
         """
-        matches = re.finditer(r"/\*\*([\s,\w*@+.='\[\]\-/%]*)\*/", data, re.MULTILINE)
+        matches = re.finditer(r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/", data, re.MULTILINE)
         for match in matches:
             group = match.group(1)
             if group:
                 doc = group.replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace("\n     ", " ")
             else:
                 doc = None
-            self.doc_strings.append(doc)
+
+            # Temporary fix to remove things starting with a @
+            doc = re.sub("\n?@.*\n?", "", doc)
+
+            self.doc_strings.append(doc.strip())
 
     @staticmethod
     def extract_return_type(raw_res):
@@ -143,26 +153,22 @@ class ScalaParse(Parser):
         retrieve_params = r"\((.*)\)"
         retrieve_params_find = re.search(retrieve_params, raw_res)
         retrieve_params = retrieve_params_find.group(1)
-        em_l = []
-        remove_space = {}
-        if not retrieve_params:
+        if retrieve_params == "":
             return {}
         else:
-            for x in retrieve_params.split(','):
-                em_l.append(x)
-            s = dict(s.split(":") for s in em_l)
-            for k, v in s.items():
-                s[k] = v.lstrip()
-                remove_space = {k.lstrip(): v for k, v in s.items()}
-            return remove_space
+            dict_by_comma = dict(item.split(":") for item in retrieve_params.split(","))
+            for k, v in dict_by_comma.items():
+                dict_by_comma[k] = v.lstrip()
+                new_dict = {k.lstrip(): v for k, v in dict_by_comma.items()}
+            return new_dict
 
     def multi_process(self):
         """
         This function will process each method found and write it to a yaml file
         :return:
         """
-        for file_path in self.files:
-            retrieve_data = self.read_file(file_path)
+        for filepath in self.files:
+            retrieve_data = self.read_file(filepath)
             self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
             matches = tuple(all_found)
@@ -170,15 +176,14 @@ class ScalaParse(Parser):
             if not matches:
                 raise Exception("No Methods Found")
             container_methods = []
-            container_name = None
             for i in matches:
                 ig = i.group()
-                base_raw = os.path.basename(file_path)
+                base_raw = os.path.basename(filepath)
                 container_name = os.path.splitext(base_raw)[0]
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
                 params = self.extract_params(ig)
-                if not self.doc_strings:
+                if self.doc_strings == None:
                     docs = ""
                 else:
                     docs = self.doc_strings[count]

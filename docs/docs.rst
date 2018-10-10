@@ -35,4 +35,5 @@ Converters
 
 Scala Parser
 ============
-.. automodule:: wrapper_writer.
+.. automodule:: wrapper_writer.scala_parser
+   :members:

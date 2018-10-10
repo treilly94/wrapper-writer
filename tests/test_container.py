@@ -23,7 +23,7 @@ class TestContainer(TestCase):
                    "    params:\n" \
                    "      p1: String\n" \
                    "      p2: Int\n" \
-                   "    docs: Test docs\n" \
+                   "    docs: \"Test docs\"\n" \
                    "    returns: Unit\n" \
                    "    other:\n" \
                    "      Example: 1 + 1 = 2\n"

@@ -31,7 +31,7 @@ class Container:
             for k, v in m.params.items():
                 config += "      %s: %s\n" % (k, v)
             # Method docs
-            config += "    docs: %s\n" % m.docs
+            config += "    docs: \"%s\"\n" % m.docs
             # Method returns
             config += "    returns: %s\n" % m.returns
             # Method other
