@@ -49,7 +49,6 @@ object FilterOnList {
         sp = ScalaParse()
         result = sp.find_method_regex(self.expected_code)
         res_tup = tuple(result)
-        print(res_tup)
         self.assertIsNotNone(res_tup)
 
     def test_multi_process(self):
