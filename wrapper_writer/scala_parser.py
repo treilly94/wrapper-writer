@@ -82,7 +82,7 @@ class ScalaParse(Parser):
     :param append_config: boolean value, True will overwrite an existing file, False will append to file
     """
 
-    doc_strings = []
+    doc_strings = []  #: This is a list of all the doc_strings gathered from the regex
 
     def find_method_regex(self, retrieve_data):
         """

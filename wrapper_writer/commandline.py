@@ -34,6 +34,10 @@ args = parser.parse_args()
 
 
 def commandline():
+    """
+    This function allows us to use the command line to call either the parse methods or the wrap methods.
+
+    """
     # Parse
     if args.command == "parse":
         p = ScalaParse(args.config_name, args.append_config)
