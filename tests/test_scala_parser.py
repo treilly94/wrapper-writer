@@ -84,7 +84,7 @@ object FilterOnList {
         expected = "aggColumn"
         self.assertEqual(expected, result)
 
-    def test_extract_params(self):
+    def test_extract_params_found(self):
         """
         Assert that the method params dictionary object is same as expected
         :return:
@@ -95,7 +95,7 @@ object FilterOnList {
         self.assertEqual(expected, result)
 
 
-    def test_no_params(self):
+    def test_extract_params_notfound(self):
         """
         Assert that the method params dictionary object is same as expected
         :return:
@@ -105,7 +105,7 @@ object FilterOnList {
         expected = {}
         self.assertEqual(expected, result)
 
-    def test_find_doc_string(self):
+    def test_docstring_found(self):
         with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
                   'r') as myfile:
             data = myfile.read()
@@ -125,7 +125,7 @@ object FilterOnList {
         self.assertEqual(expected2, sp.doc_strings[1])
         sp.doc_strings = []
 
-    def test_no_docstring(self):
+    def test_docstring_notfound(self):
         data = "def func(df:DataFrame, col:String): DataFrame"
         no_doc = ScalaParse(filename=self.goal_dir, config_name=self.config_name)
         print(data)
