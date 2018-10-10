@@ -14,7 +14,7 @@ class Structure:
     :type file_name_format: str
     """
 
-    full_path = ""
+    full_path = ""  #: This is the full path from the starting drive to the directory in question.
 
     def __init__(self, project_root, path, template, file_name_format):
         self.project_root = os.path.normpath(project_root)

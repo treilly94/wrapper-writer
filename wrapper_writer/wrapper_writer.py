@@ -18,18 +18,12 @@ class WrapperWriter:
     :param structure_config_path: The path to the structure config file relative to the cwd.
     :type structure_config_path: str
     """
-    structures = {}
-    """The dictionary which holds all the information from the structure config."""
-    containers = {}
-    """The dictionary which holds all the information from the methods config."""
-    project_root = ""
-    """The absolute path to the current working directory."""
-    structure_classes = []
-    """The list which holds all the structure classes."""
-    container_classes = []
-    """The list which holds all the container classes."""
-    wrappers = []
-    """The list which holds all the wrapper classes."""
+    structures = {}  #: The dictionary which holds all the information from the structure config.
+    containers = {}  #: The dictionary which holds all the information from the methods config.
+    project_root = ""  #: The absolute path to the current working directory.
+    structure_classes = []  #: The list which holds all the structure classes.
+    container_classes = []  #: The list which holds all the container classes.
+    wrappers = []  #: The list which holds all the wrapper classes.
 
     def __init__(self, method_config_path="./method_config.yml",
                  structure_config_path="./structure_config.yml"):
