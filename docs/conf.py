@@ -27,7 +27,7 @@ author = 'Tom Reilly, Kayleigh Bellis, Ian Edward'
 version = ''
 # The full version, including alpha/beta/rc tags
 release = ''
-
+autodoc_member_order = 'bysource'
 
 # -- General configuration ---------------------------------------------------
 
