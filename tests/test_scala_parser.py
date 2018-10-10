@@ -30,6 +30,8 @@ object FilterOnList {
 
     method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
 
+    method_signature_no_space = "def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame"
+
     method_config = {'FilterOnList': {
         'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
                         'returns': 'DataFrame'}}}
@@ -53,7 +55,7 @@ object FilterOnList {
     def test_multi_process(self):
         """
         Assert the file output, matches the expected,
-        The test will write the output file, read its contents, read the contents of expected file, compare the two.
+        The test will check if multiprocess function appends the expected string block to the container
         Delete file if there are the same, raise an assertion error if not
         :return:
         """
@@ -141,7 +143,7 @@ object FilterOnList {
         :return:
         """
         sp = ScalaParse()
-        result = sp.extract_params("def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame")
+        result = sp.extract_params(self.method_signature_no_space)
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
 
