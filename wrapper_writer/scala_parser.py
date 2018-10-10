@@ -38,9 +38,11 @@ class Parser:
 
         regex = re.compile(target_format)
 
-        selected_files = filter(regex.search, all_files)
+        selected_files = list(filter(regex.search, all_files))
 
-        self.files.extend(list(selected_files))
+        absolute_paths = [os.path.join(directory, f) for f in selected_files]
+
+        self.files.extend(absolute_paths)
 
     @staticmethod
     def read_file(file_path):
@@ -174,7 +176,6 @@ class ScalaParse(Parser):
                 container_name = os.path.splitext(base_raw)[0]
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
-                dummy_docs = "This is a doc string"
                 params = self.extract_params(ig)
                 if self.doc_strings == None:
                     docs = ""

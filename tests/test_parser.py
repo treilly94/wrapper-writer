@@ -14,7 +14,7 @@ class TestParser(TestCase):
             parser = Parser()
             parser.get_files("/test/dir/", ".*\.scala")
 
-        expected = ['alpha.scala', 'beta.scala']
+        expected = ['/test/dir/alpha.scala', '/test/dir/beta.scala']
 
         self.assertEqual(expected, parser.files)
 
