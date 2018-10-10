@@ -86,12 +86,11 @@ class ScalaParse(Parser):
         self.config_filename = config_name
         self.if_config_exists = append_config
 
-    def find_method_regex(self, item):
+    def find_method_regex(self, retrieve_data):
         """
         This function will find the raw method signature from file to be parsed
         :return: iterable object with all methods found
         """
-        retrieve_data = self.read_file(item)
         pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
         try:
             pattern2 = pattern.finditer(retrieve_data)
@@ -162,8 +161,11 @@ class ScalaParse(Parser):
         :return:
         """
         for item in self.files:
-            all_found = self.find_method_regex(item)
+            retrieve_data = self.read_file(item)
+            doc_string = self.find_doc_string(retrieve_data)
+            all_found = self.find_method_regex(retrieve_data)
             matches = tuple(all_found)
+            count=0
             if not matches:
                 raise Exception("No Methods Found")
             container_methods = []
@@ -175,8 +177,9 @@ class ScalaParse(Parser):
                 method_name = self.extract_method_name(ig)
                 dummy_docs = "This is a doc string"
                 params = self.extract_params(ig)
-                one_method = Method(method_name, params, dummy_docs, return_type)
+                one_method = Method(method_name, params, doc_string[count], return_type)
                 container_methods.append(one_method)
+                count = +1
             one_container = Container(container_name, container_methods)
             cc = one_container.create_config()
             self.containers.append(cc)
