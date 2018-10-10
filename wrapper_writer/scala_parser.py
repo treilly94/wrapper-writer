@@ -38,9 +38,11 @@ class Parser:
 
         regex = re.compile(target_format)
 
-        selected_files = filter(regex.search, all_files)
+        selected_files = list(filter(regex.search, all_files))
 
-        self.files.extend(list(selected_files))
+        absolute_paths = [os.path.join(directory, f) for f in selected_files]
+
+        self.files.extend(absolute_paths)
 
     @staticmethod
     def read_file(file_path):
