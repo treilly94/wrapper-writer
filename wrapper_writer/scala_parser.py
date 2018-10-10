@@ -81,11 +81,6 @@ class ScalaParse(Parser):
 
     doc_strings = []
 
-    def __init__(self, filename, config_name, append_config=False):
-        self.filename = filename
-        self.config_filename = config_name
-        self.if_config_exists = append_config
-
     def find_method_regex(self, retrieve_data):
         """
         This function will find the raw method signature from file to be parsed
@@ -162,8 +157,8 @@ class ScalaParse(Parser):
         This function will process each method found and write it to a yaml file
         :return:
         """
-        for item in self.files:
-            retrieve_data = self.read_file(item)
+        for filepath in self.files:
+            retrieve_data = self.read_file(filepath)
             doc_string = self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
             matches = tuple(all_found)
@@ -173,7 +168,7 @@ class ScalaParse(Parser):
             container_methods = []
             for i in matches:
                 ig = i.group()
-                base_raw = os.path.basename(item)
+                base_raw = os.path.basename(filepath)
                 container_name = os.path.splitext(base_raw)[0]
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
