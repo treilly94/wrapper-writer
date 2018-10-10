@@ -58,7 +58,7 @@ class Parser:
 
     def write_config(self):
         for i in self.containers:
-            with open(self.config_file, 'a') as txt_file:
+            with open(self.config_name, 'a') as txt_file:
                 txt_file.write(i)
 
     def delete_config(self):
