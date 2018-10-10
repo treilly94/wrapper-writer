@@ -36,7 +36,7 @@ object FilterOnList {
 
     project_root = os.getcwd()
 
-    goal_dir_raw = os.path.join(project_root, "tests/resources/input/FilterOnList.scala")
+    goal_dir_raw = os.path.join(project_root, "example/src/main/scala/com/example/Maths.scala")
 
     goal_dir = os.path.normpath(goal_dir_raw)
 
@@ -58,11 +58,51 @@ object FilterOnList {
         :return:
         """
         sp = ScalaParse()
+        sp.files.append(self.goal_dir)
         sp.multi_process()
-        with open("config.yml", 'r') as c:
-            config = yaml.load(c)
-        self.assertDictEqual(self.method_config, config)
-        os.remove(self.config_name)
+        expected = ['Maths:\n'
+                    '\tsumColumns:\n'
+                    '\t\tparams:\n'
+                    '\t\t\tdf: DataFrame\n'
+                    '\t\t\tcolumnA: String\n'
+                    '\t\t\tcolumnB: String\n'
+                    '\t\t\tnewCol: String\n'
+                    '\t\tdocs:  This function calls a protected function which filters the data '
+                    "based on where the targetCol doesn't have values that are in the values "
+                    'parameter.\n'
+                    '@param df DataFrame - Stores all the data.\n'
+                    '@param targetCol String - Column to be filtered on.\n'
+                    '@param values List[Int] - List of values to compared.\n'
+                    '@return DataFrame\n'
+                    '\t\treturns: DataFrame\n'
+                    '\t\tother:\n'
+                    '\tsum:\n'
+                    '\t\tparams:\n'
+                    '\t\t\tcolumnA: String\n'
+                    '\t\t\tcolumnB: String\n'
+                    '\t\tdocs:  This function will take in a DataFrame and filter the data based '
+                    "on where the targetCol doesn't have values that are in the values "
+                    'parameter.\n'
+                    '@param df DataFrame - Stores all the data.\n'
+                    '@param targetCol String - Column to be filtered on.\n'
+                    '@param values List[Int] - List of values to compared.\n'
+                    '@return DataFrame\n'
+                    '\t\treturns: Column\n'
+                    '\t\tother:\n'
+                    '\tmultiply:\n'
+                    '\t\tparams:\n'
+                    '\t\t\tcolumnA: Int\n'
+                    '\t\t\tcolumnB: Int\n'
+                    '\t\tdocs:  This function will take in a DataFrame and filter the data based '
+                    "on where the targetCol doesn't have values that are in the values "
+                    'parameter.\n'
+                    '@param df DataFrame - Stores all the data.\n'
+                    '@param targetCol String - Column to be filtered on.\n'
+                    '@param values List[Int] - List of values to compared.\n'
+                    '@return DataFrame\n'
+                    '\t\treturns: Int\n'
+                    '\t\tother:\n']
+        self.assertEqual(expected, sp.containers)
 
     def test_extract_return_type(self):
         """
@@ -103,7 +143,6 @@ object FilterOnList {
         result = sp.extract_params("def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame")
         expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
         self.assertEqual(expected, result)
-
 
     def test_extract_params_notfound(self):
         """

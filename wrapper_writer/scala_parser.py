@@ -161,8 +161,10 @@ class ScalaParse(Parser):
         """
         for filepath in self.files:
             retrieve_data = self.read_file(filepath)
-            doc_string = self.find_doc_string(retrieve_data)
+            print(retrieve_data)
+            self.find_doc_string(retrieve_data)
             all_found = self.find_method_regex(retrieve_data)
+            print(self.doc_strings)
             matches = tuple(all_found)
             count = 0
             if not matches:
@@ -175,7 +177,11 @@ class ScalaParse(Parser):
                 return_type = self.extract_return_type(ig)
                 method_name = self.extract_method_name(ig)
                 params = self.extract_params(ig)
-                one_method = Method(method_name, params, doc_string[count], return_type)
+                if self.doc_strings == None:
+                    docs = ""
+                else:
+                    docs = self.doc_strings[count]
+                one_method = Method(method_name, params, docs, return_type)
                 container_methods.append(one_method)
                 count = +1
             one_container = Container(container_name, container_methods)
