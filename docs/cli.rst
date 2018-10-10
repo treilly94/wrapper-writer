@@ -27,9 +27,9 @@ This takes the following arguments:
 
 -h, --help              Describe the subcommand and its arguments.
 -m, --method-config     The path to the method config file.
-                        default='./method_config.yml
+                        default=./method_config.yml
 -s, --structure-config  The path to the structure config file.
-                        default='./structure_config.yml
+                        default=./structure_config.yml
 
 .. note::
     The wrapper requires both the method and structure configs.
