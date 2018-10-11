@@ -1,7 +1,7 @@
 from argparse import ArgumentTypeError
 from unittest import TestCase
 
-from wrapper_writer.commandline import get_args, valid_write_option, existing_files
+from wrapper_writer.commandline import get_args, valid_write_option, existing_files, existing_directory
 
 
 class TestCommandline(TestCase):
@@ -17,6 +17,17 @@ class TestCommandline(TestCase):
         # Assert doesn't raise error when valid
         output = existing_files("./tests/__init__.py")
         self.assertEqual("./tests/__init__.py", output)
+
+    def test_existing_directory(self):
+        # Assert raises error when invalid
+        with self.assertRaises(ArgumentTypeError) as cm:
+            existing_directory("./pandas")
+        err = str(cm.exception)
+        self.assertEqual("./pandas cant be found, does it exist?", err)
+
+        # Assert doesn't raise error when valid
+        output = existing_directory("./tests")
+        self.assertEqual("./tests", output)
 
     def test_valid_write_option(self):
         # Assert raises error when invalid
