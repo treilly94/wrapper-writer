@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 from wrapper_writer.parsers import ScalaParse
 from wrapper_writer.wrapper_writer import WrapperWriter
@@ -52,7 +53,7 @@ def valid_write_option(string):
     return string
 
 
-def get_args():
+def get_args(args):
     """
     This method uses argparse to get the commandline arguments.
 
@@ -85,7 +86,7 @@ def get_args():
                               help='The format of the files to read from the directory')
 
     # Parse the argument lists
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def parse(args):
@@ -131,7 +132,7 @@ def commandline():
 
     :return:
     """
-    args = get_args()
+    args = get_args(sys.argv[1:])
 
     # Parse
     if args.command == "parse":
