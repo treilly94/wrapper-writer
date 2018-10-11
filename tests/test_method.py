@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wrapper_writer.method_containers import Method
+from wrapper_writer.code_elements import Method
 
 
 class TestMethod(TestCase):

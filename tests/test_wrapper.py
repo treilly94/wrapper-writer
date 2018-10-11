@@ -3,7 +3,7 @@ import shutil
 import sys
 from unittest import TestCase
 
-from wrapper_writer.method_containers import Container, Method
+from wrapper_writer.code_elements import Container, Method
 from wrapper_writer.structure import Structure
 from wrapper_writer.wrapper import Wrapper
 

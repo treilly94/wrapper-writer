@@ -18,9 +18,9 @@ Structure
 .. automodule:: wrapper_writer.structure
    :members:
 
-Method Containers
+Code Elements
 =================
-.. automodule:: wrapper_writer.method_containers
+.. automodule:: wrapper_writer.code_elements
    :members:
 
 
