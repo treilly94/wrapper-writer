@@ -1,7 +1,6 @@
 from unittest import TestCase
 
-from wrapper_writer.container import Container
-from wrapper_writer.method import Method
+from wrapper_writer.code_elements import Container, Method
 
 
 class TestContainer(TestCase):
@@ -29,3 +28,21 @@ class TestContainer(TestCase):
                    "      Example: 1 + 1 = 2\n"
 
         self.assertEqual(expected, output)
+
+
+class TestMethod(TestCase):
+
+    def test_method(self):
+        name = "testName"
+        params = {"p1": "String", "p2": "Int"}
+        docs = "Test docs"
+        returns = "Unit"
+        other = {"Example": "1 + 1 = 2"}
+
+        m = Method(name=name, params=params, docs=docs, returns=returns, other=other)
+
+        self.assertEqual(name, m.name)
+        self.assertEqual(params, m.params)
+        self.assertEqual(docs, m.docs)
+        self.assertEqual(returns, m.returns)
+        self.assertEqual(other, m.other)
