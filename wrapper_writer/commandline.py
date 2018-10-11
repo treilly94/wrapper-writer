@@ -71,6 +71,7 @@ def wrap(args):
     :return:
     """
     # Check args
+    # The appropriate errors are raised by the method
 
     # Wrap
     WrapperWriter(args.method_config, args.structure_config).run()
