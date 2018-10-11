@@ -268,10 +268,33 @@ converted into Upper or Lower camelcase. An example of the syntax is below.
     {{ container.name|lower_camel }}
 
 
-==============
-Scala Parser
-==============
+=======
+Parsers
+=======
 
-This module parses a scala file and create method config to use for Wrapper Writer
+This module currently parses a scala file and creates a method config file to use for Wrapper Writer
+
+Parser
+======
+
+This object contains the details and functionality associated with parsing one or more files into a config file
+
+**containers**
+    The list which holds all the container classes
+
+**files**
+    The list which holds all the absolute paths to the files
+
+**config_name**
+    The name of the config file to write to
+
+**append_config**
+    Option to append to the config file or to overwrite it
+
+ScalaParse
+==========
+
+Inherits from Parser, the ScalaParser class parses a scala file, extracts the method elements and writes them out to a config file
+
 
 
