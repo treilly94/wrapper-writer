@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from wrapper_writer.method import Method
+from wrapper_writer.code_elements import Method
 from wrapper_writer.parsers import ScalaParser
 
 
