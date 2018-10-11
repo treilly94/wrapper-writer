@@ -1,10 +1,22 @@
 from argparse import ArgumentTypeError
 from unittest import TestCase
 
-from wrapper_writer.commandline import get_args, valid_write_option
+from wrapper_writer.commandline import get_args, valid_write_option, existing_files
 
 
 class TestCommandline(TestCase):
+
+    def test_existing_files(self):
+        # Assert raises error when invalid
+        for i in ["./tests/cats.txt", "./tests/__init__.py,./tests/cats.txt"]:
+            with self.assertRaises(ArgumentTypeError) as cm:
+                existing_files(i)
+            err = str(cm.exception)
+            self.assertEqual("./tests/cats.txt cant be found, does it exist?", err)
+
+        # Assert doesn't raise error when valid
+        output = existing_files("./tests/__init__.py")
+        self.assertEqual("./tests/__init__.py", output)
 
     def test_valid_write_option(self):
         # Assert raises error when invalid
@@ -17,7 +29,6 @@ class TestCommandline(TestCase):
         for i in ["w", "a"]:
             output = valid_write_option(i)
             self.assertEqual(i, output)
-
 
     def test_get_args_wrap(self):
         args_in = ["wrap", "-m", "./tests/__init__.py", "-s", "./tests/test_commandline.py"]
