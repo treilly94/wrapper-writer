@@ -32,3 +32,8 @@ Converters
 ==========
 .. automodule:: wrapper_writer.converters
    :members:
+
+Parsers
+=======
+.. automodule:: wrapper_writer.parsers
+   :members:
