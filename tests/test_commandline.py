@@ -58,3 +58,13 @@ class TestCommandline(TestCase):
         self.assertEqual("./tests/test_commandline.py", args_out.files)
         self.assertEqual("./tests", args_out.directory)
         self.assertEqual(".*\.py", args_out.target_format)
+
+        # Missing Args
+        args_in = ["parse"]
+        args_out = get_args(args_in)
+        self.assertEqual("parse", args_out.command)
+        self.assertEqual("method_config.yml", args_out.config_name)
+        self.assertEqual("w", args_out.append_config)
+        self.assertEqual(None, args_out.files)
+        self.assertEqual(None, args_out.directory)
+        self.assertEqual(".*\.scala", args_out.target_format)
