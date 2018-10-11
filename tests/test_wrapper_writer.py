@@ -4,8 +4,7 @@ import os
 
 import shutil
 
-from wrapper_writer.container import Container
-from wrapper_writer.method import Method
+from wrapper_writer.method_containers import Container, Method
 from wrapper_writer.structure import Structure
 from wrapper_writer.wrapper_writer import WrapperWriter
 

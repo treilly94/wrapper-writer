@@ -18,15 +18,11 @@ Structure
 .. automodule:: wrapper_writer.structure
    :members:
 
-Container
-=========
-.. automodule:: wrapper_writer.container
+Method Containers
+=================
+.. automodule:: wrapper_writer.method_containers
    :members:
 
-Method
-======
-.. automodule:: wrapper_writer.method
-   :members:
 
 Converters
 ==========
