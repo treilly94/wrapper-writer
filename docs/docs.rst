@@ -19,7 +19,7 @@ Structure
    :members:
 
 Code Elements
-=================
+=============
 .. automodule:: wrapper_writer.code_elements
    :members:
 
