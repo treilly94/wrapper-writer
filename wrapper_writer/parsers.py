@@ -1,8 +1,7 @@
 import os
 import re
 
-from wrapper_writer.container import Container
-from wrapper_writer.method import Method
+from wrapper_writer.code_elements import Container, Method
 
 
 class Parser:

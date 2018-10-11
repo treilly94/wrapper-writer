@@ -2,8 +2,7 @@ import os
 
 import yaml
 
-from wrapper_writer.container import Container
-from wrapper_writer.method import Method
+from wrapper_writer.code_elements import Container, Method
 from wrapper_writer.structure import Structure
 from wrapper_writer.wrapper import Wrapper
 
