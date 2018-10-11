@@ -1,7 +1,22 @@
 import argparse
+import os
 
 from wrapper_writer.parsers import ScalaParse
 from wrapper_writer.wrapper_writer import WrapperWriter
+
+
+def existing_file(string):
+    """
+    This method checks that the provided file exists and if not raises an error.
+
+    :param string: The file path
+    :type string: str
+    :return: str
+    """
+    if not os.path.isfile(string):
+        raise argparse.ArgumentTypeError(string + " cant be found, does it exist?")
+
+    return string
 
 
 def get_args():
@@ -17,9 +32,9 @@ def get_args():
     # Create the parser for the Wrapper
     parser_wrap = subparsers.add_parser('wrap', help='Create the wrappers')
     parser_wrap.set_defaults(command='wrap')
-    parser_wrap.add_argument('-m', '--method-config', default='./method_config.yml',
+    parser_wrap.add_argument('-m', '--method-config', type=existing_file, default='./method_config.yml',
                              help='The path to the method config file')
-    parser_wrap.add_argument('-s', '--structure-config', default='./structure_config.yml',
+    parser_wrap.add_argument('-s', '--structure-config', type=existing_file, default='./structure_config.yml',
                              help='The path to the structure config file')
 
     # Create the parser for the Parser
