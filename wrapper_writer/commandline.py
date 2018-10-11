@@ -97,9 +97,6 @@ def parse(args):
     :type args: argparse.Namespace
     :return:
     """
-    # Check args
-
-    # Parse
     p = ScalaParse(args.config_name, args.append_config)
     if args.files:
         p.files.extend(args.files.split(","))
@@ -119,10 +116,6 @@ def wrap(args):
     :type args: argparse.Namespace
     :return:
     """
-    # Check args
-    # The appropriate errors are raised by the method
-
-    # Wrap
     WrapperWriter(args.method_config, args.structure_config).run()
 
 
