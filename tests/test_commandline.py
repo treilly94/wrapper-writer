@@ -1,18 +1,14 @@
-from argparse import Namespace
-
 from unittest import TestCase
 
-from wrapper_writer.commandline import wrap
+from wrapper_writer.commandline import get_args
 
 
 class TestCommandline(TestCase):
 
-    def test_wrap(self):
-        # Check invalid method_config
-        with self.assertRaises(Exception) as cm:
-            args = Namespace
-            args.method_config = "./test.yml"
-            args.structure_config = "./test.yml"
-            wrap(args)
-        err = str(cm.exception)
-        self.assertEqual("[Errno 2] No such file or directory: 'test.yml'", err)
+    def test_get_args(self):
+        # Test wrapper
+        args_in = ["wrap", "-m", "./tests/__init__.py", "-s", "./tests/test_commandline.py"]
+        args_out = get_args(args_in)
+        self.assertEqual("wrap", args_out.command)
+        self.assertEqual("./tests/__init__.py", args_out.method_config)
+        self.assertEqual("./tests/test_commandline.py", args_out.structure_config)
