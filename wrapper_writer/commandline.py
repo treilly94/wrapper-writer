@@ -1,6 +1,6 @@
 import argparse
 
-from wrapper_writer.scala_parser import ScalaParse
+from wrapper_writer.parsers import ScalaParse
 from wrapper_writer.wrapper_writer import WrapperWriter
 
 # Create the top-level parser

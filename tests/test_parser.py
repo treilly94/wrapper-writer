@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase, mock
 
-from wrapper_writer.scala_parser import Parser
+from wrapper_writer.parsers import Parser
 
 
 class TestParser(TestCase):
@@ -42,8 +42,8 @@ object FilterOnList {
 
         self.assertEqual(expected, res)
 
-    @mock.patch('wrapper_writer.scala_parser.os.path')
-    @mock.patch('wrapper_writer.scala_parser.os')
+    @mock.patch('wrapper_writer.parsers.os.path')
+    @mock.patch('wrapper_writer.parsers.os')
     def test_delete_config(self, mock_os, mock_path):
         # set up the mock
         mock_path.isfile.return_value = False

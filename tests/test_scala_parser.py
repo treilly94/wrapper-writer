@@ -3,7 +3,7 @@ import unittest
 
 import yaml
 
-from wrapper_writer.scala_parser import ScalaParse
+from wrapper_writer.parsers import ScalaParse
 
 
 class TestScalaParser(unittest.TestCase):
