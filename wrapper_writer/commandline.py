@@ -5,18 +5,49 @@ from wrapper_writer.parsers import ScalaParse
 from wrapper_writer.wrapper_writer import WrapperWriter
 
 
-def existing_file(string):
+def existing_files(string):
     """
-    This method checks that the provided file exists and if not raises an error.
+    This method checks that the provided file(s) exists and if not raises an error.
 
-    :param string: The file path
+    :param string: The file path(s)
     :type string: str
     :return: str
     """
-    if not os.path.isfile(string):
+    split_string = string.split(",")
+
+    for i in split_string:
+        if not os.path.isfile(i):
+            raise argparse.ArgumentTypeError(i + " cant be found, does it exist?")
+
+    return string
+
+
+def existing_directory(string):
+    """
+    This method checks that the provided directory exists and if not raises an error.
+
+    :param string: The directory
+    :type string: str
+    :return: str
+    """
+    if not os.path.isdir(string):
         raise argparse.ArgumentTypeError(string + " cant be found, does it exist?")
 
     return string
+
+
+def valid_write_option(string):
+    """
+    This method checks whether the string is one of the valid write options and if not raises an error.
+
+    :param string: The write option
+    :type string: str
+    :return: str
+    """
+    valid_options = ["w", "a"]
+
+    if string not in valid_options:
+        raise argparse.ArgumentTypeError(string + " isn't a valid write option. Must be either w or a")
 
 
 def get_args():
@@ -32,9 +63,9 @@ def get_args():
     # Create the parser for the Wrapper
     parser_wrap = subparsers.add_parser('wrap', help='Create the wrappers')
     parser_wrap.set_defaults(command='wrap')
-    parser_wrap.add_argument('-m', '--method-config', type=existing_file, default='./method_config.yml',
+    parser_wrap.add_argument('-m', '--method-config', type=existing_files, default='./method_config.yml',
                              help='The path to the method config file')
-    parser_wrap.add_argument('-s', '--structure-config', type=existing_file, default='./structure_config.yml',
+    parser_wrap.add_argument('-s', '--structure-config', type=existing_files, default='./structure_config.yml',
                              help='The path to the structure config file')
 
     # Create the parser for the Parser
@@ -42,11 +73,11 @@ def get_args():
     parser_parse.set_defaults(command='parse')
     parser_parse.add_argument('-c', '--config-name', default='method_config.yml',
                               help="The name of the config file to write to")
-    parser_parse.add_argument('-a', '--append-config', default="w",
+    parser_parse.add_argument('-a', '--append-config', type=valid_write_option, default="w",
                               help='a: Append an existing config file, w: Overwrite if config file exists')
-    parser_parse.add_argument('-f', '--files', default=None,
+    parser_parse.add_argument('-f', '--files', type=existing_files, default=None,
                               help='A comma separated list of absolute file paths to be parsed')
-    parser_parse.add_argument('-d', '--directory', default=None,
+    parser_parse.add_argument('-d', '--directory', type=existing_directory, default=None,
                               help='The absolute path to a directory containing files to be parsed')
     parser_parse.add_argument('-t', '--target-format', default=".*\.scala",
                               help='The format of the files to read from the directory')
