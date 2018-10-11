@@ -1,9 +1,23 @@
+from argparse import ArgumentTypeError
 from unittest import TestCase
 
-from wrapper_writer.commandline import get_args
+from wrapper_writer.commandline import get_args, valid_write_option
 
 
 class TestCommandline(TestCase):
+
+    def test_valid_write_option(self):
+        # Assert raises error when invalid
+        with self.assertRaises(ArgumentTypeError) as cm:
+            valid_write_option("pandas")
+        err = str(cm.exception)
+        self.assertEqual("pandas isn't a valid write option. Must be either w or a", err)
+
+        # Assert doesn't raise error when valid
+        for i in ["w", "a"]:
+            output = valid_write_option(i)
+            self.assertEqual(i, output)
+
 
     def test_get_args_wrap(self):
         args_in = ["wrap", "-m", "./tests/__init__.py", "-s", "./tests/test_commandline.py"]
