@@ -19,7 +19,7 @@ class TestScalaParser(unittest.TestCase):
     testing_docstring = """This function takes in a list of stings and a string.
 @return Int"""
 
-    filte_on_list_docstring = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
+    filter_on_list_docstring = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
 @param df DataFrame - Stores all the data.
 @param targetCol String - Column to be filtered on.
 @param values List[Int] - List of values to compared.
@@ -195,7 +195,8 @@ Operations:
         self.assertEqual("", method[1].docs)
         self.assertEqual(self.two_docstring, method[2].docs)
         self.assertEqual(self.testing_docstring, method[3].docs)
-        self.assertEqual(self.filte_on_list_docstring, method[4].docs)
+        self.assertEqual(self.filter_on_list_docstring, method[4].docs)
+        self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_func_docstring, method[5].docs)
 
     def test_create_containers_no_methods(self):

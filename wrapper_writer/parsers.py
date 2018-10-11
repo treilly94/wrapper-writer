@@ -106,14 +106,10 @@ class ScalaParser(Parser):
             elif match.group(2) is not None:
                 type = match.group(2)
                 name = match.group(3)
-                print(name)
-                print(doc_string)
                 params1 = match.group(4).split(",")
-                print(params1)
                 if params1 != ['']:
                     params = dict(item.split(":") for item in params1)
                     params = {k.lstrip(): v.lstrip() for k, v in params.items()}
-                    print(params)
                 else:
                     params = {}
                 return_type = match.group(5)
