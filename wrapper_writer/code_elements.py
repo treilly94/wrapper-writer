@@ -67,5 +67,7 @@ class Method:
         self.params = params
         self.docs = docs
         self.returns = returns
+        if not access:
+            access = "public"
         self.access = access.lower()
         self.other = other
