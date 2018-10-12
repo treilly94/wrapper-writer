@@ -133,6 +133,7 @@ class ScalaParser(Parser):
                 # Create the method
                 method = Method(name, params, str(doc_string), return_type, {})
                 method.format_name()
+                method.format_params()
                 # Adds the Method class with the respective variables to the method list
                 methods.append(method)
                 # doc string is reset to being empty

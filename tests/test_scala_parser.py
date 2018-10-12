@@ -29,23 +29,23 @@ class TestScalaParser(unittest.TestCase):
   sum_columns:
     params:
       df: DataFrame
-      columnA: String
-      columnB: String
-      newCol: String
+      column_a: String
+      column_b: String
+      new_col: String
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
     other:
   sum:
     params:
-      columnA: String
-      columnB: String
+      column_a: String
+      column_b: String
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
     other:
   multiply:
     params:
-      columnA: Int
-      columnB: Int
+      column_a: Int
+      column_b: Int
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
     other:
@@ -53,7 +53,7 @@ operations:
   filter_on_list:
     params:
       df: DataFrame
-      targetCol: String
+      target_col: String
       values: List[Int]
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
@@ -61,7 +61,7 @@ operations:
   filter_funct:
     params:
       df: DataFrame
-      targetCol: String
+      target_col: String
       values: List[Int]
     docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
@@ -87,16 +87,16 @@ operations:
         method = self.sp.regex_parser(data)
 
         self.assertEqual("sum_columns", method[0].name)
-        self.assertEqual({"columnA": "String", "columnB": "String", "df": "DataFrame", "newCol": "String"},
+        self.assertEqual({"column_a": "String", "column_b": "String", "df": "DataFrame", "new_col": "String"},
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
 
     def test_regex_parser_no_docstring(self):
-        data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+        data = "def aggColumn(df: DataFrame, col1: String, col2: String, new_col: String): DataFrame"
         method = self.sp.regex_parser(data)
         self.assertEqual("agg_column", method[0].name)
-        self.assertEqual({"df": "DataFrame", "col1": "String", "col2": "String", "newCol": "String"},
+        self.assertEqual({"df": "DataFrame", "col1": "String", "col2": "String", "new_col": "String"},
                          method[0].params)
         self.assertEqual("", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
@@ -142,13 +142,13 @@ operations:
         self.assertEqual("filter_on_list", method[4].name)
         self.assertEqual("filter_funct", method[5].name)
 
-        self.assertEqual({"df": "DataFrame", "columnA": "String", "columnB": "String", "newCol": "String"},
+        self.assertEqual({"df": "DataFrame", "column_a": "String", "column_b": "String", "new_col": "String"},
                          method[0].params)
-        self.assertEqual({"columnA": "String", "columnB": "String"}, method[1].params)
+        self.assertEqual({"column_a": "String", "column_b": "String"}, method[1].params)
         self.assertEqual({}, method[2].params)
         self.assertEqual({"colb": "List[String]", "cola": 'String="hello"'}, method[3].params)
-        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[4].params)
-        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[5].params)
+        self.assertEqual({"df": "DataFrame", "target_col": "String", "values": "List[Int]"}, method[4].params)
+        self.assertEqual({"df": "DataFrame", "target_col": "String", "values": "List[Int]"}, method[5].params)
 
         self.assertEqual("DataFrame", method[0].returns)
         self.assertEqual("Column", method[1].returns)
