@@ -103,9 +103,7 @@ def parse(args):
     if args.directory:
         p.get_files(args.directory, args.target_format)
 
-    p.multi_process()
-
-    p.write_config()
+    p.run()
 
 
 def wrap(args):
