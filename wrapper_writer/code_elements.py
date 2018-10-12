@@ -65,5 +65,5 @@ class Method:
         self.params = params
         self.docs = docs
         self.returns = returns
-        self.access = access
+        self.access = access.lower()
         self.other = other
