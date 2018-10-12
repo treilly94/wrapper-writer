@@ -25,6 +25,7 @@ class TestContainer(TestCase):
                    "      p2: Int\n" \
                    "    docs: \"Test docs\"\n" \
                    "    returns: Unit\n" \
+                   "    access: public\n" \
                    "    other:\n" \
                    "      Example: 1 + 1 = 2\n"
 
