@@ -8,6 +8,7 @@ class TestContainer(TestCase):
                 {"p1": "String", "p2": "Int"},
                 "Test docs",
                 "Unit",
+                "public",
                 {"Example": "1 + 1 = 2"}
                 )
     c_name = "testContainer"
@@ -24,6 +25,7 @@ class TestContainer(TestCase):
                    "      p2: Int\n" \
                    "    docs: \"Test docs\"\n" \
                    "    returns: Unit\n" \
+                   "    access: public\n" \
                    "    other:\n" \
                    "      Example: 1 + 1 = 2\n"
 

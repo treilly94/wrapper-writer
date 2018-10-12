@@ -34,6 +34,8 @@ class Container:
             config += "    docs: \"%s\"\n" % m.docs
             # Method returns
             config += "    returns: %s\n" % m.returns
+            # Method access
+            config += "    access: %s\n" % m.access
             # Method other
             config += "    other:\n"
             for k, v in m.other.items():
@@ -53,14 +55,19 @@ class Method:
     :type docs: str
     :param returns: The return type of the object.
     :type returns: str
+    :param access: The access modifier of the method e.g. public, private.
+    :type access: str
     :param other: A dictionary containing any additional values that may be required in the template.
     :type other: dict
     """
 
-    def __init__(self, name, params, docs, returns, other={}):
+    def __init__(self, name, params, docs, returns, access="public", other={}):
 
         self.name = name
         self.params = params
         self.docs = docs
         self.returns = returns
+        if not access:
+            access = "public"
+        self.access = access.lower()
         self.other = other
