@@ -140,7 +140,13 @@ class ScalaParser(Parser):
 
     def create_containers(self, methods, file_path):
         """
-        This function
+        This function takes the list of Method classes and a list of file paths, if the file path is empty or none,
+        then an error is raised.
+        If there are valid file paths then the container name is found using splits on the file path separator and dots.
+        From there it checks if there are Method Classes within the method list, if there are then a Container class is
+        created and the config is created around that class.
+        Otherwise it prints out which container has no methods
+        
         :param methods: This is a list of all the methods class within the file.
         :type methods: List[str]
         :param file_path: This is the file path to the file currently being parsed.
