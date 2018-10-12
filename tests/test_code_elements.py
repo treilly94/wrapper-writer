@@ -8,6 +8,7 @@ class TestContainer(TestCase):
                 {"p1": "String", "p2": "Int"},
                 "Test docs",
                 "Unit",
+                "public",
                 {"Example": "1 + 1 = 2"}
                 )
     c_name = "testContainer"
