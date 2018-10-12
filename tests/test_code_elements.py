@@ -40,7 +40,7 @@ class TestMethod(TestCase):
 
     def setUp(self):
         name = "testName"
-        params = {"p1": "String", "p2": "Int"}
+        params = {"paramOne": "String", "ParamTwo": "Int", "param_three": "Boolean"}
         docs = "Test docs"
         returns = "Unit"
         other = {"Example": "1 + 1 = 2"}
@@ -51,3 +51,7 @@ class TestMethod(TestCase):
         self.method.format_name()
         self.assertEqual("test_name", self.method.name)
 
+    def test_format_params(self):
+        self.method.format_params()
+        expected = {"param_one": "String", "param_two": "Int", "param_three": "Boolean"}
+        self.assertEqual(expected, self.method.params)

@@ -81,3 +81,15 @@ class Method:
         :return:
         """
         self.name = underscores(self.name)
+
+    def format_params(self):
+        """This method converts the keys of self.params from camelcase to lowercase with underscores.
+
+        :return:
+        """
+        formatted_params = {}
+
+        for k, v in self.params.items():
+            formatted_params[underscores(k)] = v
+
+        self.params = formatted_params
