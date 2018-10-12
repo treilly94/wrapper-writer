@@ -72,7 +72,12 @@ class WrapperWriter:
         for i, j in self.containers.items():
             container_methods = []
             for x, v in j.items():
-                one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
+                one_method = Method(name=x,
+                                    params=v.get("params"),
+                                    docs=v.get("docs"),
+                                    returns=v.get("returns"),
+                                    access=v.get("access"),
+                                    other=v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
             self.container_classes.append(one_container)
