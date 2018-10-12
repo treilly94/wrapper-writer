@@ -11,7 +11,7 @@ class Parser:
     :param config_name: The name of the config file to write.
     :type config_name: str
     :param append_config: Whether to append to the config file or to overwrite it
-    :type append_config: bool
+    :type append_config: str
     """
 
     containers = []  #: The list which holds all the container classes.
@@ -80,13 +80,12 @@ class Parser:
 class ScalaParser(Parser):
     """
     This ScalaParser class parses a scala file, extracts the method elements and writes them out to a config file
-    :param filename: The name of the file to parse
-    :param config_name: The name of the yaml config file
-    :param append_config: boolean value, True will overwrite an existing file, False will append to file
+
     """
 
     #: The regex string specific to scala in order to get the docs, params, returns, type and name.
-    regex_string = r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/|(\w+ def|def)\s(\w+)\(([\w+:\s,\[\]=\"\(\)]*)\):\s([\w\[\]]*)"
+    regex_string = \
+        r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/|(\w+ def|def)\s(\w+)\(([\w+:\s,\[\]=\"\(\)]*)\):\s([\w\[\]]*)"
 
     def regex_parser(self, data):
         """
@@ -115,7 +114,6 @@ class ScalaParser(Parser):
                 doc_string = re.sub("\n?@.*\n?", "", doc_string).strip()
             elif match.group(2) is not None:
                 # If the second group is not none then this a function match
-                type = match.group(2)  # This gets the function type, protected def, def, private def
                 name = match.group(3)  # This is the name of the function
                 # This is the params string -> "df: DataFrame, colA: String"
                 # it then gets turn into a parameter list -> ["df:DataFrame", "colA:String"]
@@ -129,7 +127,7 @@ class ScalaParser(Parser):
                 else:
                     # if there is no parameter, it becomes an empty dictionary
                     params = {}
-                return_type = match.group(5) # Get the return type, if there is nothing it is None
+                return_type = match.group(5)  # Get the return type, if there is nothing it is None
                 # Create the method
                 method = Method(name, params, str(doc_string), return_type, {})
                 method.format_name()
@@ -161,7 +159,7 @@ class ScalaParser(Parser):
         if file_path not in invalid_files:
             # this gets the file's name as the container name
             container_name = file_path.split(str(os.sep))[-1].split(".")[0]
-            if methods != []:
+            if methods:
                 container = Container(container_name, methods, file_path)
                 container.format_name()
                 self.containers.append(container.create_config())
@@ -182,9 +180,9 @@ class ScalaParser(Parser):
             methods = self.regex_parser(data)
             self.create_containers(methods, file_path)
 
-        print("finsihed for loop")
+        print("finished for loop")
         print(self.containers)
-        if self.containers != []:
+        if self.containers:
             self.write_config()
         else:
             message = "Config string is empty"
