@@ -74,3 +74,10 @@ class Method:
         self.docs = docs
         self.returns = returns
         self.other = other
+
+    def format_name(self):
+        """This method converts self.name from camelcase to lowercase with underscores.
+
+        :return:
+        """
+        self.name = underscores(self.name)
