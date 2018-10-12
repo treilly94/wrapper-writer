@@ -79,7 +79,7 @@ class Parser:
 
 class ScalaParser(Parser):
     """
-    This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
+    This ScalaParser class parses a scala file, extracts the method elements and writes them out to a config file
     :param filename: The name of the file to parse
     :param config_name: The name of the yaml config file
     :param append_config: boolean value, True will overwrite an existing file, False will append to file
@@ -96,26 +96,45 @@ class ScalaParser(Parser):
         :param data:
         :return: methods
         """
+        # Finds all doc strings, params, names, types, returns types from the data.
         matches = re.finditer(self.regex_string, data, re.MULTILINE)
-        methods = []
-        doc_string = ""
+        methods = []  # Initialising an empty list
+        doc_string = ""  # Initialising an empty string
         for match in matches:
+            # doc string match separately to the rest of the variables
+            # matches look like:
+            # ["doc string", None, None, None, None][None, "def", "sum", "df: DataFrame", "DataFrame"] ... ect..
+            # This doc string is associated with the following function
             if match.group(2) is None:
+                # if the second group is None, then this is a doc string match
+                # The doc string is then check to replace any *, long white spaces
+                # this is scala specific docstring notation
+                # The doc string is saved to a variable, ready to added to the following functions Method class
                 doc_string = match.group(1).replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace(
                     "\n     ", " ").strip()
             elif match.group(2) is not None:
-                type = match.group(2)
-                name = match.group(3)
+                # If the second group is not none then this a function match
+                type = match.group(2)  # This gets the function type, protected def, def, private def
+                name = match.group(3)  # This is the name of the function
+                # This is the params string -> "df: DataFrame, colA: String"
+                # it then gets turn into a parameter list -> ["df:DataFrame", "colA:String"]
                 params1 = match.group(4).split(",")
+                # This there is no parameters in the funciton, then it is a empty list[string]
                 if params1 != ['']:
+                    # Split the parameters up into a dictionary -> {"df":" DataFrame", " colA":" String"}
                     params = dict(item.split(":") for item in params1)
+                    # This then strips it of the white spaces
                     params = {k.lstrip(): v.lstrip() for k, v in params.items()}
                 else:
+                    # if there is no parameter, it becomes an empty dictionary
                     params = {}
-                return_type = match.group(5)
+                return_type = match.group(5) # Get the return type, if there is nothing it is None
+                # Adds the Method class with the respective variables to the method list
                 methods.append(Method(name, params, str(doc_string), return_type, {}))
+                # doc string is reset to being empty
                 doc_string = ""
             else:
+                # If no match is found then this is printed out
                 print("no match found")
         return methods
 
@@ -129,6 +148,7 @@ class ScalaParser(Parser):
         """
         invalid_files = [None, ""]
         if file_path not in invalid_files:
+            # this gets the file's name as the container name
             container_name = file_path.split(str(os.sep))[-1].split(".")[0]
             if methods != []:
                 container = Container(container_name, methods, file_path)
