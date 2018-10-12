@@ -22,6 +22,7 @@ class TestScalaParser(unittest.TestCase):
       df: DataFrame
     docs: ""
     returns: DataFrame
+    access: public
     other:
 """
 
@@ -34,6 +35,7 @@ class TestScalaParser(unittest.TestCase):
       newCol: String
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
+    access: public
     other:
   sum:
     params:
@@ -41,6 +43,7 @@ class TestScalaParser(unittest.TestCase):
       columnB: String
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
+    access: public
     other:
   multiply:
     params:
@@ -48,6 +51,7 @@ class TestScalaParser(unittest.TestCase):
       columnB: Int
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
+    access: public
     other:
 Operations:
   filterOnList:
@@ -57,6 +61,7 @@ Operations:
       values: List[Int]
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: public
     other:
   filterFunct:
     params:
@@ -65,6 +70,7 @@ Operations:
       values: List[Int]
     docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: protected
     other:
 """
     test_resource_dir = os.path.join(os.getcwd(), "tests/resources/input/")
