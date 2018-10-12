@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 
-from wrapper_writer.parsers import ScalaParse
+from wrapper_writer.parsers import ScalaParser
 from wrapper_writer.wrapper_writer import WrapperWriter
 
 
@@ -97,15 +97,13 @@ def parse(args):
     :type args: argparse.Namespace
     :return:
     """
-    p = ScalaParse(args.config_name, args.append_config)
+    p = ScalaParser(args.config_name, args.append_config)
     if args.files:
         p.files.extend(args.files.split(","))
     if args.directory:
         p.get_files(args.directory, args.target_format)
 
-    p.multi_process()
-
-    p.write_config()
+    p.run()
 
 
 def wrap(args):

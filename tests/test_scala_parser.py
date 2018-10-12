@@ -1,172 +1,212 @@
 import os
 import unittest
 
-import yaml
-
-from wrapper_writer.parsers import ScalaParse
+from wrapper_writer.code_elements import Method
+from wrapper_writer.parsers import ScalaParser
 
 
 class TestScalaParser(unittest.TestCase):
-    expected_code = (""" 
-        package com.example
+    sum_columns_docstring = """This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."""
 
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.col
+    two_docstring = """This function takes in two integers and multiplies them together and return the outcome."""
 
-object FilterOnList {
+    testing_docstring = """This function takes in a list of stings and a string."""
 
-  def filterOnList(df: DataFrame, targetCol: String, values: List[Int]): DataFrame = {
-    filterFunct(df, targetCol, values)
-  }
+    filter_on_list_docstring = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
 
-  protected def filterFunct(df: DataFrame, targetCol: String, values: List[Int]): DataFrame = {
-    df.where(!col(targetCol).isin(values: _*))
-  }
-}
+    filter_func_docstring = """This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
 
-        """).strip()
+    config_container = """one_method:
+  sumColumns:
+    params:
+      df: DataFrame
+    docs: ""
+    returns: DataFrame
+    other:
+"""
 
-    config_name = "config.yml"
+    run_end_string = """Maths:
+  sumColumns:
+    params:
+      df: DataFrame
+      columnA: String
+      columnB: String
+      newCol: String
+    docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
+    returns: DataFrame
+    other:
+  sum:
+    params:
+      columnA: String
+      columnB: String
+    docs: "This function takes in two strings, converts them to Spark columns then adds them together."
+    returns: Column
+    other:
+  multiply:
+    params:
+      columnA: Int
+      columnB: Int
+    docs: "This function takes in two integers and multiplies them together and return the outcome."
+    returns: Int
+    other:
+Operations:
+  filterOnList:
+    params:
+      df: DataFrame
+      targetCol: String
+      values: List[Int]
+    docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
+    returns: DataFrame
+    other:
+  filterFunct:
+    params:
+      df: DataFrame
+      targetCol: String
+      values: List[Int]
+    docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
+    returns: DataFrame
+    other:
+"""
+    test_resource_dir = os.path.join(os.getcwd(), "tests/resources/input/")
+    example_dir = os.path.join(os.getcwd(), "example/src/main/scala/com/example/")
 
-    method_signature = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+    def setUp(self):
+        self.sp = ScalaParser()
+        self.sp.containers = []
+        self.sp.files = []
 
-    method_signature_no_space = "def aggColumn(df:DataFrame,col1:String,col2:String,newCol:String): DataFrame"
+    def test_regex_parser_no_data(self):
+        method = self.sp.regex_parser("")
+        self.assertEqual([], method)
 
-    method_config = {'FilterOnList': {
-        'filterFunct': {'params': {'df': 'DataFrame', 'targetCol': 'String', 'values': 'List[Int]'},
-                        'returns': 'DataFrame'}}}
+    def test_regex_parser_one_method(self):
+        path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
+        with open(path) as f:
+            data = f.read()
 
-    project_root = os.getcwd()
+        method = self.sp.regex_parser(data)
 
-    goal_dir_raw = os.path.join(project_root, "example/src/main/scala/com/example/Maths.scala")
+        self.assertEqual("sumColumns", method[0].name)
+        self.assertEqual({"columnA": "String", "columnB": "String", "df": "DataFrame", "newCol": "String"},
+                         method[0].params)
+        self.assertEqual(self.sum_columns_docstring, method[0].docs)
+        self.assertEqual("DataFrame", method[0].returns)
 
-    goal_dir = os.path.normpath(goal_dir_raw)
+    def test_regex_parser_no_docstring(self):
+        data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+        method = self.sp.regex_parser(data)
+        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual({"df": "DataFrame", "col1": "String", "col2": "String", "newCol": "String"},
+                         method[0].params)
+        self.assertEqual("", method[0].docs)
+        self.assertEqual("DataFrame", method[0].returns)
 
-    def test_find_method_regex(self):
-        """
-        Assert the regex search return is not None
-        """
-        sp = ScalaParse()
-        result = sp.find_method_regex(self.expected_code)
-        res_tup = tuple(result)
-        self.assertIsNotNone(res_tup)
+    def test_regex_parser_no_params(self):
+        data = """/**
+        * hi
+        **/
+        def aggColumn(): DataFrame = {}"""
+        method = self.sp.regex_parser(data)
+        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual({}, method[0].params)
+        self.assertEqual("hi", method[0].docs)
+        self.assertEqual("DataFrame", method[0].returns)
 
-    def test_multi_process(self):
-        """
-        Assert the file output, matches the expected,
-        The test will check if multiprocess function appends the expected string block to the container
-        Delete file if there are the same, raise an assertion error if not
-        :return:
-        """
-        sp = ScalaParse()
-        sp.files = []
-        sp.files.append(self.goal_dir)
-        sp.multi_process()
-        expected = ['Maths:\n'
-                    '  sumColumns:\n'
-                    '    params:\n'
-                    '      df: DataFrame\n'
-                    '      columnA: String\n'
-                    '      columnB: String\n'
-                    '      newCol: String\n'
-                    '    docs: \"This function calls a protected function which filters the data '
-                    "based on where the targetCol doesn't have values that are in the values "
-                    'parameter.\"\n'
-                    '    returns: DataFrame\n'
-                    '    other:\n'
-                    '  sum:\n'
-                    '    params:\n'
-                    '      columnA: String\n'
-                    '      columnB: String\n'
-                    '    docs: \"This function will take in a DataFrame and filter the data based '
-                    "on where the targetCol doesn't have values that are in the values "
-                    'parameter.\"\n'
-                    '    returns: Column\n'
-                    '    other:\n'
-                    '  multiply:\n'
-                    '    params:\n'
-                    '      columnA: Int\n'
-                    '      columnB: Int\n'
-                    '    docs: \"This function will take in a DataFrame and filter the data based '
-                    "on where the targetCol doesn't have values that are in the values "
-                    'parameter.\"\n'
-                    '    returns: Int\n'
-                    '    other:\n']
-        self.assertEqual(expected, sp.containers)
+    def test_regex_parser_no_methods(self):
+        method = self.sp.regex_parser("object Fred {}")
+        self.assertEqual([], method)
 
-    def test_extract_return_type(self):
-        """
-        Assert that the return type string object is same as expected
-        :return:
-        """
-        sp = ScalaParse()
-        result = sp.extract_return_type(self.method_signature)
-        expected = "DataFrame"
-        self.assertEqual(expected, result)
+    def test_regex_parser_no_return_type(self):
+        data = """/**
+        * hi
+        **/
+        def aggColumn(df: DataFrame): = {}"""
+        method = self.sp.regex_parser(data)
+        print(method)
+        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual({"df": "DataFrame"}, method[0].params)
+        self.assertEqual("hi", method[0].docs)
+        self.assertEqual("", method[0].returns)
 
-    def test_extract_method_name(self):
-        """
-        Assert that the method name string object is same as expected
-        :return:
-        """
-        sp = ScalaParse()
-        result = sp.extract_method_name(self.method_signature)
-        expected = "aggColumn"
-        self.assertEqual(expected, result)
+    def test_regex_parser_multiplies(self):
+        path = os.path.normpath(os.path.join(self.test_resource_dir, "mixture.scala"))
+        with open(path) as f:
+            data = f.read()
 
-    def test_extract_params_found(self):
-        """
-        Assert that the method params dictionary object is same as expected
-        :return:
-        """
-        sp = ScalaParse()
-        result = sp.extract_params(self.method_signature)
-        expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
-        self.assertEqual(expected, result)
+        method = self.sp.regex_parser(data)
 
-    def test_extract_params_nospace(self):
-        """
-        Assert that the method params dictionary object is same as expected
-        :return:
-        """
-        sp = ScalaParse()
-        result = sp.extract_params(self.method_signature_no_space)
-        expected = {'df': 'DataFrame', 'col1': 'String', 'col2': 'String', 'newCol': 'String'}
-        self.assertEqual(expected, result)
+        self.assertEqual("sumColumns", method[0].name)
+        self.assertEqual("sum", method[1].name)
+        self.assertEqual("two", method[2].name)
+        self.assertEqual("testing", method[3].name)
+        self.assertEqual("filterOnList", method[4].name)
+        self.assertEqual("filterFunct", method[5].name)
 
-    def test_extract_params_not_found(self):
-        """
-        Assert that the method params dictionary object is same as expected
-        :return:
-        """
-        sp = ScalaParse()
-        result = sp.extract_params("def aggColumn(): DataFrame")
-        expected = {}
-        self.assertEqual(expected, result)
+        self.assertEqual({"df": "DataFrame", "columnA": "String", "columnB": "String", "newCol": "String"},
+                         method[0].params)
+        self.assertEqual({"columnA": "String", "columnB": "String"}, method[1].params)
+        self.assertEqual({}, method[2].params)
+        self.assertEqual({"colb": "List[String]", "cola": 'String="hello"'}, method[3].params)
+        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[4].params)
+        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[5].params)
 
-    def test_docstring_found(self):
-        """
-        Assert that the docstring found is same as expected
-        :return:
-        """
-        with open(os.path.normpath(os.path.join(os.getcwd(), "./example/src/main/scala/com/example/Operations.scala")),
-                  'r') as myfile:
-            data = myfile.read()
-            sp = ScalaParse()
-        sp.find_doc_string(data)
-        expected1 = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
-        expected2 = """This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
-        self.assertEqual(expected1, sp.doc_strings[0])
-        self.assertEqual(expected2, sp.doc_strings[1])
-        sp.doc_strings = []
+        self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("Column", method[1].returns)
+        self.assertEqual("list[Int]", method[2].returns)
+        self.assertEqual("", method[3].returns)
+        self.assertEqual("DataFrame", method[4].returns)
+        self.assertEqual("DataFrame", method[5].returns)
 
-    def test_docstring_not_found(self):
-        """
-        Assert the docstring is not not found
-        :return:
-        """
-        data = "def func(df:DataFrame, col:String): DataFrame"
-        no_doc = ScalaParse()
-        no_doc.doc_strings = []
-        no_doc.find_doc_string(data)
-        self.assertFalse(no_doc.doc_strings)
+        self.assertEqual(self.sum_columns_docstring, method[0].docs)
+        self.assertEqual("", method[1].docs)
+        self.assertEqual(self.two_docstring, method[2].docs)
+        self.assertEqual(self.testing_docstring, method[3].docs)
+        self.assertEqual(self.filter_on_list_docstring, method[4].docs)
+        self.assertEqual(self.filter_on_list_docstring, method[4].docs)
+        self.assertEqual(self.filter_func_docstring, method[5].docs)
+
+    def test_create_containers_no_methods(self):
+        path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
+        self.sp.create_containers([], path)
+        self.assertEqual([], self.sp.containers)
+        self.assertEqual("", self.sp.config)
+
+    def test_create_containers_no_file_path(self):
+        with self.assertRaises(Exception) as none_message:
+            self.sp.create_containers([], None)
+
+        err_none = str(none_message.exception)
+        self.assertEqual("File path is : None", err_none)
+
+        with self.assertRaises(Exception) as empty_message:
+            self.sp.create_containers([], "")
+        err_empty = str(empty_message.exception)
+        self.assertEqual("File path is : ", err_empty)
+
+    def test_create_containers(self):
+        path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
+        methods = [Method("sumColumns", {"df": "DataFrame"}, "", "DataFrame")]
+        self.sp.create_containers(methods, path)
+
+        self.assertEqual(self.config_container, self.sp.containers[0])
+
+    def test_run_empty(self):
+        with self.assertRaises(Exception) as error:
+            self.sp.run()
+        message = str(error.exception)
+        self.assertEqual("Config string is empty", message)
+
+    def test_run_true(self):
+        try:
+            path1 = os.path.normpath(os.path.join(self.example_dir, "Maths.scala"))
+            path2 = os.path.normpath(os.path.join(self.example_dir, "Operations.scala"))
+            self.sp.files = [path1, path2]
+            self.sp.run()
+            self.assertTrue(os.path.isfile("method_config.yml"))
+
+            with open("method_config.yml") as f:
+                data = f.read()
+
+            self.assertEqual(self.run_end_string, data)
+        finally:
+            os.remove("./method_config.yml")

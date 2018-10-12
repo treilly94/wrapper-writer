@@ -15,6 +15,7 @@ class Parser:
     """
 
     containers = []  #: The list which holds all the container classes.
+    config = ""  #: The config string which holds all the data need to write to a config file.
     files = []  #: The list which holds all the absolute paths to the files.
 
     def __init__(self, config_name="method_config.yml", append_config="w"):
@@ -76,123 +77,111 @@ class Parser:
             print("The config file does not exists")
 
 
-class ScalaParse(Parser):
+class ScalaParser(Parser):
     """
-    This ScalaParse class parses a scala file, extracts the method elements and writes them out to a config file
+    This ScalaParser class parses a scala file, extracts the method elements and writes them out to a config file
     :param filename: The name of the file to parse
     :param config_name: The name of the yaml config file
     :param append_config: boolean value, True will overwrite an existing file, False will append to file
     """
 
-    doc_strings = []  #: This is a list of all the doc_strings gathered from the regex
+    #: The regex string specific to scala in order to get the docs, params, returns, type and name.
+    regex_string = r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/|(\w+ def|def)\s(\w+)\(([\w+:\s,\[\]=\"\(\)]*)\):\s([\w\[\]]*)"
 
-    def find_method_regex(self, retrieve_data):
+    def regex_parser(self, data):
         """
-        This function will find the raw method signature from file to be parsed
-        :return: iterable object with all methods found
+        This function takes in data as a string, then uses the regex string variable within this class. To find the
+        doc strings, name, parameters, types and return type for each function within the data.
+        It then stores this information as a Method class and saves all the methods as a list.
+        :param data:
+        :return: methods
         """
-        pattern = re.compile("def (\w+)\((.*)\): (\w+)", re.MULTILINE)
-        try:
-            pattern2 = pattern.finditer(retrieve_data)
-        except:
-            print("Nothing In There")
-        return pattern2
-
-    def find_doc_string(self, data):
-        """
-        This function will check the data for the relevant regex string, in order to pick out the doc strings from a
-        function.
-
-        :param data: The data given as a string for the regex to read.
-        """
-        matches = re.finditer(r"/\*\*([\s,\w,\*,@,\+\.,='\[\]\-/%]*)\*/", data, re.MULTILINE)
+        # Finds all doc strings, params, names, types, returns types from the data.
+        matches = re.finditer(self.regex_string, data, re.MULTILINE)
+        methods = []  # Initialising an empty list
+        doc_string = ""  # Initialising an empty string
         for match in matches:
-            group = match.group(1)
-            if group:
-                doc = group.replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace("\n     ", " ")
-            else:
-                doc = None
-
-            # Temporary fix to remove things starting with a @
-            doc = re.sub("\n?@.*\n?", "", doc)
-
-            self.doc_strings.append(doc.strip())
-
-    @staticmethod
-    def extract_return_type(raw_res):
-        """
-        This function extracts the return type of a method
-        :param raw_res: A method signature from the file to be parsed
-        :return: return_type: String object of the return type
-        """
-        first, *middle, last = raw_res.split()
-        return_type = last
-        return return_type
-
-    @staticmethod
-    def extract_method_name(raw_res):
-        """
-        The function will use regex to extract the method name from the logic code
-        :param raw_res: A method signature from the file to be parsed
-        :return: clean_func_name: String object of the function name
-        """
-        func_name = r"def (\w+)"
-        func_name_find = re.search(func_name, raw_res)
-        fun_name_raw = func_name_find.group()
-        clean_func_name = fun_name_raw.replace("def ", "")
-        return clean_func_name
-
-    @staticmethod
-    def extract_params(raw_res):
-        """
-        This function will use regex to extract the parameters from the logic code
-        :param raw_res: method signature from the file to be parsed
-        :return new_dict: A dictionary containing the parameters
-        """
-        retrieve_params = r"\((.*)\)"
-        retrieve_params_find = re.search(retrieve_params, raw_res)
-        retrieve_params = retrieve_params_find.group(1)
-        em_l = []
-        remove_space = {}
-        if not retrieve_params:
-            return {}
-        else:
-            for x in retrieve_params.split(','):
-                em_l.append(x)
-            s = dict(s.split(":") for s in em_l)
-            for k, v in s.items():
-                s[k] = v.lstrip()
-                remove_space = {k.lstrip(): v for k, v in s.items()}
-            return remove_space
-
-    def multi_process(self):
-        """
-        This function will process each method found and write it to a yaml file
-        :return:
-        """
-        for filepath in self.files:
-            retrieve_data = self.read_file(filepath)
-            self.find_doc_string(retrieve_data)
-            all_found = self.find_method_regex(retrieve_data)
-            matches = tuple(all_found)
-            count = 0
-            if not matches:
-                raise Exception("No Methods Found")
-            container_methods = []
-            for i in matches:
-                ig = i.group()
-                base_raw = os.path.basename(filepath)
-                container_name = os.path.splitext(base_raw)[0]
-                return_type = self.extract_return_type(ig)
-                method_name = self.extract_method_name(ig)
-                params = self.extract_params(ig)
-                if self.doc_strings == None:
-                    docs = ""
+            # doc string match separately to the rest of the variables
+            # matches look like:
+            # ["doc string", None, None, None, None][None, "def", "sum", "df: DataFrame", "DataFrame"] ... ect..
+            # This doc string is associated with the following function
+            if match.group(2) is None:
+                # if the second group is None, then this is a doc string match
+                # The doc string is then check to replace any *, long white spaces
+                # this is scala specific docstring notation
+                # The doc string is saved to a variable, ready to added to the following functions Method class
+                doc_string = match.group(1).replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace(
+                    "\n     ", " ")
+                doc_string = re.sub("\n?@.*\n?", "", doc_string).strip()
+            elif match.group(2) is not None:
+                # If the second group is not none then this a function match
+                type = match.group(2)  # This gets the function type, protected def, def, private def
+                name = match.group(3)  # This is the name of the function
+                # This is the params string -> "df: DataFrame, colA: String"
+                # it then gets turn into a parameter list -> ["df:DataFrame", "colA:String"]
+                params1 = match.group(4).split(",")
+                # This there is no parameters in the funciton, then it is a empty list[string]
+                if params1 != ['']:
+                    # Split the parameters up into a dictionary -> {"df":" DataFrame", " colA":" String"}
+                    params = dict(item.split(":") for item in params1)
+                    # This then strips it of the white spaces
+                    params = {k.lstrip(): v.lstrip() for k, v in params.items()}
                 else:
-                    docs = self.doc_strings[count]
-                one_method = Method(method_name, params, docs, return_type)
-                container_methods.append(one_method)
-                count = +1
-            one_container = Container(container_name, container_methods)
-            cc = one_container.create_config()
-            self.containers.append(cc)
+                    # if there is no parameter, it becomes an empty dictionary
+                    params = {}
+                return_type = match.group(5) # Get the return type, if there is nothing it is None
+                # Adds the Method class with the respective variables to the method list
+                methods.append(Method(name, params, str(doc_string), return_type, {}))
+                # doc string is reset to being empty
+                doc_string = ""
+            else:
+                # If no match is found then this is printed out
+                print("no match found")
+        return methods
+
+    def create_containers(self, methods, file_path):
+        """
+        This function takes the list of Method classes and a list of file paths, if the file path is empty or none,
+        then an error is raised.
+        If there are valid file paths then the container name is found using splits on the file path separator and dots.
+        From there it checks if there are Method Classes within the method list, if there are then a Container class is
+        created and the config is created around that class.
+        Otherwise it prints out which container has no methods
+        
+        :param methods: This is a list of all the methods class within the file.
+        :type methods: List[str]
+        :param file_path: This is the file path to the file currently being parsed.
+        :type file_path: str
+        """
+        invalid_files = [None, ""]
+        if file_path not in invalid_files:
+            # this gets the file's name as the container name
+            container_name = file_path.split(str(os.sep))[-1].split(".")[0]
+            if methods != []:
+                container = Container(container_name, methods, file_path)
+                self.containers.append(container.create_config())
+            else:
+                print("Methods for the container = ", container_name, " are not found.")
+        else:
+            raise Exception("File path is : " + str(file_path))
+
+    def run(self):
+        """
+        This function runs the whole process provided there are files within the file list.
+        """
+        print("starting run")
+        print(self.files)
+        for file_path in self.files:
+            print(file_path)
+            data = self.read_file(file_path)
+            methods = self.regex_parser(data)
+            self.create_containers(methods, file_path)
+
+        print("finsihed for loop")
+        print(self.containers)
+        if self.containers != []:
+            self.write_config()
+        else:
+            message = "Config string is empty"
+            print("Container list: ", self.containers)
+            raise Exception(message)
