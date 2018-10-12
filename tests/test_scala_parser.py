@@ -22,6 +22,7 @@ class TestScalaParser(unittest.TestCase):
       df: DataFrame
     docs: ""
     returns: DataFrame
+    access: public
     other:
 """
 
@@ -34,6 +35,7 @@ class TestScalaParser(unittest.TestCase):
       new_col: String
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
+    access: public
     other:
   sum:
     params:
@@ -41,6 +43,7 @@ class TestScalaParser(unittest.TestCase):
       column_b: String
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
+    access: public
     other:
   multiply:
     params:
@@ -48,6 +51,7 @@ class TestScalaParser(unittest.TestCase):
       column_b: Int
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
+    access: public
     other:
 operations:
   filter_on_list:
@@ -57,6 +61,7 @@ operations:
       values: List[Int]
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: public
     other:
   filter_funct:
     params:
@@ -65,6 +70,7 @@ operations:
       values: List[Int]
     docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: protected
     other:
 """
     test_resource_dir = os.path.join(os.getcwd(), "tests/resources/input/")
@@ -91,6 +97,8 @@ operations:
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_docstring(self):
         data = "def aggColumn(df: DataFrame, col1: String, col2: String, new_col: String): DataFrame"
@@ -100,6 +108,8 @@ operations:
                          method[0].params)
         self.assertEqual("", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_params(self):
         data = """/**
@@ -111,6 +121,8 @@ operations:
         self.assertEqual({}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_methods(self):
         method = self.sp.regex_parser("object Fred {}")
@@ -127,6 +139,8 @@ operations:
         self.assertEqual({"df": "DataFrame"}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_multiplies(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "mixture.scala"))
@@ -164,6 +178,13 @@ operations:
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_func_docstring, method[5].docs)
+
+        for i in range(5):
+            self.assertEqual("public", method[i].access)
+        self.assertEqual("protected", method[5].access)
+
+        for i in range(6):
+            self.assertEqual({}, method[i].other)
 
     def test_create_containers_no_methods(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))

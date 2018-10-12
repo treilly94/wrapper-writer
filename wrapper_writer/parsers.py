@@ -114,6 +114,11 @@ class ScalaParser(Parser):
                 doc_string = re.sub("\n?@.*\n?", "", doc_string).strip()
             elif match.group(2) is not None:
                 # If the second group is not none then this a function match
+                # This gets the function access modifier, protected def, def, private def
+                access = match.group(2).replace("def", "").strip()
+                if not access:
+                    access = "public"
+
                 name = match.group(3)  # This is the name of the function
                 # This is the params string -> "df: DataFrame, colA: String"
                 # it then gets turn into a parameter list -> ["df:DataFrame", "colA:String"]
@@ -129,7 +134,7 @@ class ScalaParser(Parser):
                     params = {}
                 return_type = match.group(5)  # Get the return type, if there is nothing it is None
                 # Create the method
-                method = Method(name, params, str(doc_string), return_type, {})
+                method = Method(name, params, str(doc_string), return_type, access, {})
                 method.format_name()
                 method.format_params()
                 # Adds the Method class with the respective variables to the method list
