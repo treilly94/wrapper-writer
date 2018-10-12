@@ -91,6 +91,8 @@ Operations:
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_docstring(self):
         data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
@@ -100,6 +102,8 @@ Operations:
                          method[0].params)
         self.assertEqual("", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_params(self):
         data = """/**
@@ -111,6 +115,8 @@ Operations:
         self.assertEqual({}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_methods(self):
         method = self.sp.regex_parser("object Fred {}")
@@ -127,6 +133,8 @@ Operations:
         self.assertEqual({"df": "DataFrame"}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_multiplies(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "mixture.scala"))
@@ -164,6 +172,13 @@ Operations:
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_func_docstring, method[5].docs)
+
+        for i in range(5):
+            self.assertEqual("public", method[i].access)
+        self.assertEqual("protected", method[5].access)
+
+        for i in range(6):
+            self.assertEqual({}, method[i].other)
 
     def test_create_containers_no_methods(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
