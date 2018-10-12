@@ -34,6 +34,8 @@ class Container:
             config += "    docs: \"%s\"\n" % m.docs
             # Method returns
             config += "    returns: %s\n" % m.returns
+            # Method access
+            config += "    access: %s\n" % m.access
             # Method other
             config += "    other:\n"
             for k, v in m.other.items():
