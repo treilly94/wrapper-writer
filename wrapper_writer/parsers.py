@@ -118,7 +118,7 @@ class ScalaParser(Parser):
                 # This gets the function access modifier, protected def, def, private def
                 access = match.group(2).replace("def", "").strip()
                 if access == "":
-                    access = "Public"
+                    access = "public"
 
                 name = match.group(3)  # This is the name of the function
                 # This is the params string -> "df: DataFrame, colA: String"
