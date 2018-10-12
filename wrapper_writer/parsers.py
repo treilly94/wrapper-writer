@@ -116,7 +116,7 @@ class ScalaParser(Parser):
                 # If the second group is not none then this a function match
                 # This gets the function access modifier, protected def, def, private def
                 access = match.group(2).replace("def", "").strip()
-                if access == "":
+                if not access:
                     access = "public"
 
                 name = match.group(3)  # This is the name of the function
