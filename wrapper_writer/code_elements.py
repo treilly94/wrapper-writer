@@ -1,3 +1,6 @@
+from wrapper_writer.converters import underscores
+
+
 class Container:
     """The Container Class contains the details and functionality associated with a particular container.
 
@@ -10,10 +13,18 @@ class Container:
     :param methods: The methods associated with the container.
     :type methods: list
     """
+
     def __init__(self, name, methods, path=None):
         self.name = name
         self.path = path
         self.methods = methods
+
+    def format_name(self):
+        """This method converts self.name from camelcase to lowercase with underscores.
+
+        :return:
+        """
+        self.name = underscores(self.name)
 
     def create_config(self):
         """This method formats the details of the container and its methods into a yml syntax
@@ -58,7 +69,6 @@ class Method:
     """
 
     def __init__(self, name, params, docs, returns, other={}):
-
         self.name = name
         self.params = params
         self.docs = docs
