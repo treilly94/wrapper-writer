@@ -25,8 +25,8 @@ class TestScalaParser(unittest.TestCase):
     other:
 """
 
-    run_end_string = """Maths:
-  sumColumns:
+    run_end_string = """maths:
+  sum_columns:
     params:
       df: DataFrame
       columnA: String
@@ -49,8 +49,8 @@ class TestScalaParser(unittest.TestCase):
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
     other:
-Operations:
-  filterOnList:
+operations:
+  filter_on_list:
     params:
       df: DataFrame
       targetCol: String
@@ -58,7 +58,7 @@ Operations:
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
     other:
-  filterFunct:
+  filter_funct:
     params:
       df: DataFrame
       targetCol: String
@@ -86,7 +86,7 @@ Operations:
 
         method = self.sp.regex_parser(data)
 
-        self.assertEqual("sumColumns", method[0].name)
+        self.assertEqual("sum_columns", method[0].name)
         self.assertEqual({"columnA": "String", "columnB": "String", "df": "DataFrame", "newCol": "String"},
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
@@ -95,7 +95,7 @@ Operations:
     def test_regex_parser_no_docstring(self):
         data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
         method = self.sp.regex_parser(data)
-        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({"df": "DataFrame", "col1": "String", "col2": "String", "newCol": "String"},
                          method[0].params)
         self.assertEqual("", method[0].docs)
@@ -107,7 +107,7 @@ Operations:
         **/
         def aggColumn(): DataFrame = {}"""
         method = self.sp.regex_parser(data)
-        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
@@ -123,7 +123,7 @@ Operations:
         def aggColumn(df: DataFrame): = {}"""
         method = self.sp.regex_parser(data)
         print(method)
-        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({"df": "DataFrame"}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
@@ -135,12 +135,12 @@ Operations:
 
         method = self.sp.regex_parser(data)
 
-        self.assertEqual("sumColumns", method[0].name)
+        self.assertEqual("sum_columns", method[0].name)
         self.assertEqual("sum", method[1].name)
         self.assertEqual("two", method[2].name)
         self.assertEqual("testing", method[3].name)
-        self.assertEqual("filterOnList", method[4].name)
-        self.assertEqual("filterFunct", method[5].name)
+        self.assertEqual("filter_on_list", method[4].name)
+        self.assertEqual("filter_funct", method[5].name)
 
         self.assertEqual({"df": "DataFrame", "columnA": "String", "columnB": "String", "newCol": "String"},
                          method[0].params)

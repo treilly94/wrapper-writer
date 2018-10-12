@@ -130,8 +130,11 @@ class ScalaParser(Parser):
                     # if there is no parameter, it becomes an empty dictionary
                     params = {}
                 return_type = match.group(5) # Get the return type, if there is nothing it is None
+                # Create the method
+                method = Method(name, params, str(doc_string), return_type, {})
+                method.format_name()
                 # Adds the Method class with the respective variables to the method list
-                methods.append(Method(name, params, str(doc_string), return_type, {}))
+                methods.append(method)
                 # doc string is reset to being empty
                 doc_string = ""
             else:
@@ -159,6 +162,7 @@ class ScalaParser(Parser):
             container_name = file_path.split(str(os.sep))[-1].split(".")[0]
             if methods != []:
                 container = Container(container_name, methods, file_path)
+                container.format_name()
                 self.containers.append(container.create_config())
             else:
                 print("Methods for the container = ", container_name, " are not found.")
