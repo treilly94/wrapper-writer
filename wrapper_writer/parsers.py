@@ -111,7 +111,8 @@ class ScalaParser(Parser):
                 # this is scala specific docstring notation
                 # The doc string is saved to a variable, ready to added to the following functions Method class
                 doc_string = match.group(1).replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace(
-                    "\n     ", " ").strip()
+                    "\n     ", " ")
+                doc_string = re.sub("\n?@.*\n?", "", doc_string).strip()
             elif match.group(2) is not None:
                 # If the second group is not none then this a function match
                 type = match.group(2)  # This gets the function type, protected def, def, private def

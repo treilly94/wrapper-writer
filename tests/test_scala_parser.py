@@ -6,30 +6,15 @@ from wrapper_writer.parsers import ScalaParser
 
 
 class TestScalaParser(unittest.TestCase):
-    sum_columns_docstring = """This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
-@param df DataFrame - Stores all the data.
-@param columnA String - Name of column to add.
-@param columnB String - Name of column to add.
-@param newCol String - Name of new column being added to to data set, holds the values of columnA + columnB.
-@return DataFrame"""
+    sum_columns_docstring = """This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."""
 
-    two_docstring = """This function takes in two integers and multiplies them together and return the outcome.
-@return Int"""
+    two_docstring = """This function takes in two integers and multiplies them together and return the outcome."""
 
-    testing_docstring = """This function takes in a list of stings and a string.
-@return Int"""
+    testing_docstring = """This function takes in a list of stings and a string."""
 
-    filter_on_list_docstring = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"""
+    filter_on_list_docstring = """This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."""
 
-    filter_func_docstring = """This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"""
+    filter_func_docstring = """This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."""
 
     config_container = """one_method:
   sumColumns:
@@ -47,32 +32,21 @@ class TestScalaParser(unittest.TestCase):
       columnA: String
       columnB: String
       newCol: String
-    docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column.
-@param df DataFrame - Stores all the data.
-@param columnA String - Name of column to add.
-@param columnB String - Name of column to add.
-@param newCol String - Name of new column being added to to data set, holds the values of columnA + columnB.
-@return DataFrame"
+    docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
     other:
   sum:
     params:
       columnA: String
       columnB: String
-    docs: "This function takes in two strings, converts them to Spark columns then adds them together.
-@param columnA String - Name of column to add.
-@param columnB String - Name of column to add.
-@return Column"
+    docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
     other:
   multiply:
     params:
       columnA: Int
       columnB: Int
-    docs: "This function takes in two integers and multiplies them together and return the outcome.
-@param columnA Int - Integer to multiply.
-@param columnB Int - Integer to multiply.
-@return Int"
+    docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
     other:
 Operations:
@@ -81,11 +55,7 @@ Operations:
       df: DataFrame
       targetCol: String
       values: List[Int]
-    docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"
+    docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
     other:
   filterFunct:
@@ -93,11 +63,7 @@ Operations:
       df: DataFrame
       targetCol: String
       values: List[Int]
-    docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter.
-@param df DataFrame - Stores all the data.
-@param targetCol String - Column to be filtered on.
-@param values List[Int] - List of values to compared.
-@return DataFrame"
+    docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
     other:
 """
