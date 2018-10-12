@@ -53,7 +53,7 @@
 <div class="section" id="wrap">
 <h2>Wrap<a class="headerlink" href="#wrap" title="Permalink to this headline">¶</a></h2>
 <p>Wrap is a subcommand that will call the wrapper functionality. The below example will run the wrap functionality with
-default values</p>
+default values:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wrapper_writer wrap
 </pre></div>
 </div>
@@ -84,8 +84,9 @@ default=./structure_config.yml</td></tr>
 </div>
 <div class="section" id="parse">
 <h2>Parse<a class="headerlink" href="#parse" title="Permalink to this headline">¶</a></h2>
-<p>The parse functionality is currently in development. The below example will print out “Parsing …”</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wrapper_writer parse
+<p>The parse subcommand will create the methods_config file from one or more scala files, or a directory containing one
+or more scala files. The below example will run the parse functionality on two given files and a directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wrapper_writer parse -f /path/to/file/one.scala,/path/to/file/two.scala -d /path/to/dir/
 </pre></div>
 </div>
 <p>This takes the following arguments:</p>
@@ -96,6 +97,25 @@ default=./structure_config.yml</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>Describe the subcommand and its arguments.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-c</span>, <span class="option">--config-name</span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>The name of the config file to write to</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-a</span>, <span class="option">--append-config</span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>a: Append an existing config file, w: Overwrite if config file exists</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-f</span>, <span class="option">--files</span></kbd></td>
+<td>A comma separated list of absolute file paths to be parsed</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d</span>, <span class="option">--directory</span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>The absolute path to a directory containing files to be parsed</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t</span>, <span class="option">--target-format</span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>The format of the files to read from the directory</td></tr>
 </tbody>
 </table>
 </div>

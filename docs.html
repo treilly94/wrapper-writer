@@ -56,9 +56,9 @@ configs.</p>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.container_classes">
-<code class="descname">container_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.container_classes" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list which holds all the container classes.</p>
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structures">
+<code class="descname">structures</code><em class="property"> = {}</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dictionary which holds all the information from the structure config.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -67,38 +67,28 @@ configs.</p>
 <dd><p>The dictionary which holds all the information from the methods config.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.create_directories">
-<code class="descname">create_directories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.create_directories" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function will take the structure_classes parameter and called the create_path and create_dir functions
-for each structure class within the list.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class">
-<code class="descname">instantiate_container_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function will instantiate the Container class for each container within the container dictionary class
-parameter. It will store in class within a list.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class">
-<code class="descname">instantiate_structure_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function will instantiate the Structure class for each structure within the structures dictionary class
-parameter. It will store in class within a list.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class">
-<code class="descname">instantiate_wrapper_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function will instantiate the Wrapper class for each structure and each container within the
-structure and container class. It will store these wrapper classes within a list.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="wrapper_writer.wrapper_writer.WrapperWriter.project_root">
 <code class="descname">project_root</code><em class="property"> = ''</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.project_root" title="Permalink to this definition">¶</a></dt>
 <dd><p>The absolute path to the current working directory.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structure_classes">
+<code class="descname">structure_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structure_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the structure classes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.container_classes">
+<code class="descname">container_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.container_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the container classes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.wrappers">
+<code class="descname">wrappers</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.wrappers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the wrapper classes.</p>
 </dd></dl>
 
 <dl class="method">
@@ -109,27 +99,37 @@ then get the project root from the structures yml file.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class">
+<code class="descname">instantiate_structure_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_structure_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Structure class for each structure within the structures dictionary class
+parameter. It will store in class within a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class">
+<code class="descname">instantiate_container_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_container_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Container class for each container within the container dictionary class
+parameter. It will store in class within a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.create_directories">
+<code class="descname">create_directories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.create_directories" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will take the structure_classes parameter and called the create_path and create_dir functions
+for each structure class within the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class">
+<code class="descname">instantiate_wrapper_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.instantiate_wrapper_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will instantiate the Wrapper class for each structure and each container within the
+structure and container class. It will store these wrapper classes within a list.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="wrapper_writer.wrapper_writer.WrapperWriter.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will run the above method in order to produce a wrapper file.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structure_classes">
-<code class="descname">structure_classes</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structure_classes" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list which holds all the structure classes.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.structures">
-<code class="descname">structures</code><em class="property"> = {}</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.structures" title="Permalink to this definition">¶</a></dt>
-<dd><p>The dictionary which holds all the information from the structure config.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="wrapper_writer.wrapper_writer.WrapperWriter.wrappers">
-<code class="descname">wrappers</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.wrapper_writer.WrapperWriter.wrappers" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list which holds all the wrapper classes.</p>
 </dd></dl>
 
 </dd></dl>
@@ -147,7 +147,7 @@ then get the project root from the structures yml file.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project_root</strong> (<em>str</em>) – The root of the project the wrappers will be written to.</li>
-<li><strong>container</strong> (<a class="reference internal" href="#wrapper_writer.container.Container" title="wrapper_writer.container.Container"><em>Container</em></a>) – The container associated with the wrapper.</li>
+<li><strong>container</strong> (<a class="reference internal" href="#wrapper_writer.code_elements.Container" title="wrapper_writer.code_elements.Container"><em>Container</em></a>) – The container associated with the wrapper.</li>
 <li><strong>structure</strong> (<a class="reference internal" href="#wrapper_writer.structure.Structure" title="wrapper_writer.structure.Structure"><em>Structure</em></a>) – The method associated with the wrapper.</li>
 </ul>
 </td>
@@ -155,9 +155,9 @@ then get the project root from the structures yml file.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="wrapper_writer.wrapper.Wrapper.create_file_name">
-<code class="descname">create_file_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.create_file_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method formats the file name and adds it to the end of the path defined in the structure.</p>
+<dt id="wrapper_writer.wrapper.Wrapper.populate_template">
+<code class="descname">populate_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.populate_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method populates the template defined in the structure with the details of the container.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -169,9 +169,9 @@ then get the project root from the structures yml file.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="wrapper_writer.wrapper.Wrapper.populate_template">
-<code class="descname">populate_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.populate_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method populates the template defined in the structure with the details of the container.</p>
+<dt id="wrapper_writer.wrapper.Wrapper.create_file_name">
+<code class="descname">create_file_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.wrapper.Wrapper.create_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method formats the file name and adds it to the end of the path defined in the structure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -214,6 +214,7 @@ then get the project root from the structures yml file.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project_root</strong> (<em>str</em>) – This is the absolute path to the project</li>
 <li><strong>path</strong> (<em>str</em>) – The relative path from the project root where the new files will be placed.</li>
 <li><strong>template</strong> (<em>str</em>) – The name of the template file to use.</li>
 <li><strong>file_name_format</strong> (<em>str</em>) – The format of the new file names using PyFormat where a {} represents the file name.</li>
@@ -222,19 +223,10 @@ then get the project root from the structures yml file.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="wrapper_writer.structure.Structure.create_dir">
-<code class="descname">create_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.structure.Structure.create_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function makes directories from the full path variable. If the directory already exist then this will
-catch the error and print which directory exists.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dl class="attribute">
+<dt id="wrapper_writer.structure.Structure.full_path">
+<code class="descname">full_path</code><em class="property"> = ''</em><a class="headerlink" href="#wrapper_writer.structure.Structure.full_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the full path from the starting drive to the directory in question.</p>
 </dd></dl>
 
 <dl class="method">
@@ -252,14 +244,29 @@ absolute path</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="wrapper_writer.structure.Structure.create_dir">
+<code class="descname">create_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.structure.Structure.create_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function makes directories from the full path variable. If the directory already exist then this will
+catch the error and print which directory exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
-<div class="section" id="module-wrapper_writer.container">
-<span id="container"></span><h2>Container<a class="headerlink" href="#module-wrapper_writer.container" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wrapper_writer.code_elements">
+<span id="code-elements"></span><h2>Code Elements<a class="headerlink" href="#module-wrapper_writer.code_elements" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="wrapper_writer.container.Container">
-<em class="property">class </em><code class="descclassname">wrapper_writer.container.</code><code class="descname">Container</code><span class="sig-paren">(</span><em>name</em>, <em>methods</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.container.Container" title="Permalink to this definition">¶</a></dt>
+<dt id="wrapper_writer.code_elements.Container">
+<em class="property">class </em><code class="descclassname">wrapper_writer.code_elements.</code><code class="descname">Container</code><span class="sig-paren">(</span><em>name</em>, <em>methods</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.code_elements.Container" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Container Class contains the details and functionality associated with a particular container.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -279,8 +286,8 @@ absolute path</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="wrapper_writer.container.Container.create_config">
-<code class="descname">create_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.container.Container.create_config" title="Permalink to this definition">¶</a></dt>
+<dt id="wrapper_writer.code_elements.Container.create_config">
+<code class="descname">create_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.code_elements.Container.create_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method formats the details of the container and its methods into a yml syntax</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -294,12 +301,9 @@ absolute path</p>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-wrapper_writer.method">
-<span id="method"></span><h2>Method<a class="headerlink" href="#module-wrapper_writer.method" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="wrapper_writer.method.Method">
-<em class="property">class </em><code class="descclassname">wrapper_writer.method.</code><code class="descname">Method</code><span class="sig-paren">(</span><em>name</em>, <em>params</em>, <em>docs</em>, <em>returns</em>, <em>other={}</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.method.Method" title="Permalink to this definition">¶</a></dt>
+<dt id="wrapper_writer.code_elements.Method">
+<em class="property">class </em><code class="descclassname">wrapper_writer.code_elements.</code><code class="descname">Method</code><span class="sig-paren">(</span><em>name</em>, <em>params</em>, <em>docs</em>, <em>returns</em>, <em>other={}</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.code_elements.Method" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Method Class contains the details associated with a particular method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -321,12 +325,6 @@ absolute path</p>
 </div>
 <div class="section" id="module-wrapper_writer.converters">
 <span id="converters"></span><h2>Converters<a class="headerlink" href="#module-wrapper_writer.converters" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="wrapper_writer.converters.CustomFormatter">
-<em class="property">class </em><code class="descclassname">wrapper_writer.converters.</code><code class="descname">CustomFormatter</code><a class="headerlink" href="#wrapper_writer.converters.CustomFormatter" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class extends string.Formatter and adds the functionality to convert to upper or lower camelcase</p>
-</dd></dl>
-
 <dl class="function">
 <dt id="wrapper_writer.converters.lower_camel">
 <code class="descclassname">wrapper_writer.converters.</code><code class="descname">lower_camel</code><span class="sig-paren">(</span><em>name</em>, <em>split_char='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.converters.lower_camel" title="Permalink to this definition">¶</a></dt>
@@ -369,6 +367,152 @@ absolute path</p>
 </table>
 </dd></dl>
 
+<dl class="class">
+<dt id="wrapper_writer.converters.CustomFormatter">
+<em class="property">class </em><code class="descclassname">wrapper_writer.converters.</code><code class="descname">CustomFormatter</code><a class="headerlink" href="#wrapper_writer.converters.CustomFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class extends string.Formatter and adds the functionality to convert to upper or lower camelcase</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-wrapper_writer.parsers">
+<span id="parsers"></span><h2>Parsers<a class="headerlink" href="#module-wrapper_writer.parsers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wrapper_writer.parsers.Parser">
+<em class="property">class </em><code class="descclassname">wrapper_writer.parsers.</code><code class="descname">Parser</code><span class="sig-paren">(</span><em>config_name='method_config.yml'</em>, <em>append_config='w'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Parser class contains the details and functionality associated with parsing one or more files into a config file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>config_name</strong> (<em>str</em>) – The name of the config file to write.</li>
+<li><strong>append_config</strong> (<em>bool</em>) – Whether to append to the config file or to overwrite it</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="wrapper_writer.parsers.Parser.containers">
+<code class="descname">containers</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.parsers.Parser.containers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the container classes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.parsers.Parser.config">
+<code class="descname">config</code><em class="property"> = ''</em><a class="headerlink" href="#wrapper_writer.parsers.Parser.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>The config string which holds all the data need to write to a config file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wrapper_writer.parsers.Parser.files">
+<code class="descname">files</code><em class="property"> = []</em><a class="headerlink" href="#wrapper_writer.parsers.Parser.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list which holds all the absolute paths to the files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.Parser.get_files">
+<code class="descname">get_files</code><span class="sig-paren">(</span><em>directory</em>, <em>target_format</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.Parser.get_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method gets all files in a given directory that matches a given format and appends them to the files list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> (<em>str</em>) – The absolute path of the directory to look for files within</li>
+<li><strong>target_format</strong> (<em>str</em>) – A regex string that defines the naming convention of the files to parse.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="wrapper_writer.parsers.Parser.read_file">
+<em class="property">static </em><code class="descname">read_file</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.Parser.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method reads a file_path and returns its contents as a string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<em>str</em>) – The absolute path to the file to open</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.Parser.write_config">
+<code class="descname">write_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.Parser.write_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method writes the current list of containers to the config file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.Parser.delete_config">
+<code class="descname">delete_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.Parser.delete_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will check if a file exist then delete it
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wrapper_writer.parsers.ScalaParser">
+<em class="property">class </em><code class="descclassname">wrapper_writer.parsers.</code><code class="descname">ScalaParser</code><span class="sig-paren">(</span><em>config_name='method_config.yml'</em>, <em>append_config='w'</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.ScalaParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>This ScalaParser class parses a scala file, extracts the method elements and writes them out to a config file
+:param filename: The name of the file to parse
+:param config_name: The name of the yaml config file
+:param append_config: boolean value, True will overwrite an existing file, False will append to file</p>
+<dl class="attribute">
+<dt id="wrapper_writer.parsers.ScalaParser.regex_string">
+<code class="descname">regex_string</code><em class="property"> = '/\\*\\*([\\s,\\w,\\*,&#64;,\\+\\.,=\'\\[\\]\\-/%]*)\\*/|(\\w+ def|def)\\s(\\w+)\\(([\\w+:\\s,\\[\\]=\\&quot;\\(\\)]*)\\):\\s([\\w\\[\\]]*)'</em><a class="headerlink" href="#wrapper_writer.parsers.ScalaParser.regex_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regex string specific to scala in order to get the docs, params, returns, type and name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.ScalaParser.regex_parser">
+<code class="descname">regex_parser</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.ScalaParser.regex_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes in data as a string, then uses the regex string variable within this class. To find the
+doc strings, name, parameters, types and return type for each function within the data.
+It then stores this information as a Method class and saves all the methods as a list.
+:param data:
+:return: methods</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.ScalaParser.create_containers">
+<code class="descname">create_containers</code><span class="sig-paren">(</span><em>methods</em>, <em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.ScalaParser.create_containers" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes the list of Method classes and a list of file paths, if the file path is empty or none,
+then an error is raised.
+If there are valid file paths then the container name is found using splits on the file path separator and dots.
+From there it checks if there are Method Classes within the method list, if there are then a Container class is
+created and the config is created around that class.
+Otherwise it prints out which container has no methods</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>methods</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – This is a list of all the methods class within the file.</li>
+<li><strong>file_path</strong> (<em>str</em>) – This is the file path to the file currently being parsed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wrapper_writer.parsers.ScalaParser.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_writer.parsers.ScalaParser.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the whole process provided there are files within the file list.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -397,9 +541,9 @@ absolute path</p>
 <li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.wrapper_writer">Wrapper Writer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.wrapper">Wrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.structure">Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.container">Container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.method">Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.code_elements">Code Elements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.converters">Converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-wrapper_writer.parsers">Parsers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
