@@ -1,11 +1,10 @@
+{%- import "testmarcos.j2" as marcos -%}
 object {{ container.name|upper_camel }} {
 
 {%- for m in container.methods %}
+  {{ marcos.scala_docs(m) }}
+  def {{ m.name|lower_camel }}({{ marcos.show_params_types_defaults(m.params) }}): {% if m.returns %}{{ m.returns }}{% else %}Unit = {%- endif %}{
 
-  /** {{ m.docs }}*/
-  def {{ m.name|lower_camel }}({% for p, t in m.params.items() %}{{ p }}: {{ t }}{% endfor %}): {{ m.returns }} = {
-
-  }
-  {%- endfor %}
+  }{% endfor %}
 }
 {# newline at end of file #}

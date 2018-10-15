@@ -12,7 +12,8 @@ from wrapper_writer.wrapper import Wrapper
 class TestWrapper(TestCase):
     def setUp(self):
         self.m1 = Method(name="test_func",
-                         params={"param1": "String"},
+                         params={"param1": {"type": "String", "default": "numbers", "doc": "parameter to test."},
+                                 "para21": {"type": "String", "default": None, "doc": "parameter2 to test."}},
                          returns="String",
                          docs="A cool function",
                          access="public",
@@ -47,6 +48,14 @@ class TestWrapper(TestCase):
         self.assertListEqual([self.m1, m3], self.wrapper.container.methods)
 
     def test_populate_template(self):
+        m2 = Method(name="test_func",
+                    params={"param1": {"type": "String", "default": None, "doc": "parameter to test."},
+                            "para21": {"type": "String", "default": '"numbers"', "doc": ""}},
+                    returns="",
+                    docs="A cool function",
+                    access="public",
+                    other={})
+        self.wrapper.container.methods.extend([m2])
         output = self.wrapper.populate_template()
 
         with open('./tests/resources/expected/testContainer.scala', 'r') as expected_file:
