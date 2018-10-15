@@ -21,7 +21,7 @@ class Wrapper:
         self.container = container
         self.structure = structure
 
-    def remove_access(self):
+    def filter_access(self):
         """This method removes any methods in the container that don't have the access allowed by the structure
 
         :return:
