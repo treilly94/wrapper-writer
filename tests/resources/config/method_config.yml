@@ -2,21 +2,39 @@
 Maths:
   sum_column:
     params:
-      column_a: String
-      column_b: String
+      column_a:
+        type: String
+        default:
+        doc: "Name of column to add."
+      column_b:
+         type: String
+         default:
+         doc: "Name of column to add."
     docs: This function adds the two columns together
     returns: String
   mulitply:
     params:
-      column_a: String
-      column_b: String
+      column_a:
+         type: String
+         default:
+         doc: "Name of column to multiply."
+      column_b:
+        type: String
+        default:
+        doc: "Name of column to multiply."
     docs: This function multiplies the two columns together
     returns: String
 
 Estimation:
   ratio:
       params:
-        column_a: String
-        column_b: String
+        column_a:
+          type: String
+          default: numbers
+          doc: "Name of column to estimate."
+        column_b:
+          type: String
+          default:
+          doc: ""
       docs: This function does ratio estimation
       returns: String
