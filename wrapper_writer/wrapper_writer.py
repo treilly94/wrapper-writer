@@ -61,7 +61,11 @@ class WrapperWriter:
         parameter. It will store in class within a list.
         """
         for i in self.structures.values():
-            one_structure = Structure(self.project_root, i.get("path"), i.get("template"), i.get("file_name_format"))
+            one_structure = Structure(project_root=self.project_root,
+                                      path=i.get("path"),
+                                      template=i.get("template"),
+                                      access=i.get("access", "public"),
+                                      file_name_format=i.get("file_name_format"))
             self.structure_classes.append(one_structure)
 
     def instantiate_container_class(self):
@@ -76,7 +80,7 @@ class WrapperWriter:
                                     params=v.get("params"),
                                     docs=v.get("docs"),
                                     returns=v.get("returns"),
-                                    access=v.get("access"),
+                                    access=v.get("access", "public"),
                                     other=v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
@@ -112,4 +116,5 @@ class WrapperWriter:
 
         self.instantiate_wrapper_class()
         for i in self.wrappers:
+            i.filter_access()
             i.write_file()

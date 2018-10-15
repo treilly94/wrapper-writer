@@ -24,6 +24,9 @@ It also contains the following details of each type of wrapper:
 **template**
     The name of the template to use for these wrappers.
 
+**access**
+    A list of the method access modifiers that should be included in these wrappers. Defaults to public.
+
 **file_name_format**
     The format of the name of the generated files. This is a string that will be formatted.
     A **{}** symbol will represent the container name. The container name can be converted into Upper or Lower camelcase by
@@ -44,6 +47,9 @@ Below is an example of the structure config.
         path: src/main/scala/com/example/api/
         template: api.scala.j2
         file_name_format: "{!u}API.scala"
+        access:
+          - public
+          - protected
       impl:
         path: src/main/scala/com/example/implicits/
         template: implicits.scala.j2
