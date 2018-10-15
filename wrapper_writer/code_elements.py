@@ -40,7 +40,12 @@ class Container:
             # Method params
             config += "    params:\n"
             for k, v in m.params.items():
-                config += "      %s: %s\n" % (k, v)
+                config += "      %s:\n" % (k)
+                for j,i in v.items():
+                    if j == "doc":
+                        config += "         %s: \"%s\"\n" % (j, i)
+                    else:
+                        config += "         %s: %s\n" % (j, i)
             # Method docs
             config += "    docs: \"%s\"\n" % m.docs
             # Method returns
