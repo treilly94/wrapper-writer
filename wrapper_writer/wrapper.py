@@ -21,6 +21,19 @@ class Wrapper:
         self.container = container
         self.structure = structure
 
+    def remove_access(self):
+        """This method removes any methods in the container that don't have the access allowed by the structure
+
+        :return:
+        """
+
+        filtered_methods = []
+        for m in self.container.methods:
+            if m.access in self.structure.access:
+                filtered_methods.append(m)
+
+        self.container.methods = filtered_methods
+
     def populate_template(self):
         """This method populates the template defined in the structure with the details of the container.
 
