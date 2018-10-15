@@ -285,19 +285,19 @@ operations:
         self.assertEqual("Config string is empty", message)
 
     def test_run_true(self):
-        #try:
-        path1 = os.path.normpath(os.path.join(self.example_dir, "Maths.scala"))
-        path2 = os.path.normpath(os.path.join(self.example_dir, "Operations.scala"))
-        self.sp.files = [path1, path2]
-        self.sp.run()
-        self.assertTrue(os.path.isfile("method_config.yml"))
+        try:
+            path1 = os.path.normpath(os.path.join(self.example_dir, "Maths.scala"))
+            path2 = os.path.normpath(os.path.join(self.example_dir, "Operations.scala"))
+            self.sp.files = [path1, path2]
+            self.sp.run()
+            self.assertTrue(os.path.isfile("method_config.yml"))
 
-        with open("method_config.yml") as f:
-            data = f.read()
+            with open("method_config.yml") as f:
+                data = f.read()
 
-        self.assertEqual(self.run_end_string, data)
-        #finally:
-    # os.remove("./method_config.yml")
+            self.assertEqual(self.run_end_string, data)
+        finally:
+            os.remove("./method_config.yml")
 
 
 

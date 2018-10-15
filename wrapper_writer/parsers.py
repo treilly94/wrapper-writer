@@ -146,11 +146,9 @@ class ScalaParser(Parser):
         params = {}
         # {"": {"type": "", "default": "", "doc": ""}}
 
-        print(parameter_match)
-        # if there are parameters and a dco string
+        # if there are parameters and a doc string
         if parameter_match != [''] and parameter_doc != []:
             for i in range(0, len(parameter_match)):
-                print(parameter_match[i])
                 default = ""
                 name = parameter_match[i].split(":")[0].strip()
                 type_default = parameter_match[i].split(":")[1].split("=")
@@ -175,7 +173,6 @@ class ScalaParser(Parser):
                 params.update({name: {"type": type_default[0].strip(), "default": default, "doc": ""}})
 
         return params
-
 
     def create_containers(self, methods, file_path):
         """
