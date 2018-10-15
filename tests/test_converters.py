@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wrapper_writer.converters import lower_camel, upper_camel
+from wrapper_writer.converters import lower_camel, upper_camel, underscores
 
 
 class TestConverters(TestCase):
@@ -19,3 +19,14 @@ class TestConverters(TestCase):
     def test_upper_camel_other(self):
         out = upper_camel("test.func.one", ".")
         self.assertEqual("TestFuncOne", out)
+
+    def test_underscores(self):
+        # Upper camel
+        out = underscores('CamelCase')
+        self.assertEqual("camel_case", out)
+        # Lower camel
+        out = underscores('camelCase')
+        self.assertEqual("camel_case", out)
+        # Underscores
+        out = underscores('camel_case')
+        self.assertEqual("camel_case", out)
