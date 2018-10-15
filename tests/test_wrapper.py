@@ -11,15 +11,40 @@ from wrapper_writer.wrapper import Wrapper
 # This test must be run with the working directory set as the project root
 class TestWrapper(TestCase):
     def setUp(self):
-        m1 = Method(name="test_func",
+        self.m1 = Method(name="test_func",
+                         params={"param1": "String"},
+                         returns="String",
+                         docs="A cool function",
+                         access="public",
+                         other={})
+
+        container = Container(name="test_container", path="", methods=[self.m1])
+        structure = Structure(project_root=os.getcwd(), path="./test_dir", template="testTemplate.scala.j2",
+                              access=["public", "protected"], file_name_format="prefix_{}.txt")
+        self.wrapper = Wrapper(project_root="./tests/resources/", container=container, structure=structure)
+
+    def test_filter_access(self):
+        # Add new test functions
+        m2 = Method(name="test_func2",
                     params={"param1": "String"},
                     returns="String",
                     docs="A cool function",
+                    access="private",
+                    other={})
+        m3 = Method(name="test_func3",
+                    params={"param1": "String"},
+                    returns="String",
+                    docs="A cool function",
+                    access="protected",
                     other={})
 
-        container = Container(name="test_container", path="", methods=[m1])
-        structure = Structure(project_root=os.getcwd(), path="./test_dir", template="testTemplate.scala.j2", file_name_format="prefix_{}.txt")
-        self.wrapper = Wrapper(project_root="./tests/resources/", container=container, structure=structure)
+        self.wrapper.container.methods.extend([m2, m3])
+
+        # Call method
+        self.wrapper.filter_access()
+
+        # Assert
+        self.assertListEqual([self.m1, m3], self.wrapper.container.methods)
 
     def test_populate_template(self):
         output = self.wrapper.populate_template()
