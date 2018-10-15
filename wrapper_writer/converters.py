@@ -1,3 +1,4 @@
+import re
 import string
 
 
@@ -27,8 +28,20 @@ def upper_camel(name, split_char="_"):
     return "".join(w.capitalize() for w in name.split(split_char))
 
 
+def underscores(name):
+    """Converts a given name from camel case to underscores.
+
+    :param name: The name to be converted
+    :type name: str
+    :return: str
+    """
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+
 class CustomFormatter(string.Formatter):
     """This class extends string.Formatter and adds the functionality to convert to upper or lower camelcase"""
+
     def convert_field(self, value, conversion):
         if conversion == 'u':
             return upper_camel(value)

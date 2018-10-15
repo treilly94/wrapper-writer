@@ -25,65 +25,69 @@ class TestScalaParser(unittest.TestCase):
          doc: "data set need for function"
     docs: ""
     returns: DataFrame
+    access: public
     other:
 """
 
-    run_end_string = """Maths:
-  sumColumns:
+    run_end_string = """maths:
+  sum_columns:
     params:
       df:
          type: DataFrame
          default: 
          doc: "Stores all the data."
-      columnA:
+      column_a:
          type: String
          default: 
          doc: "Name of column to add."
-      columnB:
+      column_b:
          type: String
          default: 
          doc: "Name of column to add."
-      newCol:
+      new_col:
          type: String
          default: 
          doc: "Name of new column being added to to data set, holds the values of columnA + columnB."
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
+    access: public
     other:
   sum:
     params:
-      columnA:
+      column_a:
          type: String
          default: 
          doc: "Name of column to add."
-      columnB:
+      column_b:
          type: String
          default: 
          doc: "Name of column to add."
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
+    access: public
     other:
   multiply:
     params:
-      columnA:
+      column_a:
          type: Int
          default: 
          doc: "Integer to multiply."
-      columnB:
+      column_b:
          type: Int
          default: 
          doc: "Integer to multiply."
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
+    access: public
     other:
-Operations:
-  filterOnList:
+operations:
+  filter_on_list:
     params:
       df:
          type: DataFrame
          default: 
          doc: "Stores all the data."
-      targetCol:
+      target_col:
          type: String
          default: 
          doc: "Column to be filtered on."
@@ -93,14 +97,15 @@ Operations:
          doc: "List of values to compared."
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: public
     other:
-  filterFunct:
+  filter_funct:
     params:
       df:
          type: DataFrame
          default: 
          doc: "Stores all the data."
-      targetCol:
+      target_col:
          type: String
          default: 
          doc: "Column to be filtered on."
@@ -110,6 +115,7 @@ Operations:
          doc: "List of values to compared."
     docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
+    access: protected
     other:
 """
     test_resource_dir = os.path.join(os.getcwd(), "tests/resources/input/")
@@ -130,29 +136,32 @@ Operations:
             data = f.read()
 
         method = self.sp.regex_parser(data)
-
-        self.assertEqual("sumColumns", method[0].name)
-        self.assertEqual({"columnA":  {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
-                          "columnB": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+        self.assertEqual("sum_columns", method[0].name)
+        self.assertEqual({"column_a":  {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+                          "column_b": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
                           "df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
-                          "newCol": {'default': '',
+                          "new_col": {'default': '',
                                      'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
                                      'type': 'String'}},
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_docstring(self):
-        data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
+        data = "def aggColumn(df: DataFrame, col1: String, col2: String, new_col: String): DataFrame"
         method = self.sp.regex_parser(data)
-        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({'col1': {'default': '', 'doc': '', 'type': 'String'},
                           'col2': {'default': '', 'doc': '', 'type': 'String'},
                           'df': {'default': '', 'doc': '', 'type': 'DataFrame'},
-                          'newCol': {'default': '', 'doc': '', 'type': 'String'}},
+                          'new_col': {'default': '', 'doc': '', 'type': 'String'}},
                          method[0].params)
         self.assertEqual("", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_params(self):
         data = """/**
@@ -161,10 +170,12 @@ Operations:
         **/
         def aggColumn(): DataFrame = {}"""
         method = self.sp.regex_parser(data)
-        self.assertEqual("aggColumn", method[0].name)
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_no_methods(self):
         method = self.sp.regex_parser("object Fred {}")
@@ -177,11 +188,13 @@ Operations:
         **/
         def aggColumn(df: DataFrame): = {}"""
         method = self.sp.regex_parser(data)
-        print(method)
-        self.assertEqual("aggColumn", method[0].name)
+
+        self.assertEqual("agg_column", method[0].name)
         self.assertEqual({"df": {"default":"", "type":"DataFrame", "doc": "data set need for function"}}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
+        self.assertEqual("public", method[0].access)
+        self.assertEqual({}, method[0].other)
 
     def test_regex_parser_multiplies(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "mixture.scala"))
@@ -190,14 +203,33 @@ Operations:
 
         method = self.sp.regex_parser(data)
 
-        self.assertEqual("sumColumns", method[0].name)
+        self.assertEqual("sum_columns", method[0].name)
         self.assertEqual("sum", method[1].name)
         self.assertEqual("two", method[2].name)
         self.assertEqual("testing", method[3].name)
-        self.assertEqual("filterOnList", method[4].name)
-        self.assertEqual("filterFunct", method[5].name)
+        self.assertEqual("filter_on_list", method[4].name)
+        self.assertEqual("filter_funct", method[5].name)
 
-
+        self.assertEqual({"df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
+                          "column_a": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+                          "column_b": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+                          "new_col": {'default': '', 'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
+                                      'type': 'String'}},
+                         method[0].params)
+        self.assertEqual({"column_a": {'default': '', 'doc': 'Stores all the data.', 'type': 'String'},
+                          "column_b": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'}},
+                         method[1].params)
+        self.assertEqual({}, method[2].params)
+        self.assertEqual({"colb": {'default': '', 'doc': '', 'type': 'List[String]'},
+                          "cola": {'default': '"hello"', 'doc': '', 'type': 'String'}}, method[3].params)
+        self.assertEqual({"df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
+                          "target_col": {'default': '', 'doc': 'Column to be filtered on.',  'type': 'String'},
+                          "values": {'default': '',  'doc': 'List of values to compared.', 'type': 'List[Int]'}},
+                         method[4].params)
+        self.assertEqual({"df":{'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
+                          "target_col": {'default': '', 'doc': 'Column to be filtered on.',  'type': 'String'},
+                          "values": {'default': '',  'doc': 'List of values to compared.', 'type': 'List[Int]'}},
+                         method[5].params)
 
         self.assertEqual("DataFrame", method[0].returns)
         self.assertEqual("Column", method[1].returns)
@@ -213,6 +245,13 @@ Operations:
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_on_list_docstring, method[4].docs)
         self.assertEqual(self.filter_func_docstring, method[5].docs)
+
+        for i in range(5):
+            self.assertEqual("public", method[i].access)
+        self.assertEqual("protected", method[5].access)
+
+        for i in range(6):
+            self.assertEqual({}, method[i].other)
 
     def test_create_containers_no_methods(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))

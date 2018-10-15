@@ -4,16 +4,23 @@ from wrapper_writer.code_elements import Container, Method
 
 
 class TestContainer(TestCase):
-    m1 = Method("testName",
-                {"p1": {"type":"String", "default":"", "doc":""}, "p2": {"type":"Int", "default":"", "doc":""}},
-                "Test docs",
-                "Unit",
-                {"Example": "1 + 1 = 2"}
-                )
-    c_name = "testContainer"
-    c_path = "/home/cats/"
-    c_methods = [m1]
-    container = Container(c_name, c_methods, c_path)
+
+    def setUp(self):
+        m1 = Method("testName",
+                    {"p1": {"type":"String", "default":"", "doc":""}, "p2": {"type":"Int", "default":"", "doc":""}},
+                    "Test docs",
+                    "Unit",
+                    "public",
+                    {"Example": "1 + 1 = 2"}
+                    )
+        c_name = "testContainer"
+        c_path = "/home/cats/"
+        c_methods = [m1]
+        self.container = Container(c_name, c_methods, c_path)
+
+    def test_format_name(self):
+        self.container.format_name()
+        self.assertEqual("test_container", self.container.name)
 
     def test_create_config(self):
         output = self.container.create_config()
@@ -30,6 +37,7 @@ class TestContainer(TestCase):
                    "         doc: \"\"\n" \
                    "    docs: \"Test docs\"\n" \
                    "    returns: Unit\n" \
+                   "    access: public\n" \
                    "    other:\n" \
                    "      Example: 1 + 1 = 2\n"
 
@@ -38,17 +46,20 @@ class TestContainer(TestCase):
 
 class TestMethod(TestCase):
 
-    def test_method(self):
+    def setUp(self):
         name = "testName"
-        params = {"p1": "String", "p2": "Int"}
+        params = {"paramOne": "String", "ParamTwo": "Int", "param_three": "Boolean"}
         docs = "Test docs"
         returns = "Unit"
         other = {"Example": "1 + 1 = 2"}
 
-        m = Method(name=name, params=params, docs=docs, returns=returns, other=other)
+        self.method = Method(name=name, params=params, docs=docs, returns=returns, other=other)
 
-        self.assertEqual(name, m.name)
-        self.assertEqual(params, m.params)
-        self.assertEqual(docs, m.docs)
-        self.assertEqual(returns, m.returns)
-        self.assertEqual(other, m.other)
+    def test_format_name(self):
+        self.method.format_name()
+        self.assertEqual("test_name", self.method.name)
+
+    def test_format_params(self):
+        self.method.format_params()
+        expected = {"param_one": "String", "param_two": "Int", "param_three": "Boolean"}
+        self.assertEqual(expected, self.method.params)
