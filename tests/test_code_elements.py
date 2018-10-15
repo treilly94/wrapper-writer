@@ -5,7 +5,7 @@ from wrapper_writer.code_elements import Container, Method
 
 class TestContainer(TestCase):
     m1 = Method("testName",
-                {"p1": "String", "p2": "Int"},
+                {"p1": {"type":"String", "default":"", "doc":""}, "p2": {"type":"Int", "default":"", "doc":""}},
                 "Test docs",
                 "Unit",
                 {"Example": "1 + 1 = 2"}
@@ -20,8 +20,14 @@ class TestContainer(TestCase):
         expected = "testContainer:\n" \
                    "  testName:\n" \
                    "    params:\n" \
-                   "      p1: String\n" \
-                   "      p2: Int\n" \
+                   "      p1:\n" \
+                   "         type: String\n" \
+                   "         default: \n"\
+                   "         doc: \"\"\n"\
+                   "      p2:\n" \
+                   "         type: Int\n" \
+                   "         default: \n" \
+                   "         doc: \"\"\n" \
                    "    docs: \"Test docs\"\n" \
                    "    returns: Unit\n" \
                    "    other:\n" \

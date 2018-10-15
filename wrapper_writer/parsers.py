@@ -157,12 +157,7 @@ class ScalaParser(Parser):
                 else:
                     param_doc = " ".join(param_doc)
 
-                print("into the parameter dic function")
-                print(name)
-                print(type_default[0].strip())
-                print(default)
-                print(param_doc)
-                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": param_doc}})
+                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": param_doc.strip()}})
 
         elif parameter_match != ['']:
             for i in range(0, len(parameter_match)):
@@ -172,7 +167,6 @@ class ScalaParser(Parser):
                 if len(type_default) > 1:
                     default = type_default[1].strip()
                 params.update({name: {"type": type_default[0].strip(), "default": default, "doc": ""}})
-
 
         return params
 

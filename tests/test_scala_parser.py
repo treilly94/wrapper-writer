@@ -19,7 +19,10 @@ class TestScalaParser(unittest.TestCase):
     config_container = """one_method:
   sumColumns:
     params:
-      df: DataFrame
+      df:
+         default: 
+         type: DataFrame
+         doc: "data set need for function"
     docs: ""
     returns: DataFrame
     other:
@@ -28,41 +31,83 @@ class TestScalaParser(unittest.TestCase):
     run_end_string = """Maths:
   sumColumns:
     params:
-      df: DataFrame
-      columnA: String
-      columnB: String
-      newCol: String
+      df:
+         type: DataFrame
+         default: 
+         doc: "Stores all the data."
+      columnA:
+         type: String
+         default: 
+         doc: "Name of column to add."
+      columnB:
+         type: String
+         default: 
+         doc: "Name of column to add."
+      newCol:
+         type: String
+         default: 
+         doc: "Name of new column being added to to data set, holds the values of columnA + columnB."
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
     other:
   sum:
     params:
-      columnA: String
-      columnB: String
+      columnA:
+         type: String
+         default: 
+         doc: "Name of column to add."
+      columnB:
+         type: String
+         default: 
+         doc: "Name of column to add."
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
     other:
   multiply:
     params:
-      columnA: Int
-      columnB: Int
+      columnA:
+         type: Int
+         default: 
+         doc: "Integer to multiply."
+      columnB:
+         type: Int
+         default: 
+         doc: "Integer to multiply."
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
     other:
 Operations:
   filterOnList:
     params:
-      df: DataFrame
-      targetCol: String
-      values: List[Int]
+      df:
+         type: DataFrame
+         default: 
+         doc: "Stores all the data."
+      targetCol:
+         type: String
+         default: 
+         doc: "Column to be filtered on."
+      values:
+         type: List[Int]
+         default: 
+         doc: "List of values to compared."
     docs: "This function calls a protected function which filters the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
     other:
   filterFunct:
     params:
-      df: DataFrame
-      targetCol: String
-      values: List[Int]
+      df:
+         type: DataFrame
+         default: 
+         doc: "Stores all the data."
+      targetCol:
+         type: String
+         default: 
+         doc: "Column to be filtered on."
+      values:
+         type: List[Int]
+         default: 
+         doc: "List of values to compared."
     docs: "This function will take in a DataFrame and filter the data based on where the targetCol doesn't have values that are in the values parameter."
     returns: DataFrame
     other:
@@ -87,9 +132,9 @@ Operations:
         method = self.sp.regex_parser(data)
 
         self.assertEqual("sumColumns", method[0].name)
-        self.assertEqual({"columnA":  {'default': '', 'doc': 'Name of column to add. ', 'type': 'String'},
-                          "columnB": {'default': '', 'doc': 'Name of column to add. ', 'type': 'String'},
-                          "df": {'default': '', 'doc': 'Stores all the data. ', 'type': 'DataFrame'},
+        self.assertEqual({"columnA":  {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+                          "columnB": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+                          "df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
                           "newCol": {'default': '',
                                      'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
                                      'type': 'String'}},
@@ -101,7 +146,10 @@ Operations:
         data = "def aggColumn(df: DataFrame, col1: String, col2: String, newCol: String): DataFrame"
         method = self.sp.regex_parser(data)
         self.assertEqual("aggColumn", method[0].name)
-        self.assertEqual({"df": "DataFrame", "col1": "String", "col2": "String", "newCol": "String"},
+        self.assertEqual({'col1': {'default': '', 'doc': '', 'type': 'String'},
+                          'col2': {'default': '', 'doc': '', 'type': 'String'},
+                          'df': {'default': '', 'doc': '', 'type': 'DataFrame'},
+                          'newCol': {'default': '', 'doc': '', 'type': 'String'}},
                          method[0].params)
         self.assertEqual("", method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
@@ -186,7 +234,7 @@ Operations:
 
     def test_create_containers(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
-        methods = [Method("sumColumns", {"df": "DataFrame"}, "", "DataFrame")]
+        methods = [Method("sumColumns", {"df": {"default":"", "type":"DataFrame", "doc": "data set need for function"}}, "", "DataFrame")]
         self.sp.create_containers(methods, path)
 
         self.assertEqual(self.config_container, self.sp.containers[0])
