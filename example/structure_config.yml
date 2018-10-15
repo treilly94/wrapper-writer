@@ -9,6 +9,9 @@ structure:
     path: src/main/scala/com/example/api/
     template: api.scala.j2
     file_name_format: "{!u}API.scala"
+    access:
+      - protected
+      - public
   impl:
     path: src/main/scala/com/example/implicits/
     template: implicits.scala.j2
