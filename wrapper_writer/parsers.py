@@ -100,6 +100,7 @@ class ScalaParser(Parser):
         matches = re.finditer(self.regex_string, data, re.MULTILINE)
         methods = []  # Initialising an empty list
         doc_string = ""  # Initialising an empty string
+        shorten_doc = [""]
         for match in matches:
             # doc string match separately to the rest of the variables
             # matches look like:
@@ -107,29 +108,24 @@ class ScalaParser(Parser):
             # This doc string is associated with the following function
             if match.group(2) is None:
                 # if the second group is None, then this is a doc string match
-                # The doc string is then check to replace any *, long white spaces
-                # this is scala specific docstring notation
-                # The doc string is saved to a variable, ready to added to the following functions Method class
-                doc_string = match.group(1).replace("*", "").replace("\n     @", "\n@").replace("\n    ", "").replace(
-                    "\n     ", " ")
-                doc_string = re.sub("\n?@.*\n?", "", doc_string).strip()
+                # The full doc string is edited to take out the return type at the bottom if there is one
+                doc = re.sub("\n\s.*\*\s@return.*", "", match.group(1))
+                # Then the * and white space are taken out, then split by the @ into list
+                shorten_doc = re.sub("\n\s*\*?", "", doc).split("@")
+                # The first one in the list is the description so this is saved to the doc string variable
+                doc_string = shorten_doc[0].strip()
             elif match.group(2) is not None:
                 # If the second group is not none then this a function match
                 type = match.group(2)  # This gets the function type, protected def, def, private def
                 name = match.group(3)  # This is the name of the function
+
                 # This is the params string -> "df: DataFrame, colA: String"
                 # it then gets turn into a parameter list -> ["df:DataFrame", "colA:String"]
                 params1 = match.group(4).split(",")
-                # This there is no parameters in the funciton, then it is a empty list[string]
-                if params1 != ['']:
-                    # Split the parameters up into a dictionary -> {"df":" DataFrame", " colA":" String"}
-                    params = dict(item.split(":") for item in params1)
-                    # This then strips it of the white spaces
-                    params = {k.lstrip(): v.lstrip() for k, v in params.items()}
-                else:
-                    # if there is no parameter, it becomes an empty dictionary
-                    params = {}
-                return_type = match.group(5) # Get the return type, if there is nothing it is None
+                params = self.parameter_dictionary(params1, shorten_doc[1:])
+
+                return_type = match.group(5)  # Get the return type, if there is nothing it is None
+
                 # Adds the Method class with the respective variables to the method list
                 methods.append(Method(name, params, str(doc_string), return_type, {}))
                 # doc string is reset to being empty
@@ -138,6 +134,70 @@ class ScalaParser(Parser):
                 # If no match is found then this is printed out
                 print("no match found")
         return methods
+
+    def parameter_dictionary(self, parameter_match, parameter_doc):
+        # Initialising an empty dictionary
+        params = {}
+        # {"": {"type": "", "default": "", "doc": ""}}
+
+        print(parameter_match)
+        # if there are parameters and a dco string
+        if parameter_match != [''] and parameter_doc != []:
+            for i in range(0, len(parameter_match)):
+                print(parameter_match[i])
+                default = ""
+                name = parameter_match[i].split(":")[0].strip()
+                type_default = parameter_match[i].split(":")[1].split("=")
+                if len(type_default) > 1:
+                    default = type_default[1].strip()
+
+                param_doc = parameter_doc[i].split(" ")[3:]
+                if param_doc[0] == "-":
+                    param_doc = " ".join(param_doc[1:])
+                else:
+                    param_doc = " ".join(param_doc)
+
+                print("into the parameter dic function")
+                print(name)
+                print(type_default[0].strip())
+                print(default)
+                print(param_doc)
+                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": param_doc}})
+
+        elif parameter_match != ['']:
+            for i in range(0, len(parameter_match)):
+                default = ""
+                name = parameter_match[i].split(":")[0].strip()
+                type_default = parameter_match[i].split(":")[1].split("=")
+                if len(type_default) > 1:
+                    default = type_default[1].strip()
+                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": ""}})
+
+
+        return params
+
+
+        # if parameter_match != [''] and parameter_doc != "":
+        #     count = 0
+        #     for item in parameter_match:
+        #         list_param = item.split(":")
+        #         param_doc = parameter_doc[count].split(" ")[3:]
+        #         if param_doc[0] == "-":
+        #             param_doc = " ".join(param_doc[1:])
+        #         else:
+        #             param_doc = " ".join(param_doc)
+        #
+        #         params.update({list_param[0].strip(): {"types": list_param[1].strip(), "doc": param_doc}})
+        #         count += 1
+        # elif params1 != ['']:
+        #     for item in params1:
+        #         list_param = item.split(":")
+        #         params.update({list_param[0].strip(): {"types": list_param[1].strip(), "doc": param_doc}})
+        #
+        # else:
+        #     # if there is no parameter, it becomes an empty dictionary
+        #     params = {}
+
 
     def create_containers(self, methods, file_path):
         """

@@ -87,7 +87,12 @@ Operations:
         method = self.sp.regex_parser(data)
 
         self.assertEqual("sumColumns", method[0].name)
-        self.assertEqual({"columnA": "String", "columnB": "String", "df": "DataFrame", "newCol": "String"},
+        self.assertEqual({"columnA":  {'default': '', 'doc': 'Name of column to add. ', 'type': 'String'},
+                          "columnB": {'default': '', 'doc': 'Name of column to add. ', 'type': 'String'},
+                          "df": {'default': '', 'doc': 'Stores all the data. ', 'type': 'DataFrame'},
+                          "newCol": {'default': '',
+                                     'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
+                                     'type': 'String'}},
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
@@ -104,6 +109,7 @@ Operations:
     def test_regex_parser_no_params(self):
         data = """/**
         * hi
+        * @return DataFrame
         **/
         def aggColumn(): DataFrame = {}"""
         method = self.sp.regex_parser(data)
@@ -119,12 +125,13 @@ Operations:
     def test_regex_parser_no_return_type(self):
         data = """/**
         * hi
+        * @param df DataFrame - data set need for function
         **/
         def aggColumn(df: DataFrame): = {}"""
         method = self.sp.regex_parser(data)
         print(method)
         self.assertEqual("aggColumn", method[0].name)
-        self.assertEqual({"df": "DataFrame"}, method[0].params)
+        self.assertEqual({"df": {"default":"", "type":"DataFrame", "doc": "data set need for function"}}, method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
 
@@ -142,13 +149,7 @@ Operations:
         self.assertEqual("filterOnList", method[4].name)
         self.assertEqual("filterFunct", method[5].name)
 
-        self.assertEqual({"df": "DataFrame", "columnA": "String", "columnB": "String", "newCol": "String"},
-                         method[0].params)
-        self.assertEqual({"columnA": "String", "columnB": "String"}, method[1].params)
-        self.assertEqual({}, method[2].params)
-        self.assertEqual({"colb": "List[String]", "cola": 'String="hello"'}, method[3].params)
-        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[4].params)
-        self.assertEqual({"df": "DataFrame", "targetCol": "String", "values": "List[Int]"}, method[5].params)
+
 
         self.assertEqual("DataFrame", method[0].returns)
         self.assertEqual("Column", method[1].returns)
@@ -197,16 +198,35 @@ Operations:
         self.assertEqual("Config string is empty", message)
 
     def test_run_true(self):
-        try:
-            path1 = os.path.normpath(os.path.join(self.example_dir, "Maths.scala"))
-            path2 = os.path.normpath(os.path.join(self.example_dir, "Operations.scala"))
-            self.sp.files = [path1, path2]
-            self.sp.run()
-            self.assertTrue(os.path.isfile("method_config.yml"))
+        #try:
+        path1 = os.path.normpath(os.path.join(self.example_dir, "Maths.scala"))
+        path2 = os.path.normpath(os.path.join(self.example_dir, "Operations.scala"))
+        self.sp.files = [path1, path2]
+        self.sp.run()
+        self.assertTrue(os.path.isfile("method_config.yml"))
 
-            with open("method_config.yml") as f:
-                data = f.read()
+        with open("method_config.yml") as f:
+            data = f.read()
 
-            self.assertEqual(self.run_end_string, data)
-        finally:
-            os.remove("./method_config.yml")
+        self.assertEqual(self.run_end_string, data)
+        #finally:
+    # os.remove("./method_config.yml")
+
+
+
+
+    def test_parameter_dictionary_no_doc(self):
+        parameter_match = ["df:DataFrame", "colA:String"]
+        params = self.sp.parameter_dictionary(parameter_match, [])
+        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""},
+                          "colA":{"type":"String", "default":"", "doc":""}}, params)
+
+    def test_parameter_dictionary_no_param(self):
+        params = self.sp.parameter_dictionary([""], [])
+        self.assertEqual({}, params)
+
+    def test_parameter_dictionary_defaults(self):
+        parameter_match = ["df:DataFrame", "colA:String='Ted'"]
+        params = self.sp.parameter_dictionary(parameter_match, [])
+        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""},
+                          "colA":{"type":"String", "default":"'Ted'", "doc":""}}, params)
