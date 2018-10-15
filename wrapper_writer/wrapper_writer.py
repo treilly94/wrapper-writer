@@ -64,7 +64,7 @@ class WrapperWriter:
             one_structure = Structure(project_root=self.project_root,
                                       path=i.get("path"),
                                       template=i.get("template"),
-                                      access=i.get("access"),
+                                      access=i.get("access", "public"),
                                       file_name_format=i.get("file_name_format"))
             self.structure_classes.append(one_structure)
 
@@ -80,7 +80,7 @@ class WrapperWriter:
                                     params=v.get("params"),
                                     docs=v.get("docs"),
                                     returns=v.get("returns"),
-                                    access=v.get("access"),
+                                    access=v.get("access", "public"),
                                     other=v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
