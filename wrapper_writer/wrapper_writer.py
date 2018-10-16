@@ -2,8 +2,7 @@ import os
 
 import yaml
 
-from wrapper_writer.container import Container
-from wrapper_writer.method import Method
+from wrapper_writer.code_elements import Container, Method
 from wrapper_writer.structure import Structure
 from wrapper_writer.wrapper import Wrapper
 
@@ -18,18 +17,12 @@ class WrapperWriter:
     :param structure_config_path: The path to the structure config file relative to the cwd.
     :type structure_config_path: str
     """
-    structures = {}
-    """The dictionary which holds all the information from the structure config."""
-    containers = {}
-    """The dictionary which holds all the information from the methods config."""
-    project_root = ""
-    """The absolute path to the current working directory."""
-    structure_classes = []
-    """The list which holds all the structure classes."""
-    container_classes = []
-    """The list which holds all the container classes."""
-    wrappers = []
-    """The list which holds all the wrapper classes."""
+    structures = {}  #: The dictionary which holds all the information from the structure config.
+    containers = {}  #: The dictionary which holds all the information from the methods config.
+    project_root = ""  #: The absolute path to the current working directory.
+    structure_classes = []  #: The list which holds all the structure classes.
+    container_classes = []  #: The list which holds all the container classes.
+    wrappers = []  #: The list which holds all the wrapper classes.
 
     def __init__(self, method_config_path="./method_config.yml",
                  structure_config_path="./structure_config.yml"):
@@ -68,7 +61,11 @@ class WrapperWriter:
         parameter. It will store in class within a list.
         """
         for i in self.structures.values():
-            one_structure = Structure(self.project_root, i.get("path"), i.get("template"), i.get("file_name_format"))
+            one_structure = Structure(project_root=self.project_root,
+                                      path=i.get("path"),
+                                      template=i.get("template"),
+                                      access=i.get("access", "public"),
+                                      file_name_format=i.get("file_name_format"))
             self.structure_classes.append(one_structure)
 
     def instantiate_container_class(self):
@@ -79,7 +76,12 @@ class WrapperWriter:
         for i, j in self.containers.items():
             container_methods = []
             for x, v in j.items():
-                one_method = Method(x, v.get("params"), v.get("docs"), v.get("returns"), v.get("other"))
+                one_method = Method(name=x,
+                                    params=v.get("params"),
+                                    docs=v.get("docs"),
+                                    returns=v.get("returns"),
+                                    access=v.get("access", "public"),
+                                    other=v.get("other"))
                 container_methods.append(one_method)
             one_container = Container(i, container_methods)
             self.container_classes.append(one_container)
@@ -114,4 +116,5 @@ class WrapperWriter:
 
         self.instantiate_wrapper_class()
         for i in self.wrappers:
+            i.filter_access()
             i.write_file()
