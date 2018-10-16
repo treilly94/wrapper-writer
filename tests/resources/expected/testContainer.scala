@@ -10,7 +10,6 @@ object TestContainer {
 
   }
 
-
   /** A cool function
     *}
     * @params param1 String - parameter to test.}
