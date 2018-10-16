@@ -8,15 +8,18 @@ class Container:
 
     :param name: The name of the container.
     :type name: str
-    :param path: The path of the container relative to the project root.
-    :type path: str
     :param methods: The methods associated with the container.
     :type methods: list
+    :param path: The path of the container relative to the project root.
+    :type path: str
+    :param package: The package that the container is in.
+    :type package: list[str]
     """
 
-    def __init__(self, name, methods, path=None):
+    def __init__(self, name, methods, path=None, package=None):
         self.name = name
         self.path = path
+        self.package = package
         self.methods = methods
 
     def format_name(self):
