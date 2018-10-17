@@ -212,7 +212,7 @@ class ScalaParser(Parser):
         invalid_files = [None, ""]
         if file_path not in invalid_files:
             # this gets the file's name as the container name
-            container_name = file_path.split(str(os.sep))[-1].split(".")[0]
+            container_name = os.path.normpath(file_path).split(str(os.sep))[-1].split(".")[0]
             if methods:
                 container = Container(container_name, methods, file_path)
                 container.format_name()
