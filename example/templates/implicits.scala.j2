@@ -11,7 +11,7 @@ object {{ container.name|upper_camel }}Impl {
 
   implicit class {{ m.name|upper_camel }}MethodsImpl(df: {{ m.params.pop("df") }}) {
     {{ macros.scala_docs(m) }}
-    def {{ m.name|lower_camel }}({{ macros.show_params_types_defaults(m) }}: {{ m.returns }} = {
+    def {{ m.name|lower_camel }}({{ macros.show_params_types_defaults(m.params) }}): {{ m.returns }} = {
       {{ container.name|upper_camel }}.{{ m.name|lower_camel }}({{ macros.show_params(m.params) }})
     }
   }

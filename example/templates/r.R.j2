@@ -2,7 +2,7 @@
 
 {% for m in container.methods %}
 
-{{ macros.r_docs(m.name, m.docs, m.params) }}
+{{ macros.r_docs(m) }}
 
 {{ m.name|lower_camel }} <- function(sc, {{ macros.show_params(m.params) }}) {
 
