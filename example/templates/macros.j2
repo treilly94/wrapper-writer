@@ -18,16 +18,16 @@
     {%- endif %}
 {% endmacro %}
 
-{% macro r_docs(name, docs, params) %}
-#' {{ name|lower_camel }}
+{% macro r_docs(method) %}
+#' {{ method.name|lower_camel }}
 #'
-#' {{ docs }}
+#' {{ method.docs }}
 #' @param sc
-{% for p in params -%}
-#' @param {{ p }}
-{% endfor -%}
+{%- for p, t in method.params.items() -%}}
+#' @param {{ p }} {{ t.get("type") }} {% if t.get("doc") %}{{ t.get("doc") }}{% endif %}
+{%- endfor -%}
 #'
-#' @return
+#' @return {% if method.returns %}{{ method.returns }}{% endif %}
 #' @export
 #'
 #' @examples
