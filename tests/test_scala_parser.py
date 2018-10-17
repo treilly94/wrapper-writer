@@ -299,21 +299,72 @@ operations:
         finally:
             os.remove("./method_config.yml")
 
+    def test_parameter_dictionary_wrong_types(self):
+        params = self.sp.parameter_dictionary(None, None)
+        self.assertEqual(params, {})
 
+        params = self.sp.parameter_dictionary([''], [''])
+        self.assertEqual(params, {})
 
+        params = self.sp.parameter_dictionary([], [])
+        self.assertEqual(params, {})
 
     def test_parameter_dictionary_no_doc(self):
-        parameter_match = ["df:DataFrame", "colA:String"]
+        parameter_match = ["df:DataFrame"]
         params = self.sp.parameter_dictionary(parameter_match, [])
-        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""},
-                          "colA":{"type":"String", "default":"", "doc":""}}, params)
+        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""}}, params)
 
-    def test_parameter_dictionary_no_param(self):
-        params = self.sp.parameter_dictionary([""], [])
-        self.assertEqual({}, params)
+        params = self.sp.parameter_dictionary(parameter_match, None)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""}}, params)
 
-    def test_parameter_dictionary_defaults(self):
-        parameter_match = ["df:DataFrame", "colA:String='Ted'"]
+        params = self.sp.parameter_dictionary(parameter_match, [''])
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""}}, params)
+
+    def test_parameter_dictionary_default_string(self):
+        parameter_match = ["df:DataFrame", 'column:String = "Fred"']
         params = self.sp.parameter_dictionary(parameter_match, [])
-        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""},
-                          "colA":{"type":"String", "default":"'Ted'", "doc":""}}, params)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
+                          "column": {"type":"String", "default":'"Fred"', "doc":""}}, params)
+
+    def test_parameter_dictionary_default_int(self):
+        parameter_match = ["df:DataFrame", 'value:Int = 2']
+        params = self.sp.parameter_dictionary(parameter_match, [])
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
+                          "value": {"type":"Int", "default":'2', "doc":""}}, params)
+
+
+    def test_parameter_dictionary_default_list_int(self):
+        parameter_match = ["df:DataFrame", 'values:List[Int] = [2, 3, 4]']
+        params = self.sp.parameter_dictionary(parameter_match, [])
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
+                          "values": {"type":"List[Int]", "default":'[2, 3, 4]', "doc":""}}, params)
+
+    def test_parameter_dictionary_default_seq_string(self):
+        parameter_match = ["df:DataFrame", 'columns:Seq[String] = Seq("Fred", "molly")']
+        params = self.sp.parameter_dictionary(parameter_match, [])
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
+                          "columns": {"type":"Seq[String]", "default":'Seq("Fred", "molly")', "doc":""}}, params)
+
+
+    def test_parameter_dictionary_doc(self):
+        parameter_match = ["df:DataFrame", 'column:String = "Fred"']
+        parameter_doc = ['@param df DataFrame - Data going in.', '@param column String - column name.']
+        params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": "Data going in."},
+                          "column": {"type":"String", "default":'"Fred"', "doc":"column name."}}, params)
+
+    def test_parameter_dictionary_doc_without_dash(self):
+        parameter_match = ["df:DataFrame", 'column:String = "Fred"']
+        parameter_doc = ['@param df DataFrame Data going in.', '@param column String column name.']
+        params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": "Data going in."},
+                          "column": {"type":"String", "default":'"Fred"', "doc":"column name."}}, params)
+
+
+    def test_parameter_dictionary_withput_descriptions(self):
+        parameter_match = ["df:DataFrame", 'column:String = "Fred"']
+        parameter_doc = ['@param df DataFrame', '@param column String']
+        params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
+                          "column": {"type":"String", "default":'"Fred"', "doc":""}}, params)
+

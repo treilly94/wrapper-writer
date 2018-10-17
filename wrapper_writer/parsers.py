@@ -142,35 +142,56 @@ class ScalaParser(Parser):
         return methods
 
     def parameter_dictionary(self, parameter_match, parameter_doc):
+        """
+        This function takes in two separate list of strings, one containing the parameters in th following format:
+        ["df:DataFrame", 'column:String = "Fred"']
+        The other contains the parameter info from the doc string:
+        ['@param df DataFrame - Data going in.', '@param column String - column name.']
+
+        These are then looped through with the key points such as name, type, doc and default being picked out.
+        It gives you the following dictionary:
+
+        {"df": {"type": "DataFrame", "default": "", "doc": "Data going in."},
+         "column": {"type":"String", "default":'"Fred"', "doc":"column name."}
+         }
+
+        :param parameter_match: This is a list of strings containing all the parameters
+        :type parameter_match: List[Str]
+        :param parameter_doc: This is a list of strings containing all the doc parameter info
+        :type parameter_doc: List[Str]
+        :return:  Dictionary
+        """
         # Initialising an empty dictionary
         params = {}
         # {"": {"type": "", "default": "", "doc": ""}}
-
+        wrong_types = [[], [''], None]
         # if there are parameters and a doc string
-        if parameter_match != [''] and parameter_doc != []:
+        if parameter_match not in wrong_types and parameter_doc not in wrong_types:
             for i in range(0, len(parameter_match)):
                 default = ""
                 name = parameter_match[i].split(":")[0].strip()
-                type_default = parameter_match[i].split(":")[1].split("=")
-                if len(type_default) > 1:
-                    default = type_default[1].strip()
+                param_type = parameter_match[i].split(":")[1].split("=")
+                if len(param_type) > 1:
+                    default = param_type[1].strip()
 
-                param_doc = parameter_doc[i].split(" ")[3:]
-                if param_doc[0] == "-":
-                    param_doc = " ".join(param_doc[1:])
+                param_doc_list = parameter_doc[i].split(" ")[3:]
+                if param_doc_list == []:
+                    param_doc = ""
+                elif param_doc_list[0] == "-":
+                    param_doc = " ".join(param_doc_list[1:])
                 else:
-                    param_doc = " ".join(param_doc)
+                    param_doc = " ".join(param_doc_list)
 
-                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": param_doc.strip()}})
+                params.update({name: {"type": param_type[0].strip(), "default": default, "doc": param_doc.strip()}})
 
-        elif parameter_match != ['']:
+        elif parameter_match not in wrong_types:
             for i in range(0, len(parameter_match)):
                 default = ""
                 name = parameter_match[i].split(":")[0].strip()
-                type_default = parameter_match[i].split(":")[1].split("=")
-                if len(type_default) > 1:
-                    default = type_default[1].strip()
-                params.update({name: {"type": type_default[0].strip(), "default": default, "doc": ""}})
+                param_type = parameter_match[i].split(":")[1].split("=")
+                if len(param_type) > 1:
+                    default = param_type[1].strip()
+                params.update({name: {"type": param_type[0].strip(), "default": default, "doc": ""}})
 
         return params
 
