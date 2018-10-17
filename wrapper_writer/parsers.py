@@ -143,7 +143,7 @@ class ScalaParser(Parser):
 
     def parameter_dictionary(self, parameter_match, parameter_doc):
         """
-        This function takes in two separate list of strings, one containing the parameters in th following format:
+        This function takes in two separate lists of strings, one containing the parameters in th following format:
         ["df:DataFrame", 'column:String = "Fred"']
         The other contains the parameter info from the doc string:
         ['@param df DataFrame - Data going in.', '@param column String - column name.']
