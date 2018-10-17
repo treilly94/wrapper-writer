@@ -16,7 +16,7 @@ object Maths {
     * @param newCol String - Name of new column being added to to data set, holds the values of columnA + columnB.
     * @return DataFrame
     */
-  def sumColumns(df: DataFrame, columnA: String, columnB: String, newCol: String): DataFrame = {
+  def sumColumns(df: DataFrame, columnA: String, columnB: String, newCol: String = "summed"): DataFrame = {
     df.withColumn(newCol, sum(columnA, columnB))
   }
 
@@ -26,7 +26,7 @@ object Maths {
     * @param columnB String - Name of column to add.
     * @return Column
     */
-  def sum(columnA:String, columnB:String): Column = {
+  protected def sum(columnA:String, columnB:String): Column = {
     col(columnA)+col(columnB)
   }
 
@@ -38,7 +38,7 @@ object Maths {
     * @param columnB Int - Integer to multiply.
     * @return Int
     */
-  def multiply(columnA:Int, columnB:Int): Int = {
+  protected def multiply(columnA:Int, columnB:Int): Int = {
     columnA*columnB
   }
 

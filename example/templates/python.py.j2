@@ -6,7 +6,7 @@ from pyspark.sql import DataFrame
 {% for m in container.methods %}
 
 def {{ m.name }}({{ macros.show_params(m.params) }}):
-	{{ macros.python_docs(m.docs) }}
+	{{ macros.python_docs(m) }}
     # Get the Scala API
     api = df._sc._jvm.com.example.api.{{ container.name|upper_camel }}API
 

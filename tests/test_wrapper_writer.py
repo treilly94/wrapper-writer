@@ -1,8 +1,6 @@
-from unittest import TestCase
-
 import os
-
 import shutil
+from unittest import TestCase
 
 from wrapper_writer.code_elements import Container, Method
 from wrapper_writer.structure import Structure
@@ -15,39 +13,42 @@ class TestWrapperWriter(TestCase):
     project_root = os.getcwd()
 
     container = {
-            "Maths": {
-                "sum_column": {
-                    "params": {"column_a": "String", "column_b": "String", },
-                    "returns": "String",
-                    "docs": "This function adds the two columns together"
-                },
-                "mulitply": {
-                    "params": {"column_a": "String", "column_b": "String", },
-                    "returns": "String",
-                    "docs": "This function multiplies the two columns together"
-                }
-            },
-            "Estimation": {"ratio": {
-                "params": {"column_a": "String", "column_b": "String", },
+        "Maths": {
+            "sum_column": {
+                "params": {"column_a": {'default': None, 'doc': 'Name of column to add.', 'type': 'String'},
+                           "column_b": {'default': None, 'doc': 'Name of column to add.', 'type': 'String'}},
                 "returns": "String",
-                "docs": "This function does ratio estimation"
-            }}
-        }
+                "docs": "This function adds the two columns together"
+            },
+            "mulitply": {
+                "params": {"column_a": {'default': None, 'doc': 'Name of column to multiply.', 'type': 'String'},
+                           "column_b": {'default': None, 'doc': 'Name of column to multiply.', 'type': 'String'}},
+                "returns": "String",
+                "docs": "This function multiplies the two columns together"
+            }
+        },
+        "Estimation": {"ratio": {
+            "params": {"column_a": {'default': '"numbers"', 'doc': 'Name of column to estimate.', 'type': 'String'},
+                       "column_b": {'default': None, 'doc': '', 'type': 'String'}},
+            "returns": "String",
+            "docs": "This function does ratio estimation"
+        }}
+    }
     structure = {
-            "python": {
-                "path": "/test_dir/python/path/",
-                "template": "python.txt",
-                "file_name_format": "{}.py"
-            },
-            "scala": {
-                "path": "/test_dir/scala/path/",
-                "template": "scala.txt",
-                "file_name_format": "{}.scala"
-            },
-        }
+        "python": {
+            "path": "/test_dir/python/path/",
+            "template": "python.txt",
+            "file_name_format": "{}.py"
+        },
+        "scala": {
+            "path": "/test_dir/scala/path/",
+            "template": "scala.txt",
+            "file_name_format": "{}.scala"
+        },
+    }
 
     structure_class = [Structure(project_root, "./test_dir/python/path/", "python.txt", ".py"),
-                           Structure(project_root, "./test_dir/scala/path/", "scala.txt", ".scala")]
+                       Structure(project_root, "./test_dir/scala/path/", "scala.txt", ".scala")]
 
     def test_read_method_configs(self):
         w = WrapperWriter(self.method_config, self.structure_config)
@@ -82,7 +83,6 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("scala.txt", w.structure_classes[1].template)
         self.assertEqual("{}.scala", w.structure_classes[1].file_name_format)
 
-
     def test_instantiate_container_class(self):
         w = WrapperWriter(self.method_config, self.structure_config)
         w.containers = self.container
@@ -90,22 +90,26 @@ class TestWrapperWriter(TestCase):
 
         self.assertEqual("Maths", w.container_classes[0].name)
         self.assertEqual("sum_column", w.container_classes[0].methods[0].name)
-        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[0].methods[0].params)
+        self.assertEqual({"column_a": {'default': None, 'doc': 'Name of column to add.', 'type': 'String'},
+                          "column_b": {'default': None, 'doc': 'Name of column to add.', 'type': 'String'}},
+                         w.container_classes[0].methods[0].params)
         self.assertEqual("This function adds the two columns together", w.container_classes[0].methods[0].docs)
         self.assertEqual("String", w.container_classes[0].methods[0].returns)
 
         self.assertEqual("mulitply", w.container_classes[0].methods[1].name)
-        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[0].methods[1].params)
+        self.assertEqual({"column_a": {'default': None, 'doc': 'Name of column to multiply.', 'type': 'String'},
+                          "column_b": {'default': None, 'doc': 'Name of column to multiply.', 'type': 'String'}},
+                         w.container_classes[0].methods[1].params)
         self.assertEqual("This function multiplies the two columns together", w.container_classes[0].methods[1].docs)
         self.assertEqual("String", w.container_classes[0].methods[1].returns)
 
         self.assertEqual("Estimation", w.container_classes[1].name)
         self.assertEqual("ratio", w.container_classes[1].methods[0].name)
-        self.assertEqual({"column_a": "String", "column_b": "String"}, w.container_classes[1].methods[0].params)
+        self.assertEqual({"column_a": {'default': '"numbers"', 'doc': 'Name of column to estimate.', 'type': 'String'},
+                          "column_b": {'default': None, 'doc': '', 'type': 'String'}},
+                         w.container_classes[1].methods[0].params)
         self.assertEqual("This function does ratio estimation", w.container_classes[1].methods[0].docs)
         self.assertEqual("String", w.container_classes[1].methods[0].returns)
-
-
 
     def test_create_directories(self):
         w = WrapperWriter(self.method_config, self.structure_config)
@@ -130,7 +134,7 @@ class TestWrapperWriter(TestCase):
                                                  "This function multiplies the two columns together", "String", None)
                                           ]),
                                Container("Estimation", [Method("ratio", {"column_a": "String", "column_b": "String"},
-                                                 "This function does ratio estimation", "String", None)])
+                                                               "This function does ratio estimation", "String", None)])
                                ]
 
         w.instantiate_wrapper_class()
@@ -138,7 +142,7 @@ class TestWrapperWriter(TestCase):
 
         self.assertEqual("Maths", w.wrappers[0].container.name)
         self.assertEqual("sum_column", w.wrappers[0].container.methods[0].name)
-        self.assertEqual({"column_a": "String", "column_b": "String"},w.wrappers[0].container.methods[0].params)
+        self.assertEqual({"column_a": "String", "column_b": "String"}, w.wrappers[0].container.methods[0].params)
         self.assertEqual("This function adds the two columns together", w.wrappers[0].container.methods[0].docs)
         self.assertEqual("String", w.wrappers[0].container.methods[0].returns)
         self.assertEqual("mulitply", w.wrappers[0].container.methods[1].name)
@@ -150,7 +154,6 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("python.txt", w.wrappers[0].structure.template)
         self.assertEqual(".py", w.wrappers[0].structure.file_name_format)
 
-
         self.assertEqual("Estimation", w.wrappers[1].container.name)
         self.assertEqual("ratio", w.wrappers[1].container.methods[0].name)
         self.assertEqual({"column_a": "String", "column_b": "String"}, w.wrappers[1].container.methods[0].params)
@@ -160,8 +163,6 @@ class TestWrapperWriter(TestCase):
         self.assertEqual(os.path.normpath("test_dir/python/path"), w.wrappers[1].structure.path)
         self.assertEqual("python.txt", w.wrappers[1].structure.template)
         self.assertEqual(".py", w.wrappers[1].structure.file_name_format)
-
-
 
         self.assertEqual("Maths", w.wrappers[2].container.name)
         self.assertEqual("sum_column", w.wrappers[2].container.methods[0].name)
@@ -188,5 +189,75 @@ class TestWrapperWriter(TestCase):
         self.assertEqual("scala.txt", w.wrappers[3].structure.template)
         self.assertEqual(".scala", w.wrappers[3].structure.file_name_format)
 
+    def test_default_string(self):
+        w = WrapperWriter(self.method_config, self.structure_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": {'default': "fred", 'doc': 'Name of column to add.', 'type': 'String'}},
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                }}}
+        w.default_string()
 
+        self.assertEqual('"fred"',
+                         w.containers.get("Maths").get("sum_column").get("params").get("column_a").get("default"))
 
+    def test_default_string_nodefault(self):
+        w = WrapperWriter(self.method_config, self.structure_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": {'default': None, 'doc': 'Name of column to add.', 'type': 'String'}},
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                }}}
+        w.default_string()
+
+        self.assertEqual(None, w.containers.get("Maths").get("sum_column").get("params").get("column_a").get("default"))
+
+    def test_default_string_int_default(self):
+        w = WrapperWriter(self.method_config, self.structure_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": {'default': '2', 'doc': 'Name of column to add.', 'type': 'Int'}},
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                }}}
+        w.default_string()
+
+        self.assertEqual('2', w.containers.get("Maths").get("sum_column").get("params").get("column_a").get("default"))
+
+    def test_default_string_list_String(self):
+        w = WrapperWriter(self.method_config, self.structure_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": {'default': 'List["fred"]', 'doc': 'Name of column to add.',
+                                            'type': 'List[String]'}},
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                }}}
+        w.default_string()
+
+        self.assertEqual('List["fred"]',
+                         w.containers.get("Maths").get("sum_column").get("params").get("column_a").get("default"))
+
+    def test_default_string_multiple(self):
+        w = WrapperWriter(self.method_config, self.structure_config)
+        w.containers = {
+            "Maths": {
+                "sum_column": {
+                    "params": {"column_a": {'default': 'List["fred"]', 'doc': 'Name of column to add.',
+                                            'type': 'List[String]'},
+                               "column_b": {'default': 'fred', 'doc': 'Name of column to add.', 'type': 'String'}},
+                    "returns": "String",
+                    "docs": "This function adds the two columns together"
+                }}}
+        w.default_string()
+
+        self.assertEqual('List["fred"]',
+                         w.containers.get("Maths").get("sum_column").get("params").get("column_a").get("default"))
+        self.assertEqual('"fred"',
+                         w.containers.get("Maths").get("sum_column").get("params").get("column_b").get("default"))

@@ -29,6 +29,17 @@ class WrapperWriter:
         self.method_config_path = os.path.normpath(method_config_path)
         self.structure_config_path = os.path.normpath(structure_config_path)
 
+    def default_string(self):
+        """
+        This function makes sure that the string defaults are inputted into the dictionary as '"fred"'
+        This is to ensure that the are printed correctly when they are wrapped.
+        """
+        for i, j in self.containers.items():
+            for x, v in j.items():
+                for t, l in v.get("params").items():
+                    if l.get("type") == "String" and l.get("default") is not None:
+                        l["default"] = '"' + l.get("default") + '"'
+
     def read_configs(self):
         """
         This function will read in two yml files and saved them as two dictionaries, containers and structures. It will
@@ -38,6 +49,7 @@ class WrapperWriter:
         # Read methods
         file = open(self.method_config_path)
         self.containers = yaml.load(file)
+        self.default_string()
         file.close()
 
         # Read Structure
@@ -76,6 +88,7 @@ class WrapperWriter:
         for i, j in self.containers.items():
             container_methods = []
             for x, v in j.items():
+                print(v.get("params"))
                 one_method = Method(name=x,
                                     params=v.get("params"),
                                     docs=v.get("docs"),

@@ -7,7 +7,8 @@ class TestContainer(TestCase):
 
     def setUp(self):
         m1 = Method("testName",
-                    {"p1": {"type":"String", "default":"", "doc":""}, "p2": {"type":"Int", "default":"", "doc":""}},
+                    {"p1": {"type": "String", "default": "", "doc": ""},
+                     "p2": {"type": "Int", "default": "", "doc": ""}},
                     "Test docs",
                     "Unit",
                     "public",
@@ -29,8 +30,8 @@ class TestContainer(TestCase):
                    "    params:\n" \
                    "      p1:\n" \
                    "         type: String\n" \
-                   "         default: \n"\
-                   "         doc: \"\"\n"\
+                   "         default: \n" \
+                   "         doc: \"\"\n" \
                    "      p2:\n" \
                    "         type: Int\n" \
                    "         default: \n" \
@@ -48,7 +49,9 @@ class TestMethod(TestCase):
 
     def setUp(self):
         name = "testName"
-        params = {"paramOne": "String", "ParamTwo": "Int", "param_three": "Boolean"}
+        params = {"paramOne": {"type": "String", "default": "", "doc": "hi"},
+                  "ParamTwo": {"type": "Int", "default": "3", "doc": ""},
+                  "param_three": {"type": "Boolean", "default": True, "doc": ""}}
         docs = "Test docs"
         returns = "Unit"
         other = {"Example": "1 + 1 = 2"}
@@ -61,5 +64,7 @@ class TestMethod(TestCase):
 
     def test_format_params(self):
         self.method.format_params()
-        expected = {"param_one": "String", "param_two": "Int", "param_three": "Boolean"}
+        expected = {"param_one": {"type": "String", "default": "", "doc": "hi"},
+                    "param_two": {"type": "Int", "default": "3", "doc": ""},
+                    "param_three": {"type": "Boolean", "default": True, "doc": ""}}
         self.assertEqual(expected, self.method.params)

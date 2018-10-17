@@ -1,0 +1,27 @@
+{%- macro scala_docs(method) -%}
+  /** {{ method.docs }}
+    *{% for p, t in method.params.items() %}
+    * @params {{ p }} {{ t.get("type") }}{% if t.get("doc") %} - {{ t.get("doc") }}{% endif %}{% endfor %}
+    *{% if method.returns %} @return {{ method.returns }}{% endif %}
+    */
+{%- endmacro -%}
+
+
+{% macro show_params_types_defaults(params) %}
+    {%- set length = params|length -%}
+    {%- for p, v in params.items() -%}
+        {%- if v.get("default") -%}
+            {%- if loop.index == length -%}
+                {{ p }}: {{ v.get("type") }} = {{ v.get("default") }}
+             {%- else -%}
+                {{ p }}: {{ v.get("type") }} = {{ v.get("default") }}, {# comment in order to get whitespace #}
+            {%- endif -%}
+        {%- else -%}
+            {%- if loop.index == length -%}
+                {{ p }}: {{ v.get("type") }}
+             {%- else -%}
+                {{ p }}: {{ v.get("type") }}, {# comment in order to get whitespace #}
+            {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}

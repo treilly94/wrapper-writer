@@ -1,25 +1,33 @@
-{% macro scala_docs(docs) %}
-    {%- if docs != None -%}
-    /** {{ docs }}*/
+{%- macro scala_docs(method) -%}
+  /** {{ method.docs }}
+    *{% for p, t in method.params.items() %}
+    * @params {{ p }} {{ t.get("type") }}{% if t.get("doc") %} - {{ t.get("doc") }}{% endif %}{% endfor %}
+    *{% if method.returns %} @return {{ method.returns }}{% endif %}
+    */
+{%- endmacro -%}
+
+{% macro python_docs(method) %}
+    {%- if method.docs != None -%}
+    """
+    {{ method.docs }}
+    {%- for p, t in method.params.items() -%}
+    :param {{ p }}: {% if t.get("doc") %}{{ t.get("doc") }}{% endif %}
+    :type {{ p }}: {{ t.get("type") }}{% endfor %}
+    {% if method.returns %}:return:  {{ method.returns }}{% endif %}
+    """
     {%- endif %}
 {% endmacro %}
 
-{% macro python_docs(docs) %}
-    {%- if docs != None -%}
-    """ {{ docs }}"""
-    {%- endif %}
-{% endmacro %}
-
-{% macro r_docs(name, docs, params) %}
-#' {{ name|lower_camel }}
+{% macro r_docs(method) %}
+#' {{ method.name|lower_camel }}
 #'
-#' {{ docs }}
+#' {{ method.docs }}
 #' @param sc
-{% for p in params -%}
-#' @param {{ p }}
-{% endfor -%}
+{%- for p, t in method.params.items() -%}
+#' @param {{ p }} {{ t.get("type") }} {% if t.get("doc") %}{{ t.get("doc") }}{% endif %}
+{%- endfor -%}
 #'
-#' @return
+#' @return {% if method.returns %}{{ method.returns }}{% endif %}
 #' @export
 #'
 #' @examples
@@ -49,14 +57,22 @@
     {%- endfor -%}
 {% endmacro %}
 
-{% macro show_params_and_types(params) %}
-	{%- set length = params|length -%}
-    {%- for p in params -%}
-    	{%- if loop.index == length -%}
-    		{{ p }}: {{ params.get(p) }}
-    	{%- else -%}
-    		{{ p }}: {{ params.get(p) }},
-    	{%- endif -%}
+{% macro show_params_types_defaults(params) %}
+    {%- set length = params|length -%}
+    {%- for p, v in params.items() -%}
+        {%- if v.get("default") -%}
+            {%- if loop.index == length -%}
+                {{ p }}: {{ v.get("type") }} = {{ v.get("default") }}
+             {%- else -%}
+                {{ p }}: {{ v.get("type") }} = {{ v.get("default") }}, {# comment in order to get whitespace #}
+            {%- endif -%}
+        {%- else -%}
+            {%- if loop.index == length -%}
+                {{ p }}: {{ v.get("type") }}
+             {%- else -%}
+                {{ p }}: {{ v.get("type") }}, {# comment in order to get whitespace #}
+            {%- endif -%}
+        {%- endif -%}
     {%- endfor -%}
 {% endmacro %}
 
