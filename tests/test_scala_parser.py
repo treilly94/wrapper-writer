@@ -64,7 +64,7 @@ class TestScalaParser(unittest.TestCase):
          doc: "Name of column to add."
     docs: "This function takes in two strings, converts them to Spark columns then adds them together."
     returns: Column
-    access: public
+    access: protected
     other:
   multiply:
     params:
@@ -78,7 +78,7 @@ class TestScalaParser(unittest.TestCase):
          doc: "Integer to multiply."
     docs: "This function takes in two integers and multiplies them together and return the outcome."
     returns: Int
-    access: public
+    access: protected
     other:
 operations:
   filter_on_list:
