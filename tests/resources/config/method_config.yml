@@ -30,7 +30,7 @@ Estimation:
       params:
         column_a:
           type: String
-          default: numbers
+          default: "numbers"
           doc: "Name of column to estimate."
         column_b:
           type: String

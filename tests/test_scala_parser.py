@@ -46,7 +46,7 @@ class TestScalaParser(unittest.TestCase):
          doc: "Name of column to add."
       new_col:
          type: String
-         default: 
+         default: "summed"
          doc: "Name of new column being added to to data set, holds the values of columnA + columnB."
     docs: "This function takes in a DataFrame and then adds a new column to it which holds the values of columnA + columnB. This is calculated by calling the sumColumns function when adding the new column."
     returns: DataFrame
@@ -137,12 +137,12 @@ operations:
 
         method = self.sp.regex_parser(data)
         self.assertEqual("sum_columns", method[0].name)
-        self.assertEqual({"column_a":  {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
+        self.assertEqual({"column_a": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
                           "column_b": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
                           "df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
                           "new_col": {'default': '',
-                                     'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
-                                     'type': 'String'}},
+                                      'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
+                                      'type': 'String'}},
                          method[0].params)
         self.assertEqual(self.sum_columns_docstring, method[0].docs)
         self.assertEqual("DataFrame", method[0].returns)
@@ -190,7 +190,8 @@ operations:
         method = self.sp.regex_parser(data)
 
         self.assertEqual("agg_column", method[0].name)
-        self.assertEqual({"df": {"default":"", "type":"DataFrame", "doc": "data set need for function"}}, method[0].params)
+        self.assertEqual({"df": {"default": "", "type": "DataFrame", "doc": "data set need for function"}},
+                         method[0].params)
         self.assertEqual("hi", method[0].docs)
         self.assertEqual("", method[0].returns)
         self.assertEqual("public", method[0].access)
@@ -213,7 +214,8 @@ operations:
         self.assertEqual({"df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
                           "column_a": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
                           "column_b": {'default': '', 'doc': 'Name of column to add.', 'type': 'String'},
-                          "new_col": {'default': '', 'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
+                          "new_col": {'default': '',
+                                      'doc': 'Name of new column being added to to data set, holds the values of columnA + columnB.',
                                       'type': 'String'}},
                          method[0].params)
         self.assertEqual({"column_a": {'default': '', 'doc': 'Stores all the data.', 'type': 'String'},
@@ -223,12 +225,12 @@ operations:
         self.assertEqual({"colb": {'default': '', 'doc': '', 'type': 'List[String]'},
                           "cola": {'default': '"hello"', 'doc': '', 'type': 'String'}}, method[3].params)
         self.assertEqual({"df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
-                          "target_col": {'default': '', 'doc': 'Column to be filtered on.',  'type': 'String'},
-                          "values": {'default': '',  'doc': 'List of values to compared.', 'type': 'List[Int]'}},
+                          "target_col": {'default': '', 'doc': 'Column to be filtered on.', 'type': 'String'},
+                          "values": {'default': '', 'doc': 'List of values to compared.', 'type': 'List[Int]'}},
                          method[4].params)
-        self.assertEqual({"df":{'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
-                          "target_col": {'default': '', 'doc': 'Column to be filtered on.',  'type': 'String'},
-                          "values": {'default': '',  'doc': 'List of values to compared.', 'type': 'List[Int]'}},
+        self.assertEqual({"df": {'default': '', 'doc': 'Stores all the data.', 'type': 'DataFrame'},
+                          "target_col": {'default': '', 'doc': 'Column to be filtered on.', 'type': 'String'},
+                          "values": {'default': '', 'doc': 'List of values to compared.', 'type': 'List[Int]'}},
                          method[5].params)
 
         self.assertEqual("DataFrame", method[0].returns)
@@ -273,7 +275,9 @@ operations:
 
     def test_create_containers(self):
         path = os.path.normpath(os.path.join(self.test_resource_dir, "one_method.scala"))
-        methods = [Method("sumColumns", {"df": {"default":"", "type":"DataFrame", "doc": "data set need for function"}}, "", "DataFrame")]
+        methods = [
+            Method("sumColumns", {"df": {"default": "", "type": "DataFrame", "doc": "data set need for function"}}, "",
+                   "DataFrame")]
         self.sp.create_containers(methods, path)
 
         self.assertEqual(self.config_container, self.sp.containers[0])
@@ -312,7 +316,7 @@ operations:
     def test_parameter_dictionary_no_doc(self):
         parameter_match = ["df:DataFrame"]
         params = self.sp.parameter_dictionary(parameter_match, [])
-        self.assertEqual({"df": {"type":"DataFrame", "default":"", "doc":""}}, params)
+        self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""}}, params)
 
         params = self.sp.parameter_dictionary(parameter_match, None)
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""}}, params)
@@ -324,47 +328,43 @@ operations:
         parameter_match = ["df:DataFrame", 'column:String = "Fred"']
         params = self.sp.parameter_dictionary(parameter_match, [])
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
-                          "column": {"type":"String", "default":'"Fred"', "doc":""}}, params)
+                          "column": {"type": "String", "default": '"Fred"', "doc": ""}}, params)
 
     def test_parameter_dictionary_default_int(self):
         parameter_match = ["df:DataFrame", 'value:Int = 2']
         params = self.sp.parameter_dictionary(parameter_match, [])
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
-                          "value": {"type":"Int", "default":'2', "doc":""}}, params)
-
+                          "value": {"type": "Int", "default": '2', "doc": ""}}, params)
 
     def test_parameter_dictionary_default_list_int(self):
         parameter_match = ["df:DataFrame", 'values:List[Int] = [2, 3, 4]']
         params = self.sp.parameter_dictionary(parameter_match, [])
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
-                          "values": {"type":"List[Int]", "default":'[2, 3, 4]', "doc":""}}, params)
+                          "values": {"type": "List[Int]", "default": '[2, 3, 4]', "doc": ""}}, params)
 
     def test_parameter_dictionary_default_seq_string(self):
         parameter_match = ["df:DataFrame", 'columns:Seq[String] = Seq("Fred", "molly")']
         params = self.sp.parameter_dictionary(parameter_match, [])
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
-                          "columns": {"type":"Seq[String]", "default":'Seq("Fred", "molly")', "doc":""}}, params)
-
+                          "columns": {"type": "Seq[String]", "default": 'Seq("Fred", "molly")', "doc": ""}}, params)
 
     def test_parameter_dictionary_doc(self):
         parameter_match = ["df:DataFrame", 'column:String = "Fred"']
         parameter_doc = ['@param df DataFrame - Data going in.', '@param column String - column name.']
         params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": "Data going in."},
-                          "column": {"type":"String", "default":'"Fred"', "doc":"column name."}}, params)
+                          "column": {"type": "String", "default": '"Fred"', "doc": "column name."}}, params)
 
     def test_parameter_dictionary_doc_without_dash(self):
         parameter_match = ["df:DataFrame", 'column:String = "Fred"']
         parameter_doc = ['@param df DataFrame Data going in.', '@param column String column name.']
         params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": "Data going in."},
-                          "column": {"type":"String", "default":'"Fred"', "doc":"column name."}}, params)
-
+                          "column": {"type": "String", "default": '"Fred"', "doc": "column name."}}, params)
 
     def test_parameter_dictionary_withput_descriptions(self):
         parameter_match = ["df:DataFrame", 'column:String = "Fred"']
         parameter_doc = ['@param df DataFrame', '@param column String']
         params = self.sp.parameter_dictionary(parameter_match, parameter_doc)
         self.assertEqual({"df": {"type": "DataFrame", "default": "", "doc": ""},
-                          "column": {"type":"String", "default":'"Fred"', "doc":""}}, params)
-
+                          "column": {"type": "String", "default": '"Fred"', "doc": ""}}, params)

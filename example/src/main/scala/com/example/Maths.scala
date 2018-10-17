@@ -16,7 +16,7 @@ object Maths {
     * @param newCol String - Name of new column being added to to data set, holds the values of columnA + columnB.
     * @return DataFrame
     */
-  def sumColumns(df: DataFrame, columnA: String, columnB: String, newCol: String): DataFrame = {
+  def sumColumns(df: DataFrame, columnA: String, columnB: String, newCol: String = "summed"): DataFrame = {
     df.withColumn(newCol, sum(columnA, columnB))
   }
 
