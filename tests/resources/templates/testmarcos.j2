@@ -1,6 +1,6 @@
 {%- macro scala_docs(method) -%}
   /** {{ method.docs }}
-    *{% for p, t in method.params.items() %}}
+    *{% for p, t in method.params.items() %}
     * @params {{ p }} {{ t.get("type") }}{% if t.get("doc") %} - {{ t.get("doc") }}{% endif %}{% endfor %}
     *{% if method.returns %} @return {{ method.returns }}{% endif %}
     */
@@ -16,6 +16,7 @@
              {%- else -%}
                 {{ p }}: {{ v.get("type") }} = {{ v.get("default") }}, {# comment in order to get whitespace #}
             {%- endif -%}
+        {%- else -%}
             {%- if loop.index == length -%}
                 {{ p }}: {{ v.get("type") }}
              {%- else -%}
